@@ -1,16 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>server</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LKDin.IUI\LKDin.IUI.csproj" />
-    <ProjectReference Include="..\LKDin.Server.UI\LKDin.UI.ConsoleMenu.csproj" />
+    <ProjectReference Include="..\LKDin.DTOs\LKDin.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

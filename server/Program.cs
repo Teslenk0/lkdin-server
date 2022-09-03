@@ -1,13 +1,26 @@
-﻿namespace LKDin.Server;
+﻿using LKDin.IUI;
+using LKDin.Server.BusinessLogic;
+using LKDin.Server.IBusinessLogic;
+using LKDin.UI.ConsoleMenu;
+using LKDin.UI.ConsoleMenu.AvailableOptions;
+
+namespace LKDin.Server;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("HEEEEELLLOOO");
-        var input = Console.ReadLine();
+        var enabledOptions = new List<IMenuOption>()
+        {
+            new CreateUserOption("Crear nuevo usuario"),
+            new ExitOption("Salir")
+        };
 
-        Console.WriteLine(input);
+        IUIService uiService = new ConsoleMenuService(enabledOptions);
+
+        Thread menuThread = new(uiService.Render);
+
+        menuThread.Start();
     }
 }
 
