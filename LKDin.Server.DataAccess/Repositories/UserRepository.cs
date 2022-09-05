@@ -28,5 +28,17 @@ namespace LKDin.Server.DataAccess.Repositories
 
             return exists;
         }
+
+        public User? Get(string id)
+        {
+            User user;
+
+            using (var context = DbContextFactory.Create())
+            {
+                user = context.Users.Find(id);
+            }
+
+            return user;
+        }
     }
 }

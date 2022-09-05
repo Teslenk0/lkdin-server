@@ -3,6 +3,7 @@ using System;
 using LKDin.Server.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LKDin.Server.DataAccess.Migrations
 {
     [DbContext(typeof(LKDinContext))]
-    partial class LKDinContextModelSnapshot : ModelSnapshot
+    [Migration("20220905205330_MakeImagePathNullable")]
+    partial class MakeImagePathNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");

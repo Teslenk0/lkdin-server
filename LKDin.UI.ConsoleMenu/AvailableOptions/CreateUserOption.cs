@@ -3,7 +3,7 @@ using LKDin.IBusinessLogic;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
-    public class CreateUserOption : ConsoleMenuOption
+    public class CreateUserOption : UserProtectedConsoleMenuOption
     {
         private readonly IUserService _userService;
 
@@ -16,11 +16,11 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
         {
             try
             {
-                this.PrintHeader("Crear Usuario");
+                this.PrintHeader(this.MessageToPrint);
     
                 UserDTO userDTO = new()
                 {
-                    Id = this.RequestId(),
+                    Id = this.RequestUserId(),
                     Name = this.RequestName(),
                     Password = this.RequestPassword(),
                 };
@@ -35,27 +35,6 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
                 this.PrintFinishedExecutionMessage(null, false);
             }
-        }
-
-        private string RequestPassword()
-        {
-            Console.Write("Contraseña: ");
-
-            string password;
-
-            do
-            {
-                password = Console.ReadLine();
-
-                if (password == null || password.Length < 5)
-                {
-                    this.PrintError("Valor incorrecto (al menos 5 caracteres)");
-                    Console.Write("Contraseña: ");
-                }
-            }
-            while (password == null || password.Length < 5);
-
-            return password;
         }
 
         private string RequestName()
@@ -77,27 +56,6 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             while (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)));
 
             return name;
-        }
-
-        private string RequestId()
-        {
-            Console.Write("ID (CI, DNI): ");
-
-            string id;
-
-            do
-            {
-                id = Console.ReadLine();
-
-                if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
-                {
-                    this.PrintError("Valor incorrecto (solo caracteres alfanumericos)");
-                    Console.Write("ID (CI, DNI): ");
-                }
-            }
-            while (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit));
-
-            return id;
         }
     }
 }

@@ -42,6 +42,8 @@ public abstract class ConsoleMenuOption : IMenuOption
 
     protected void PrintError(string errorMessage)
     {
+        Console.WriteLine();
+
         this.PrintDiv(ERROR_DIV_CHAR);
 
         Console.WriteLine($"ERROR: {errorMessage}");
@@ -81,5 +83,47 @@ public abstract class ConsoleMenuOption : IMenuOption
         }
         
         Console.ReadLine();
+    }
+
+    protected string RequestUserId()
+    {
+        Console.Write("ID (CI, DNI): ");
+
+        string id;
+
+        do
+        {
+            id = Console.ReadLine();
+
+            if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
+            {
+                this.PrintError("Valor incorrecto (solo caracteres alfanumericos)");
+                Console.Write("ID (CI, DNI): ");
+            }
+        }
+        while (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit));
+
+        return id;
+    }
+
+    protected string RequestPassword()
+    {
+        Console.Write("Contraseña: ");
+
+        string password;
+
+        do
+        {
+            password = Console.ReadLine();
+
+            if (password == null || password.Length < 5)
+            {
+                this.PrintError("Valor incorrecto (al menos 5 caracteres)");
+                Console.Write("Contraseña: ");
+            }
+        }
+        while (password == null || password.Length < 5);
+
+        return password;
     }
 }

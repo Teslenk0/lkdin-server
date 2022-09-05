@@ -11,7 +11,9 @@ public class Program
     {
         var enabledOptions = new List<IMenuOption>()
         {
-            new CreateUserOption("Crear nuevo usuario", new UserService()),
+            new CreateUserOption("Crear Usuario", new UserService()),
+            new CreateWorkProfileOption("Crear Perfil de Trabajo", new WorkProfileService(new UserService())),
+            new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", new WorkProfileService(new UserService())),
             new ExitOption("Salir")
         };
 

@@ -7,5 +7,7 @@ namespace LKDin.Server.IDataAccess.Repositories
         public User Create(User user);
 
         public bool Exists(string id);
+
+        public User? Get(string id);
     }
 }

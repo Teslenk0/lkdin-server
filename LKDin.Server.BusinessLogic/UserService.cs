@@ -26,14 +26,30 @@ namespace LKDin.Server.BusinessLogic
                 throw new UserAlreadyExistsException(userDTO.Id);
             }
 
-            var user = new User()
-            {
-                Name = userDTO.Name,
-                Password = userDTO.Password,
-                Id = userDTO.Id
-            };
+            var user = UserDTO.DTOToEntity(userDTO);
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
 
             this._userRepository.Create(user);
+        }
+
+        public UserDTO ValidateUserCredentials(string userId, string password)
+        {
+            var user = this._userRepository.Get(userId);
+
+            if (user == null)
+            {
+                throw new UserDoesNotExistException(userId);
+            }
+
+            bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);
+
+            if (!verified)
+            {
+                throw new UnauthorizedException();
+            }
+
+            return UserDTO.EntityToDTO(user);
         }
     }
 }

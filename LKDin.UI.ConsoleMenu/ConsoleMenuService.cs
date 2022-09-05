@@ -22,7 +22,7 @@ public class ConsoleMenuService : IUIService
             for (var i = 0; i < MenuOptions.Count; i++)
             {
 
-                MenuOptions[i].OptionNumber = i;
+                MenuOptions[i].OptionNumber = i + 1;
 
                 MenuOptions[i].PrintMenuOptionMessage();
             }
@@ -44,7 +44,7 @@ public class ConsoleMenuService : IUIService
                     throw new Exception("Unsupported option: {0}");
                 }
 
-                var optionHandler = MenuOptions[parsedOption];
+                var optionHandler = MenuOptions[parsedOption - 1];
 
                 optionHandler.Execute();
 
