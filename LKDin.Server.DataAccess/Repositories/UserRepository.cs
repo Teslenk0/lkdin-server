@@ -16,5 +16,17 @@ namespace LKDin.Server.DataAccess.Repositories
 
             return user;
         }
+
+        public bool Exists(string id)
+        {
+            bool exists;
+
+            using (var context = DbContextFactory.Create())
+            {
+                exists = context.Users.Any(u => u.Id == id);
+            }
+
+            return exists;
+        }
     }
 }

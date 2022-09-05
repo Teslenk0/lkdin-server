@@ -24,7 +24,7 @@ public class ConsoleMenuService : IUIService
 
                 MenuOptions[i].OptionNumber = i;
 
-                MenuOptions[i].PrintMessage();
+                MenuOptions[i].PrintMenuOptionMessage();
             }
 
             Console.WriteLine("---------------------");

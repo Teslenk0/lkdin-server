@@ -1,4 +1,5 @@
 ﻿using LKDin.DTOs;
+using LKDin.Exceptions;
 using LKDin.IBusinessLogic;
 using LKDin.Server.DataAccess.Repositories;
 using LKDin.Server.Domain;
@@ -17,6 +18,14 @@ namespace LKDin.Server.BusinessLogic
 
         public void CreateUser(UserDTO userDTO)
         {
+
+            var exists = this._userRepository.Exists(userDTO.Id);
+
+            if (exists)
+            {
+                throw new UserAlreadyExistsException(userDTO.Id);
+            }
+
             var user = new User()
             {
                 Name = userDTO.Name,

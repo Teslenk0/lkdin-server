@@ -14,18 +14,27 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         public override void Execute()
         {
-            Console.WriteLine("---------------------");
-            Console.WriteLine("     Crear Usuario   ");
-            Console.WriteLine("---------------------");
-
-            UserDTO userDTO = new()
+            try
             {
-                Id = this.RequestId(),
-                Name = this.RequestName(),
-                Password = this.RequestPassword(),
-            };
+                this.PrintHeader("Crear Usuario");
+    
+                UserDTO userDTO = new()
+                {
+                    Id = this.RequestId(),
+                    Name = this.RequestName(),
+                    Password = this.RequestPassword(),
+                };
 
-            this._userService.CreateUser(userDTO);
+                this._userService.CreateUser(userDTO);
+
+                this.PrintFinishedExecutionMessage("Se creo el usuario exitosamente");
+            }
+            catch (Exception e)
+            {
+                this.PrintError(e.Message);
+
+                this.PrintFinishedExecutionMessage(null, false);
+            }
         }
 
         private string RequestPassword()
@@ -40,9 +49,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
                 if (password == null || password.Length < 5)
                 {
-                    Console.WriteLine("==========================");
-                    Console.WriteLine("ERROR: Valor incorrecto (al menos 5 caracteres)");
-                    Console.WriteLine("==========================");
+                    this.PrintError("Valor incorrecto (al menos 5 caracteres)");
                     Console.Write("Contraseña: ");
                 }
             }
@@ -53,9 +60,21 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         private string RequestName()
         {
-            Console.Write("Nombre (opcional): ");
+            Console.Write("Nombre: ");
 
-            string name = Console.ReadLine();
+            string name;
+
+            do
+            {
+                name = Console.ReadLine();
+
+                if (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)))
+                {
+                    this.PrintError("Valor incorrecto");
+                    Console.Write("Nombre: ");
+                }
+            }
+            while (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)));
 
             return name;
         }
@@ -72,9 +91,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
                 if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
                 {
-                    Console.WriteLine("==========================");
-                    Console.WriteLine("ERROR: Valor incorrecto (solo caracteres alfanumericos)");
-                    Console.WriteLine("==========================");
+                    this.PrintError("Valor incorrecto (solo caracteres alfanumericos)");
                     Console.Write("ID (CI, DNI): ");
                 }
             }

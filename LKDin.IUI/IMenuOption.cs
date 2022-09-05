@@ -8,5 +8,5 @@ public interface IMenuOption
 
     public void Execute();
 
-    public void PrintMessage();
+    public void PrintMenuOptionMessage();
 }
