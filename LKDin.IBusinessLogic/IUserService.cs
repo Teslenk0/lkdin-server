@@ -1,6 +1,6 @@
 ﻿using LKDin.DTOs;
 
-namespace LKDin.Server.IBusinessLogic
+namespace LKDin.IBusinessLogic
 {
     public interface IUserService
     {

@@ -1,7 +1,4 @@
-﻿
-using static System.Net.Mime.MediaTypeNames;
-
-namespace LKDin.UI.ConsoleMenu.AvailableOptions
+﻿namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class ExitOption : ConsoleMenuOption
     {

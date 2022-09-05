@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>LKDin.UI</AssemblyName>
+    <AssemblyName>LKDin.UI.ConsoleMenu</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +15,7 @@
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LKDin.DTOs\LKDin.DTOs.csproj" />
+    <ProjectReference Include="..\LKDin.IBusinessLogic\LKDin.IBusinessLogic.csproj" />
     <ProjectReference Include="..\LKDin.IUI\LKDin.IUI.csproj" />
-    <ProjectReference Include="..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj" />
-    <ProjectReference Include="..\LKDin.Server.IBusinessLogic\LKDin.Server.IBusinessLogic.csproj" />
   </ItemGroup>
 </Project>

@@ -5,13 +5,13 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server", "LKDin.Server.csproj", "{983C468C-B4B4-4655-80DB-65E6597B8C7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.UI.ConsoleMenu", "..\LKDin.Server.UI\LKDin.UI.ConsoleMenu.csproj", "{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.UI.ConsoleMenu", "..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj", "{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.IUI", "..\LKDin.IUI\LKDin.IUI.csproj", "{136B46E2-5F7B-4FC4-A0F8-5CBD67E04EB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.DTOs", "..\LKDin.DTOs\LKDin.DTOs.csproj", "{5C8DE7C4-A1A1-4577-80D5-8970616748EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.IBusinessLogic", "..\LKDin.Server.IBusinessLogic\LKDin.Server.IBusinessLogic.csproj", "{0F6E4A75-C575-4032-B767-FAECA2B724DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.IBusinessLogic", "..\LKDin.IBusinessLogic\LKDin.IBusinessLogic.csproj", "{0F6E4A75-C575-4032-B767-FAECA2B724DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.BusinessLogic", "..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj", "{19D8A967-4B67-47BB-983C-DA532975D114}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.IDataAccess", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.DataAccess", "..\LKDin.Server.DataAccess\LKDin.Server.DataAccess.csproj", "{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.Domain", "..\LKDin.Server.Domain\LKDin.Server.Domain.csproj", "{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.Domain", "..\LKDin.Server.Domain\LKDin.Server.Domain.csproj", "{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

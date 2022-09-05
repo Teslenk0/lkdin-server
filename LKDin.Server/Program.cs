@@ -1,6 +1,5 @@
 ﻿using LKDin.IUI;
 using LKDin.Server.BusinessLogic;
-using LKDin.Server.IBusinessLogic;
 using LKDin.UI.ConsoleMenu;
 using LKDin.UI.ConsoleMenu.AvailableOptions;
 
@@ -12,7 +11,7 @@ public class Program
     {
         var enabledOptions = new List<IMenuOption>()
         {
-            new CreateUserOption("Crear nuevo usuario"),
+            new CreateUserOption("Crear nuevo usuario", new UserService()),
             new ExitOption("Salir")
         };
 

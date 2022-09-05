@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LKDin.Server.Domain
+﻿namespace LKDin.Server.Domain
 {
     public class BaseEntity
     {

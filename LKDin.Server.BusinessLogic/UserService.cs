@@ -1,8 +1,8 @@
 ﻿using LKDin.DTOs;
+using LKDin.IBusinessLogic;
 using LKDin.Server.DataAccess.Repositories;
-using LKDin.Server.IDataAccess.Repositories;
-using LKDin.Server.IBusinessLogic;
 using LKDin.Server.Domain;
+using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.BusinessLogic
 {

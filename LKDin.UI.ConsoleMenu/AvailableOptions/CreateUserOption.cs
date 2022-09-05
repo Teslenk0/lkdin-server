@@ -1,6 +1,5 @@
 ﻿using LKDin.DTOs;
-using LKDin.Server.BusinessLogic;
-using LKDin.Server.IBusinessLogic;
+using LKDin.IBusinessLogic;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
@@ -8,9 +7,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
     {
         private readonly IUserService _userService;
 
-        public CreateUserOption(string messageToPrint) : base(messageToPrint)
+        public CreateUserOption(string messageToPrint, IUserService userService) : base(messageToPrint)
         {
-            this._userService = new UserService();
+            this._userService = userService;
         }
 
         public override void Execute()
