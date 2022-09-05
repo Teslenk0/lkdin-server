@@ -7,15 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server", "LKDin.Serve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.UI.ConsoleMenu", "..\LKDin.Server.UI\LKDin.UI.ConsoleMenu.csproj", "{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.IUI", "..\LKDin.IUI\LKDin.IUI.csproj", "{136B46E2-5F7B-4FC4-A0F8-5CBD67E04EB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.IUI", "..\LKDin.IUI\LKDin.IUI.csproj", "{136B46E2-5F7B-4FC4-A0F8-5CBD67E04EB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.DTOs", "..\LKDin.DTOs\LKDin.DTOs.csproj", "{5C8DE7C4-A1A1-4577-80D5-8970616748EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.DTOs", "..\LKDin.DTOs\LKDin.DTOs.csproj", "{5C8DE7C4-A1A1-4577-80D5-8970616748EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.IBusinessLogic", "..\LKDin.Server.IBusinessLogic\LKDin.Server.IBusinessLogic.csproj", "{0F6E4A75-C575-4032-B767-FAECA2B724DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.IBusinessLogic", "..\LKDin.Server.IBusinessLogic\LKDin.Server.IBusinessLogic.csproj", "{0F6E4A75-C575-4032-B767-FAECA2B724DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.BusinessLogic", "..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj", "{19D8A967-4B67-47BB-983C-DA532975D114}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.BusinessLogic", "..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj", "{19D8A967-4B67-47BB-983C-DA532975D114}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.IDataAccess", "..\LKDin.Server.IDataAccess\LKDin.Server.IDataAccess.csproj", "{7DDF0481-0B8F-40D9-AF7A-3A4985C345F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.IDataAccess", "..\LKDin.Server.IDataAccess\LKDin.Server.IDataAccess.csproj", "{7DDF0481-0B8F-40D9-AF7A-3A4985C345F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.DataAccess", "..\LKDin.Server.DataAccess\LKDin.Server.DataAccess.csproj", "{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.Domain", "..\LKDin.Server.Domain\LKDin.Server.Domain.csproj", "{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{7DDF0481-0B8F-40D9-AF7A-3A4985C345F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDF0481-0B8F-40D9-AF7A-3A4985C345F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DDF0481-0B8F-40D9-AF7A-3A4985C345F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CDBBEFE-04BD-4435-AB6B-11F0F3EC3750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F178FD1-4B5B-43EA-BE4F-7886097AAE7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

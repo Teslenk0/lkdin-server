@@ -1,6 +1,8 @@
 ﻿using LKDin.DTOs;
-using LKDin.Server.IBusinessLogic;
+using LKDin.Server.DataAccess.Repositories;
 using LKDin.Server.IDataAccess.Repositories;
+using LKDin.Server.IBusinessLogic;
+using LKDin.Server.Domain;
 
 namespace LKDin.Server.BusinessLogic
 {
@@ -10,12 +12,19 @@ namespace LKDin.Server.BusinessLogic
 
         public UserService()
         {
-
+            this._userRepository = new UserRepository();
         }
 
-        public UserDTO CreateUser(UserDTO userDTO)
+        public void CreateUser(UserDTO userDTO)
         {
-            return null;
+            var user = new User()
+            {
+                Name = userDTO.Name,
+                Password = userDTO.Password,
+                Id = userDTO.Id
+            };
+
+            this._userRepository.Create(user);
         }
     }
 }

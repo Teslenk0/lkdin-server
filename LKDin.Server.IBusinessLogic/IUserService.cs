@@ -4,6 +4,6 @@ namespace LKDin.Server.IBusinessLogic
 {
     public interface IUserService
     {
-        public UserDTO CreateUser(UserDTO userDTO);
+        public void CreateUser(UserDTO userDTO);
     }
 }

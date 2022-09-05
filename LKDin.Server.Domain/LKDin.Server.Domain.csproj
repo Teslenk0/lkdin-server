@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LKDin.Server.Domain\LKDin.Server.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
