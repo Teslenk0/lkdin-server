@@ -1,7 +1,16 @@
-﻿namespace LKDin.Server.Domain
+﻿using System.Text;
+
+namespace LKDin.Server.Domain
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
-        public int Version { get; set; }
+        public abstract string Serialize();
+
+        protected byte[] SerializeAndEncode()
+        {
+            string serializedObject = Serialize();
+
+            return new UTF8Encoding(true).GetBytes(serializedObject);
+        }
     }
 }

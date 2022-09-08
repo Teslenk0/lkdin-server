@@ -13,5 +13,12 @@
         public ICollection<ChatMessage> ReceivedMessages { get; set; }
 
         public ICollection<ChatMessage> SentMessages { get; set; }
+
+        public override string Serialize()
+        {
+            return "Id=" + Id + "|"
+                   + "Name=" + Name + "|"
+                   + "Password=" + Password;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace LKDin.Server.Domain
+﻿using System.Xml.Linq;
+
+namespace LKDin.Server.Domain
 {
     public class WorkProfile : BaseEntity
     {
@@ -13,5 +15,13 @@
         public User User { get; set; }
 
         public string UserId { get; set; }
+
+        public override string Serialize()
+        {
+            return "Id=" + Id.ToString() + "|"
+                   + "Description=" + Description + "|"
+                   + "ImagePath=" + ImagePath + "|"
+                   + "UserId=" + UserId;
+        }
     }
 }
