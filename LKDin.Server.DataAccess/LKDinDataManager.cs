@@ -8,7 +8,13 @@ namespace LKDin.Server.DataAccess
     {
         private readonly static Dictionary<string, object> _lockers = new();
 
-        public static List<User> Users { get { return ReadDataFromStore<User>(); } }
+        public static List<User> Users { get { return ReadDataFromStore<User>("user"); } }
+
+        public static List<WorkProfile> WorkProfiles { get { return ReadDataFromStore<WorkProfile>("workprofile"); } }
+
+        public static List<Skill> Skills { get { return ReadDataFromStore<Skill>("skill"); } }
+
+        public static List<ChatMessage> ChatMessages { get { return ReadDataFromStore<ChatMessage>("chatmessage"); } }
 
         public static void AddDataToStore<T>(BaseEntity baseEntity)
         {
@@ -25,24 +31,18 @@ namespace LKDin.Server.DataAccess
             {
                 var filePath = GetStoreFilePath(storeName);
 
-                using (FileStream file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.None))
-                {
+                using FileStream file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.None);
 
-                    StreamWriter writer = new(file);
+                using StreamWriter writer = new(file);
 
-                    writer.WriteLine(baseEntity.Serialize());
+                writer.WriteLine(baseEntity.Serialize());
 
-                    writer.Flush();
-
-                    file.Close();
-                }
+                writer.Flush();
             }
         }
 
-        private static List<T> ReadDataFromStore<T>()
+        private static List<T> ReadDataFromStore<T>(string storeName) where T : new()
         {
-            var storeName = typeof(T).Name.ToLower();
-
             if (!_lockers.ContainsKey(storeName))
             {
                 _lockers.TryAdd(storeName, new object());
@@ -50,23 +50,30 @@ namespace LKDin.Server.DataAccess
 
             var locker = _lockers[storeName];
 
-            List<T> baseEntities = new();
+            List<T> parsedDataList = new();
+
 
             lock (locker)
             {
                 var filePath = GetStoreFilePath(storeName);
 
-                using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    StreamReader reader = new(file);
+                using FileStream file = new(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
 
-                    reader.ReadLine();
-                    
-                    file.Close();
+                using StreamReader reader = new(file);
+
+                while (!reader.EndOfStream)
+                {
+                    var data = reader.ReadLine();
+
+                    if (data != null && data != "")
+                    {
+                        parsedDataList.Add(BaseEntity.Deserialize<T>(data));
+                    }
                 }
+
             }
 
-            return baseEntities;
+            return parsedDataList;
         }
 
         private static string GetStoreFilePath(string storeName)

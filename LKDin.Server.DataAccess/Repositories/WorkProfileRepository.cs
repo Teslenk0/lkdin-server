@@ -8,26 +8,16 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public WorkProfile Create(WorkProfile workProfile)
         {
-            /*using (var context = DbContextFactory.Create())
-            {
-                context.WorkProfiles.Add(workProfile);
+            workProfile.Id = Guid.NewGuid();
 
-                context.SaveChanges();
-            }*/
+            LKDinDataManager.AddDataToStore<WorkProfile>(workProfile);
 
             return workProfile;
         }
 
         public bool ExistsByUserId(string userId)
         {
-            bool exists;
-
-            /*using (var context = DbContextFactory.Create())
-            {
-                exists = context.WorkProfiles.Any(u => u.UserId == userId);
-            }*/
-
-            return false;
+            return LKDinDataManager.WorkProfiles.Any(u => u.UserId == userId);
         }
 
         public WorkProfile Update(WorkProfile workProfile)
@@ -44,17 +34,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public WorkProfile? GetByUserId(string userId)
         {
-            WorkProfile workProfile;
-
-            /* using (var context = DbContextFactory.Create())
-            {
-                workProfile = context
-                                .WorkProfiles
-                                .Where(wp => wp.UserId == userId)
-                                .FirstOrDefault();
-            } */
-
-            return null;
+            return LKDinDataManager.WorkProfiles.Find(wp => wp.UserId == userId);
         }
     }
 }

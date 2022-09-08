@@ -19,14 +19,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public User? Get(string id)
         {
-            User user;
-
-            /*using (var context = DbContextFactory.Create())
-            {
-                user = context.Users.Find(id);
-            } */
-
-            return null;
+            return LKDinDataManager.Users.Find(u => u.Id == id);
         }
     }
 }

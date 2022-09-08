@@ -8,12 +8,15 @@ namespace LKDin.DTOs
 
         public string Name { get; set; }
 
+        public string WorkProfileId { get; set; }
+
         public static SkillDTO EntityToDTO(Skill skill)
         {
             return new SkillDTO()
             {
                 Id = skill.Id.ToString(),
-                Name = skill.Name
+                Name = skill.Name,
+                WorkProfileId = skill.WorkProfileId.ToString()
             };
         }
 
@@ -21,7 +24,8 @@ namespace LKDin.DTOs
         {
             var skill = new Skill()
             {
-                Name = skillDTO.Name
+                Name = skillDTO.Name,
+                WorkProfileId = skillDTO.WorkProfileId
             };
 
             if (skillDTO.Id != null)

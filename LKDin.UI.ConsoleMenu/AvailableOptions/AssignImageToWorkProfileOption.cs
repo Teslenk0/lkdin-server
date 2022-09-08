@@ -21,17 +21,11 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 this.PrintHeader(this.MessageToPrint);
 
-                var userId = this.RequestUserId();
-
                 WorkProfileDTO workProfileDTO = new()
                 {
-                    
-                    User = new UserDTO()
-                    {
-                        Id = userId,
-                        Password = this.RequestPassword()
-                    },
-                    UserId = userId,
+
+                    UserId = this.RequestUserId(),
+                    UserPassword = this.RequestPassword(),
                     Description = this.RequestImagePath()
                 };
 

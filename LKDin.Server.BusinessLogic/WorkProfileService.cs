@@ -2,6 +2,7 @@
 using LKDin.Exceptions;
 using LKDin.IBusinessLogic;
 using LKDin.Server.DataAccess.Repositories;
+using LKDin.Server.Domain;
 using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.BusinessLogic
@@ -9,6 +10,8 @@ namespace LKDin.Server.BusinessLogic
     public class WorkProfileService : IWorkProfileService
     {
         private readonly IWorkProfileRepository _workProfileRepository;
+
+        private readonly ISkillRepository _skillRepository;
 
         private readonly IUserService _userService;
 
@@ -21,7 +24,7 @@ namespace LKDin.Server.BusinessLogic
 
         public void CreateWorkProfile (WorkProfileDTO workProfileDTO)
         {
-            this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.User.Password);
+            this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
 
             var exists = this._workProfileRepository.ExistsByUserId(workProfileDTO.UserId);
 
@@ -32,16 +35,24 @@ namespace LKDin.Server.BusinessLogic
 
             var workProfile = WorkProfileDTO.DTOToEntity(workProfileDTO);
 
-            // Set the User as null so EF does not try to create a new user
-            workProfile.User = null;
-
             this._workProfileRepository.Create(workProfile);
+
+            List<Skill> skills = new();
+
+            foreach(SkillDTO skillDTO in workProfileDTO.Skills)
+            {
+                skillDTO.WorkProfileId = workProfile.Id.ToString();
+
+                skills.Add(SkillDTO.DTOToEntity(skillDTO));
+            }
+
+            this._skillRepository.CreateMany(skills);
         }
 
 
         public void AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
         {
-            this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.User.Id);
+            this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
 
             var workProfile = this._workProfileRepository.GetByUserId(partialWorkProfileDTO.UserId);
 

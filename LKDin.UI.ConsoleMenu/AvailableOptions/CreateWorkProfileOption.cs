@@ -19,19 +19,12 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 this.PrintHeader(this.MessageToPrint);
 
-                var userId = this.RequestUserId();
-
                 WorkProfileDTO workProfileDTO = new()
                 {
-                    
-                    User = new UserDTO()
-                    {
-                        Id = userId,
-                        Password = this.RequestPassword()
-                    },
-                    UserId = userId,
+                    UserId = this.RequestUserId(),
+                    UserPassword = this.RequestPassword(),
                     Description = this.RequestDescription(),
-                    Skills = this.RequestSkills(),
+                    Skills = this.RequestSkills()
                 };
 
                 this._workProfileService.CreateWorkProfile(workProfileDTO);
@@ -79,7 +72,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 skills = Console.ReadLine();
 
-                if(skills.Length > 2)
+                if (skills.Length > 2)
                 {
                     string[] words = skills.Split(',');
 
@@ -89,7 +82,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                     }
                 }
 
-                if(resultantSkills.Count < 3)
+                if (resultantSkills.Count < 3)
                 {
                     this.PrintError("Valor incorrecto (debes ingresar al menos 3)");
                     Console.Write("Habilidades (separadas por coma): ");

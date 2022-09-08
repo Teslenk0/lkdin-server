@@ -8,12 +8,6 @@
 
         public string Password { get; set; }
 
-        public WorkProfile WorkProfile { get; set; }
-
-        public ICollection<ChatMessage> ReceivedMessages { get; set; }
-
-        public ICollection<ChatMessage> SentMessages { get; set; }
-
         public override string Serialize()
         {
             return "Id=" + Id + "|"
