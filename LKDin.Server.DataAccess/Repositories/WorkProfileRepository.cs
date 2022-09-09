@@ -1,4 +1,5 @@
-﻿using LKDin.Server.Domain;
+﻿using LKDin.Helpers;
+using LKDin.Server.Domain;
 using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.DataAccess.Repositories
@@ -20,8 +21,13 @@ namespace LKDin.Server.DataAccess.Repositories
             return LKDinDataManager.WorkProfiles.Any(u => u.UserId == userId);
         }
 
-        public WorkProfile Update(WorkProfile workProfile)
+        public WorkProfile AssignImageToWorkProfile(WorkProfile workProfile)
         {
+            var assetPath = LKDinAssetManager
+                    .CopyAssetToAssetsFolder<WorkProfile>(workProfile.ImagePath, workProfile.Id);
+
+            workProfile.ImagePath = assetPath;
+
             LKDinDataManager.UpdateDataFromStore<WorkProfile>(workProfile);
 
             return workProfile;

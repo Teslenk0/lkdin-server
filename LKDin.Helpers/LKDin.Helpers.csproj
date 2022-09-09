@@ -6,4 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LKDin.Exceptions\LKDin.Exceptions.csproj" />
+  </ItemGroup>
 </Project>

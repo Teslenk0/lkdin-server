@@ -1,4 +1,5 @@
-﻿using LKDin.Server.Domain;
+﻿using LKDin.Helpers;
+using LKDin.Server.Domain;
 using System.IO;
 using System.Text;
 
@@ -27,7 +28,7 @@ namespace LKDin.Server.DataAccess
 
             var locker = _lockers[storeName];
 
-            var filePath = GetStoreFilePath(storeName);
+            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
 
             lock (locker)
             {
@@ -50,7 +51,7 @@ namespace LKDin.Server.DataAccess
                 _lockers.TryAdd(storeName, new object());
             }
 
-            var filePath = GetStoreFilePath(storeName);
+            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
 
             var locker = _lockers[storeName];
 
@@ -79,11 +80,10 @@ namespace LKDin.Server.DataAccess
 
             List<T> parsedDataList = new();
 
+            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
 
             lock (locker)
             {
-                var filePath = GetStoreFilePath(storeName);
-
                 using FileStream file = new(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
 
                 using StreamReader reader = new(file);
@@ -101,17 +101,6 @@ namespace LKDin.Server.DataAccess
             }
 
             return parsedDataList;
-        }
-
-        private static string GetStoreFilePath(string storeName)
-        {
-            var folder = Environment.SpecialFolder.ApplicationData;
-
-            var path = Environment.GetFolderPath(folder);
-
-            var skillsFilePath = Path.Join(path + "/LKDin", storeName + ".data");
-
-            return skillsFilePath;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace LKDin.Server.BusinessLogic
 
             workProfile.ImagePath = partialWorkProfileDTO.ImagePath;
 
-            this._workProfileRepository.Update(workProfile);
+            this._workProfileRepository.AssignImageToWorkProfile(workProfile);
         }
     }
 }

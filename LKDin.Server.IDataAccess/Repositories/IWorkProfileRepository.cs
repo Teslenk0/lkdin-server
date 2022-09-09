@@ -8,7 +8,7 @@ namespace LKDin.Server.IDataAccess.Repositories
 
         public bool ExistsByUserId(string userId);
 
-        public WorkProfile Update(WorkProfile workProfile);
+        public WorkProfile AssignImageToWorkProfile(WorkProfile workProfile);
 
         public WorkProfile GetByUserId(string userId);
     }

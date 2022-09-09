@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LKDin.Server.Domain\LKDin.Server.Domain.csproj" />
     <ProjectReference Include="..\LKDin.Server.IDataAccess\LKDin.Server.IDataAccess.csproj" />
+    <ProjectReference Include="..\LKDin.Helpers\LKDin.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using LKDin.DTOs;
+using LKDin.Helpers;
 using LKDin.IBusinessLogic;
 using LKDin.Server.Domain;
 
@@ -53,8 +54,16 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                     this.PrintError("Valor incorrecto");
                     Console.Write("Descripcion: ");
                 }
+                else if (!LKDinAssetManager.DoesFileExist(imagePath))
+                {
+                    this.PrintError("Archivo no existe");
+                    Console.Write("Ruta a la imagen (absoluta): ");
+                }
             }
-            while (imagePath == null || imagePath.Length < 5);
+            while (
+                    imagePath == null
+                || imagePath.Length < 5
+                || !LKDinAssetManager.DoesFileExist(imagePath));
 
             return imagePath;
         }

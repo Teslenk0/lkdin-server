@@ -17,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\LKDin.IBusinessLogic\LKDin.IBusinessLogic.csproj" />
     <ProjectReference Include="..\LKDin.IUI\LKDin.IUI.csproj" />
+    <ProjectReference Include="..\LKDin.Helpers\LKDin.Helpers.csproj" />
   </ItemGroup>
 </Project>
