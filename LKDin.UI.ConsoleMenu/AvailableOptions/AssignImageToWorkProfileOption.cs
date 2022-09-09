@@ -15,23 +15,20 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         public override void Execute()
         {
-            throw new NotImplementedException();
-
             try
             {
                 this.PrintHeader(this.MessageToPrint);
 
                 WorkProfileDTO workProfileDTO = new()
                 {
-
                     UserId = this.RequestUserId(),
                     UserPassword = this.RequestPassword(),
-                    Description = this.RequestImagePath()
+                    ImagePath = this.RequestImagePath()
                 };
 
                 this._workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
-                this.PrintFinishedExecutionMessage("Se creo el perfil de trabajo exitosamente");
+                this.PrintFinishedExecutionMessage("Se asigno la imagen al perfil de trabajo exitosamente");
             }
             catch (Exception e)
             {
@@ -45,54 +42,21 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
         {
             Console.Write("Ruta a la imagen (absoluta): ");
 
-            string description;
+            string imagePath;
 
             do
             {
-                description = Console.ReadLine();
+                imagePath = Console.ReadLine();
 
-                if (description == null || description.Length < 2)
+                if (imagePath == null || imagePath.Length < 5)
                 {
                     this.PrintError("Valor incorrecto");
                     Console.Write("Descripcion: ");
                 }
             }
-            while (description == null || description.Length < 2);
+            while (imagePath == null || imagePath.Length < 5);
 
-            return description;
-        }
-
-        private List<SkillDTO> RequestSkills()
-        {
-            List<SkillDTO> resultantSkills = new();
-
-            Console.Write("Habilidades (separadas por coma): ");
-
-            string skills;
-
-            do
-            {
-                skills = Console.ReadLine();
-
-                if(skills.Length > 2)
-                {
-                    string[] words = skills.Split(',');
-
-                    foreach (var skill in words)
-                    {
-                        resultantSkills.Add(new SkillDTO() { Name = skill.Trim() });
-                    }
-                }
-
-                if(resultantSkills.Count < 3)
-                {
-                    this.PrintError("Valor incorrecto (debes ingresar al menos 3)");
-                    Console.Write("Habilidades (separadas por coma): ");
-                }
-            }
-            while (resultantSkills.Count < 3);
-
-            return resultantSkills;
+            return imagePath;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace LKDin.Server.BusinessLogic
         {
             this._workProfileRepository = new WorkProfileRepository();
 
+            this._skillRepository = new SkillRepository();
+
             this._userService = userService;
         }
 

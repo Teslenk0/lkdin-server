@@ -30,7 +30,7 @@ namespace LKDin.DTOs
 
             if (skillDTO.Id != null)
             {
-                skill.Id = Guid.Parse(skillDTO.Id);
+                skill.Id = skillDTO.Id;
             }
 
             return skill;

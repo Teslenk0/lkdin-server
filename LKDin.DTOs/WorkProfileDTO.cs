@@ -36,7 +36,7 @@ namespace LKDin.DTOs
 
             if(workProfileDTO.Id != null)
             {
-                workProfile.Id = Guid.Parse(workProfileDTO.Id);
+                workProfile.Id = workProfileDTO.Id;
             }
 
             return workProfile;

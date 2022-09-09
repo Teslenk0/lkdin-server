@@ -27,10 +27,10 @@ namespace LKDin.Server.DataAccess
 
             var locker = _lockers[storeName];
 
+            var filePath = GetStoreFilePath(storeName);
+
             lock (locker)
             {
-                var filePath = GetStoreFilePath(storeName);
-
                 using FileStream file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.None);
 
                 using StreamWriter writer = new(file);
@@ -38,6 +38,33 @@ namespace LKDin.Server.DataAccess
                 writer.WriteLine(baseEntity.Serialize());
 
                 writer.Flush();
+            }
+        }
+
+        public static void UpdateDataFromStore<T>(BaseEntity baseEntity)
+        {
+            var storeName = typeof(T).Name.ToLower();
+
+            if (!_lockers.ContainsKey(storeName))
+            {
+                _lockers.TryAdd(storeName, new object());
+            }
+
+            var filePath = GetStoreFilePath(storeName);
+
+            var locker = _lockers[storeName];
+
+            lock (locker)
+            {
+                var linesToKeep = File.ReadLines(filePath)
+                         .Where(l => !l.Contains($"Id={baseEntity.Id}"))
+                         .ToList();
+
+                var updatedData = baseEntity.Serialize();
+
+                linesToKeep.Add(updatedData);
+
+                File.WriteAllLines(filePath, linesToKeep);
             }
         }
 

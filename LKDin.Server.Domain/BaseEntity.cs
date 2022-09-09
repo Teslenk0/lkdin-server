@@ -4,6 +4,8 @@ namespace LKDin.Server.Domain
 {
     public abstract class BaseEntity
     {
+        public string Id { get; set; }
+
         public abstract string Serialize();
 
         protected byte[] SerializeAndEncode()
@@ -27,6 +29,7 @@ namespace LKDin.Server.Domain
                 entity.GetType()
                     .GetProperty(data[0])
                     .SetValue(entity, data[1], null);
+                
             }
 
             return entity;

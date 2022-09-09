@@ -4,8 +4,6 @@ namespace LKDin.Server.Domain
 {
     public class ChatMessage : BaseEntity
     {
-        public Guid Id { get; set; }
-
         public string Content { get; set; }
 
         public string SenderId { get; set; }
@@ -16,7 +14,7 @@ namespace LKDin.Server.Domain
 
         public override string Serialize()
         {
-            return "Id=" + Id.ToString() + "|" 
+            return "Id=" + Id + "|" 
                    + "Content=" + Content + "|" 
                    + "SenderId=" + SenderId + "|" 
                    + "ReceiverId=" + ReceiverId + "|"

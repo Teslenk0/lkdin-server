@@ -40,7 +40,7 @@ namespace LKDin.DTOs
 
             if(chatMessageDTO.Id != null)
             {
-                chatMessage.Id = Guid.Parse(chatMessageDTO.Id);
+                chatMessage.Id = chatMessageDTO.Id;
             }
 
             return chatMessage;

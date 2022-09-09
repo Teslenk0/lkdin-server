@@ -4,8 +4,6 @@ namespace LKDin.Server.Domain
 {
     public class WorkProfile : BaseEntity
     {
-        public Guid Id { get; set; }
-
         public string Description { get; set; }
 
         public string? ImagePath { get; set; }
@@ -14,7 +12,7 @@ namespace LKDin.Server.Domain
 
         public override string Serialize()
         {
-            return "Id=" + Id.ToString() + "|"
+            return "Id=" + Id + "|"
                    + "Description=" + Description + "|"
                    + "ImagePath=" + ImagePath + "|"
                    + "UserId=" + UserId;

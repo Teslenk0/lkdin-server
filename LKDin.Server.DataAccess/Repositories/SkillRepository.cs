@@ -10,7 +10,7 @@ namespace LKDin.Server.DataAccess.Repositories
         {
             foreach(Skill skill in skills)
             {
-                skill.Id = Guid.NewGuid();
+                skill.Id = Guid.NewGuid().ToString();
 
                 LKDinDataManager.AddDataToStore<Skill>(skill);
             }

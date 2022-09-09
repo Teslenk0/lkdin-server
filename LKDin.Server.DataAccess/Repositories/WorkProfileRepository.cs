@@ -8,7 +8,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public WorkProfile Create(WorkProfile workProfile)
         {
-            workProfile.Id = Guid.NewGuid();
+            workProfile.Id = Guid.NewGuid().ToString();
 
             LKDinDataManager.AddDataToStore<WorkProfile>(workProfile);
 
@@ -22,12 +22,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public WorkProfile Update(WorkProfile workProfile)
         {
-            /*using (var context = DbContextFactory.Create())
-            {
-                context.WorkProfiles.Update(workProfile);
-
-                context.SaveChanges();
-            }*/
+            LKDinDataManager.UpdateDataFromStore<WorkProfile>(workProfile);
 
             return workProfile;
         }
