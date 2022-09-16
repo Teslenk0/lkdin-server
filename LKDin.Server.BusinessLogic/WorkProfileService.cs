@@ -67,5 +67,79 @@ namespace LKDin.Server.BusinessLogic
 
             this._workProfileRepository.AssignImageToWorkProfile(workProfile);
         }
+
+        public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
+        {
+            var skillsThatMatch = this._skillRepository.GetByName(skillsToSearchFor.Select(skill => skill.Name).ToList());
+
+            var workProfilesIds = skillsThatMatch
+                .Select(s => s.WorkProfileId)
+                .Distinct()
+                .ToList();
+
+            var workProfiles = this._workProfileRepository.GetByIds(workProfilesIds);
+
+            var skills = this._skillRepository.GetByWorkProfileIds(workProfilesIds);
+
+            var result = new List<WorkProfileDTO>();
+
+            workProfiles.ForEach(wp =>
+            {
+                var wpDTO = WorkProfileDTO.EntityToDTO(wp);
+
+                var userDTO = this._userService.GetUser(wp.UserId);
+
+                wpDTO.User = userDTO;
+
+                var wpSkills = skills.Where(skill => skill.WorkProfileId.Equals(wp.Id)).ToList();
+
+                wpSkills.ForEach(skill =>
+                {
+                    var skillDTO = SkillDTO.EntityToDTO(skill);
+
+                    wpDTO.Skills.Add(skillDTO);
+                });
+
+                result.Add(wpDTO);
+            });
+
+            return result;
+        }
+
+        public List<WorkProfileDTO> GetWorkProfilesByDescription(string description)
+        {
+            var workProfilesThatMatch = this._workProfileRepository.GetByDescription(description);
+
+            var workProfilesIds = workProfilesThatMatch
+                .Select(s => s.Id)
+                .Distinct()
+                .ToList();
+
+            var skills = this._skillRepository.GetByWorkProfileIds(workProfilesIds);
+
+            var result = new List<WorkProfileDTO>();
+
+            workProfilesThatMatch.ForEach(wp =>
+            {
+                var wpDTO = WorkProfileDTO.EntityToDTO(wp);
+
+                var userDTO = this._userService.GetUser(wp.UserId);
+
+                wpDTO.User = userDTO;
+
+                var wpSkills = skills.Where(skill => skill.WorkProfileId.Equals(wp.Id)).ToList();
+
+                wpSkills.ForEach(skill =>
+                {
+                    var skillDTO = SkillDTO.EntityToDTO(skill);
+
+                    wpDTO.Skills.Add(skillDTO);
+                });
+
+                result.Add(wpDTO);
+            });
+
+            return result;
+        }
     }
 }

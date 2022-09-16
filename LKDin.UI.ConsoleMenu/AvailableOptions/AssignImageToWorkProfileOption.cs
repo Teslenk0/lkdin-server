@@ -52,7 +52,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 if (imagePath == null || imagePath.Length < 5)
                 {
                     this.PrintError("Valor incorrecto");
-                    Console.Write("Descripcion: ");
+                    Console.Write("Ruta a la imagen (absoluta): ");
                 }
                 else if (!LKDinAssetManager.DoesFileExist(imagePath))
                 {

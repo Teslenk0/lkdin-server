@@ -16,9 +16,16 @@ namespace LKDin.Helpers
 
         public static string GetStoreFilePath(string storeName)
         {
+            var storeFilePath = Path.Join(GetDataFolderPath(), storeName + ".data");
+
+            return storeFilePath;
+        }
+
+        public static string GetDataFolderPath()
+        {
             var path = GetBasePath();
 
-            var storeFilePath = Path.Join(path + "/data", storeName + ".data");
+            var storeFilePath = Path.Join(path, "/data");
 
             return storeFilePath;
         }

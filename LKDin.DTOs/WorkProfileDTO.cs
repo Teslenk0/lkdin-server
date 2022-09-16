@@ -12,6 +12,8 @@ namespace LKDin.DTOs
 
         public List<SkillDTO> Skills { get; set; }
 
+        public UserDTO User { get; set; }
+
         public static WorkProfileDTO EntityToDTO(WorkProfile workProfile)
         {
             var workProfileDTO = new WorkProfileDTO()
@@ -19,7 +21,8 @@ namespace LKDin.DTOs
                 Description = workProfile.Description,
                 ImagePath = workProfile.ImagePath,
                 UserId = workProfile.UserId,
-                Id = workProfile.Id.ToString()
+                Id = workProfile.Id,
+                Skills = new List<SkillDTO>()
             };
 
             return workProfileDTO;

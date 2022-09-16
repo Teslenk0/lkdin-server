@@ -17,22 +17,40 @@ namespace LKDin.Server.DataAccess
 
         public static List<ChatMessage> ChatMessages { get { return ReadDataFromStore<ChatMessage>("chatmessage"); } }
 
+        private static void EnsureStorageExistance(string storeName)
+        {
+            var folderDataPath = LKDinConfigManager.GetDataFolderPath();
+
+            Directory.CreateDirectory(folderDataPath);
+
+            var storePath = LKDinConfigManager.GetStoreFilePath(storeName);
+
+            if (!File.Exists(storePath))
+            {
+                using FileStream fileStream = File.Create(storePath);
+
+                fileStream.Flush();
+            }
+        }
+
         public static void AddDataToStore<T>(BaseEntity baseEntity)
         {
             var storeName = typeof(T).Name.ToLower();
+
+            EnsureStorageExistance(storeName);
 
             if (!_lockers.ContainsKey(storeName))
             {
                 _lockers.TryAdd(storeName, new object());
             }
 
-            var locker = _lockers[storeName];
-
             var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
+
+            var locker = _lockers[storeName];
 
             lock (locker)
             {
-                using FileStream file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.None);
+                using FileStream file = new(filePath, FileMode.Append, FileAccess.Write, FileShare.None);
 
                 using StreamWriter writer = new(file);
 
@@ -71,6 +89,8 @@ namespace LKDin.Server.DataAccess
 
         private static List<T> ReadDataFromStore<T>(string storeName) where T : new()
         {
+            EnsureStorageExistance(storeName);
+
             if (!_lockers.ContainsKey(storeName))
             {
                 _lockers.TryAdd(storeName, new object());

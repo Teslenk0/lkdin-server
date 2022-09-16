@@ -19,6 +19,8 @@ namespace LKDin.Helpers
 
             var storeName = typeof(T).Name.ToLower();
 
+            EnsureAssetFolderExistance(storeName);
+
             var destinationFile = LKDinConfigManager
         .GetAssetsFolderPath(storeName) + $"/{id}{Path.GetExtension(sourceFile)}";
 
@@ -63,6 +65,13 @@ namespace LKDin.Helpers
             {
                 return File.Exists(filePath);
             }
+        }
+
+        private static void EnsureAssetFolderExistance(string storeName)
+        {
+            var folderDataPath = LKDinConfigManager.GetAssetsFolderPath(storeName);
+
+            Directory.CreateDirectory(folderDataPath);
         }
     }
 }

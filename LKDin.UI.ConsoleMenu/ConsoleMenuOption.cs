@@ -1,4 +1,6 @@
-﻿using LKDin.IUI;
+﻿using LKDin.DTOs;
+using LKDin.IUI;
+using LKDin.UI.ConsoleMenu.Extensions;
 
 namespace LKDin.UI.ConsoleMenu;
 
@@ -83,5 +85,13 @@ public abstract class ConsoleMenuOption : IMenuOption
         }
         
         Console.ReadLine();
+    }
+
+    protected void PrintDataInTable<T>(List<T> data, string[] columnNames, params Func<T, object>[] valueSelectors)
+    {
+        var customTable = data.ToStringTable(columnNames, valueSelectors);
+        Console.WriteLine();
+        Console.WriteLine(customTable);
+        Console.WriteLine();
     }
 }

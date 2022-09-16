@@ -33,6 +33,19 @@ namespace LKDin.Server.BusinessLogic
             this._userRepository.Create(user);
         }
 
+        public UserDTO? GetUser(string userId)
+        {
+
+            var user = this._userRepository.Get(userId);
+
+            if(user != null)
+            {
+                return UserDTO.EntityToDTO(user);
+            }
+
+            return null;
+        }
+
         public UserDTO ValidateUserCredentials(string userId, string password)
         {
             var user = this._userRepository.Get(userId);

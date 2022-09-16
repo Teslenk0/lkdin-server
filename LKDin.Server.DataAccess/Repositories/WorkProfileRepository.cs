@@ -37,5 +37,21 @@ namespace LKDin.Server.DataAccess.Repositories
         {
             return LKDinDataManager.WorkProfiles.Find(wp => wp.UserId == userId);
         }
+
+        public List<WorkProfile> GetByIds(List<string> workProfileIds)
+        {
+            return LKDinDataManager.WorkProfiles
+                .Where(wp => workProfileIds
+                .Contains(wp.Id))
+                .ToList();
+        }
+
+        public List<WorkProfile> GetByDescription(string description)
+        {
+            return LKDinDataManager
+                .WorkProfiles
+                .Where(wp => wp.Description.ToLower().Contains(description.ToLower()))
+                .ToList();
+        }
     }
 }
