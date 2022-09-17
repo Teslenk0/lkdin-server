@@ -24,7 +24,7 @@ namespace LKDin.Server.BusinessLogic
             this._userService = userService;
         }
 
-        public void CreateWorkProfile (WorkProfileDTO workProfileDTO)
+        public void CreateWorkProfile(WorkProfileDTO workProfileDTO)
         {
             this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
 
@@ -41,7 +41,7 @@ namespace LKDin.Server.BusinessLogic
 
             List<Skill> skills = new();
 
-            foreach(SkillDTO skillDTO in workProfileDTO.Skills)
+            foreach (SkillDTO skillDTO in workProfileDTO.Skills)
             {
                 skillDTO.WorkProfileId = workProfile.Id.ToString();
 
@@ -140,6 +140,38 @@ namespace LKDin.Server.BusinessLogic
             });
 
             return result;
+        }
+
+        public WorkProfileDTO GetWorkProfileByUserId(string userId)
+        {
+            var userDTO = this._userService.GetUser(userId);
+
+            if (userDTO == null)
+            {
+                throw new UserDoesNotExistException(userId);
+            }
+
+            var wp = this._workProfileRepository.GetByUserId(userId);
+
+            if (wp == null)
+            {
+                throw new WorkProfileDoesNotExistException(userId);
+            }
+
+            var resultWP = WorkProfileDTO.EntityToDTO(wp);
+
+            var skills = this._skillRepository.GetByWorkProfileIds(new List<string>() { resultWP.Id });
+
+            skills.ForEach(skill =>
+            {
+                var skillDTO = SkillDTO.EntityToDTO(skill);
+
+                resultWP.Skills.Add(skillDTO);
+            });
+
+            resultWP.User = userDTO;
+
+            return resultWP;
         }
     }
 }

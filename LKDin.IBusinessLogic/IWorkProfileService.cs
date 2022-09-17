@@ -11,5 +11,7 @@ namespace LKDin.IBusinessLogic
         public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor);
 
         public List<WorkProfileDTO> GetWorkProfilesByDescription(string description);
+
+        public WorkProfileDTO GetWorkProfileByUserId(string userId);
     }
 }

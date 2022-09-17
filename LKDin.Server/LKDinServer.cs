@@ -26,6 +26,7 @@ public class LKDinServer
             new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
             new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
             new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
+            new ShowUserOption("Buscar Perfil por ID", workProfileService),
             new ExitOption("Salir")
         };
 
