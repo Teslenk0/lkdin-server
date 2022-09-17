@@ -184,8 +184,7 @@ public abstract class ConsoleMenuOption : IMenuOption
     protected void PrintDataInTable<T>(List<T> data, string[] columnNames, params Func<T, object>[] valueSelectors)
     {
         var customTable = data.ToStringTable(columnNames, valueSelectors);
-        Console.WriteLine();
+        this.PrintInfoDiv();
         Console.WriteLine(customTable);
-        Console.WriteLine();
     }
 }

@@ -43,7 +43,7 @@ namespace LKDin.Server.BusinessLogic
             this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
 
             var receivedMessages = this._chatMessageRepository.GetByReceiverId(userDTO.Id, includeReadMessages);
-            
+           
             return this.AssignUsersToChatMessages(receivedMessages);
         }
 
@@ -54,6 +54,11 @@ namespace LKDin.Server.BusinessLogic
             var sentMessages = this._chatMessageRepository.GetBySenderId(userDTO.Id, includeReadMessages);
 
             return this.AssignUsersToChatMessages(sentMessages);
+        }
+
+        public void MarkMessagesAsRead(List<string> messagesIds)
+        {
+            this._chatMessageRepository.MarkMessagesAsRead(messagesIds);
         }
 
         private List<ChatMessageDTO> AssignUsersToChatMessages(List<ChatMessage> chatMessages)

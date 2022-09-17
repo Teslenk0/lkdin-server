@@ -17,10 +17,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         protected override void PerformExecution()
         {
-
             var searchCriteria = this.RequestSearchCriteria();
-
-            this.PrintInfoDiv();
 
             var data = this._workProfileService.GetWorkProfilesByDescription(searchCriteria);
 

@@ -9,5 +9,7 @@ namespace LKDin.IBusinessLogic
         public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO, bool includeReadMessages);
 
         public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO, bool includeReadMessages);
+
+        public void MarkMessagesAsRead(List<string> messagesIds);
     }
 }

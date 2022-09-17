@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace LKDin.Server.Domain
+﻿namespace LKDin.Server.Domain
 {
     public class ChatMessage : BaseEntity
     {
@@ -12,13 +10,25 @@ namespace LKDin.Server.Domain
 
         public bool Read { get; set; }
 
+        public long SentAt { get; set; }
+
+        public long? ReadAt { get; set; }
+
         public override string Serialize()
         {
-            return "Id=" + Id + "|" 
-                   + "Content=" + Content + "|" 
-                   + "SenderId=" + SenderId + "|" 
+            var serializedChatMessage = "Id=" + Id + "|"
+                   + "Content=" + Content + "|"
+                   + "SenderId=" + SenderId + "|"
                    + "ReceiverId=" + ReceiverId + "|"
+                   + "SentAt(long)=" + SentAt.ToString() + "|"
                    + "Read(boolean)=" + Read.ToString();
+
+            if(ReadAt != null)
+            {
+                serializedChatMessage += "|ReadAt(long)=" + ReadAt.ToString();
+            }
+
+            return serializedChatMessage;
         }
     }
 }

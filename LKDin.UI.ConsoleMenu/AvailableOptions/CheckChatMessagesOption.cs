@@ -1,8 +1,6 @@
 ﻿using LKDin.DTOs;
-using LKDin.Helpers;
 using LKDin.IBusinessLogic;
 using LKDin.Server.Domain;
-using LKDin.UI.ConsoleMenu.Extensions;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
@@ -25,18 +23,21 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             var includeReadMessages = this.RequestIncludeReadMessages();
 
-            this.PrintInfoDiv();
-
             var messagesSent = this._chatMessageService.GetBySenderId(userDTO, includeReadMessages);
 
             var messagesReceived = this._chatMessageService.GetByReceiverId(userDTO, includeReadMessages);
 
-            this.PrintFinishedExecutionMessage(null);
+            this.PrintMessages(messagesReceived, messagesSent);
+
+            var receivedMessagesIds = messagesReceived.Select(message => message.Id).ToList();
+
+            // Chat messages are marked as read after pressing a key requested by PrintFinishedExecutionMessage
+            this._chatMessageService.MarkMessagesAsRead(receivedMessagesIds);
         }
 
         private bool RequestIncludeReadMessages()
         {
-            string includeReadMessages = "";
+            string includeReadMessages;
 
             string[] availableOptions = new string[] { "s", "n" };
 
@@ -54,7 +55,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             } while (!availableOptions.Contains(includeReadMessages));
 
-            if (includeReadMessages.Equals('s'))
+            if (includeReadMessages.Equals("s"))
             {
                 return true;
             }
@@ -64,21 +65,73 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             }
         }
 
-        private void PrintResultsInTable(List<WorkProfileDTO> results)
+        private void PrintMessages(List<ChatMessageDTO> receivedMessages, List<ChatMessageDTO> sentMessages)
+        {
+            // Dictionary of conversations, they key is the receiver and the value a list with messages;
+            var conversationsDictionary = new Dictionary<string, List<ChatMessageDTO>>();
+
+            var conversationsHeaders = new Dictionary<string, string>();
+
+            receivedMessages.ForEach(message =>
+            {
+                if (!conversationsDictionary.ContainsKey(message.SenderId))
+                {
+                    conversationsDictionary[message.SenderId] = new List<ChatMessageDTO>();
+                }
+
+                if (!conversationsHeaders.ContainsKey(message.SenderId))
+                {
+                    conversationsHeaders[message.SenderId] = $"Conversación con {message.Sender.Name} - {message.SenderId}";
+                }
+
+                conversationsDictionary[message.SenderId].Add(message);
+            });
+
+            sentMessages.ForEach(message =>
+            {
+                if (!conversationsDictionary.ContainsKey(message.ReceiverId))
+                {
+                    conversationsDictionary[message.ReceiverId] = new List<ChatMessageDTO>();
+                }
+
+                if (!conversationsHeaders.ContainsKey(message.ReceiverId))
+                {
+                    conversationsHeaders[message.ReceiverId] = $"Conversación con {message.Receiver.Name} - {message.ReceiverId}";
+                }
+
+                conversationsDictionary[message.ReceiverId].Add(message);
+            });
+
+            conversationsDictionary.Keys.ToList().ForEach(conversationKey =>
+            {
+                var orderedListOfMessages = conversationsDictionary[conversationKey].OrderBy(chatMessage => chatMessage.SentAt).ToList();
+
+                this.PrintInfoDiv();
+                Console.WriteLine();
+
+                Console.WriteLine(conversationsHeaders[conversationKey]);
+
+                this.PrintConversationTable(orderedListOfMessages);
+            });
+
+            this.PrintFinishedExecutionMessage(null);
+        }
+
+        private void PrintConversationTable(List<ChatMessageDTO> results)
         {
             var columnNames = new[]
             {
-                "ID Usuario",
-                "Nombre",
-                "Descripcion",
-                "Skills"
+                "Fecha",
+                "Enviado Por",
+                "Mensaje",
+                "Visto?"
             };
 
-            this.PrintDataInTable<WorkProfileDTO>(results, columnNames,
-                wp => wp.User.Id,
-                wp => wp.User.Name,
-                wp => wp.Description,
-                wp => String.Join<string>(',', wp.Skills.Select(s => s.Name).ToArray()));
+            this.PrintDataInTable<ChatMessageDTO>(results, columnNames,
+                cm => DateTimeOffset.FromUnixTimeSeconds((long)cm.SentAt).ToString("g"),
+                cm => cm.Sender.Name,
+                cm => cm.Content,
+                cm => cm.Read ? "SI" : "NO");
 
         }
     }

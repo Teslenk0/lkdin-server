@@ -26,7 +26,7 @@ namespace LKDin.Server.Domain
             {
                 var data = field.Split('=');
 
-                // The fiel
+                // The field may explicitly say to which type should be deserialized.
                 if (data[0].Contains("(boolean)"))
                 {
                     var fieldName = data[0].Replace("(boolean)", "");
@@ -34,7 +34,16 @@ namespace LKDin.Server.Domain
                         .GetType()
                         .GetProperty(fieldName)
                         .SetValue(entity, Boolean.Parse(data[1]), null);
-                } else
+                }
+                else if (data[0].Contains("(long)"))
+                {
+                    var fieldName = data[0].Replace("(long)", "");
+                    entity
+                        .GetType()
+                        .GetProperty(fieldName)
+                        .SetValue(entity, Int64.Parse(data[1]), null);
+                }
+                else
                 {
                     entity
                         .GetType()

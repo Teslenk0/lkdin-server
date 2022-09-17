@@ -9,6 +9,8 @@ namespace LKDin.Server.DataAccess.Repositories
         {
             chatMessage.Id = Guid.NewGuid().ToString();
 
+            chatMessage.SentAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
             LKDinDataManager.AddDataToStore<ChatMessage>(chatMessage);
 
             return chatMessage;
@@ -36,6 +38,20 @@ namespace LKDin.Server.DataAccess.Repositories
             }
 
             return messages.ToList();
+        }
+
+        public void MarkMessagesAsRead(List<string> messagesIds)
+        {
+            var messages = LKDinDataManager.ChatMessages.Where(message => messagesIds.Contains(message.Id)).ToList();
+
+            messages.ForEach(message =>
+            {
+                message.Read = true;
+
+                message.ReadAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+                LKDinDataManager.UpdateDataFromStore<ChatMessage>(message);
+            });
         }
     }
 }
