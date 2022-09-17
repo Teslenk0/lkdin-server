@@ -14,7 +14,9 @@ namespace LKDin.DTOs
 
         public bool Read { get; set; }
 
-        public UserDTO User { get; set; }
+        public UserDTO Receiver { get; set; }
+
+        public UserDTO Sender { get; set; }
 
         public static ChatMessageDTO EntityToDTO(ChatMessage chatMessage)
         {

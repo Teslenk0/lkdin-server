@@ -2,27 +2,23 @@
 using LKDin.Helpers;
 using LKDin.IBusinessLogic;
 using LKDin.Server.Domain;
-using LKDin.UI.ConsoleMenu.Extensions;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
-    public class SearchWorkProfilesByDescription : ConsoleMenuOption
+    public class SearchWorkProfilesBySkillsOption : ConsoleMenuOption
     {
         private readonly IWorkProfileService _workProfileService;
 
-        public SearchWorkProfilesByDescription(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
+        public SearchWorkProfilesBySkillsOption(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
         {
             this._workProfileService = workProfileService;
         }
 
         protected override void PerformExecution()
         {
-
             var searchCriteria = this.RequestSearchCriteria();
 
-            this.PrintInfoDiv();
-
-            var data = this._workProfileService.GetWorkProfilesByDescription(searchCriteria);
+            var data = this._workProfileService.GetWorkProfilesBySkills(NormalizeSearchCriteriaIntoSkills(searchCriteria));
 
             this.PrintResultsInTable(data);
 
@@ -31,11 +27,25 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         private string RequestSearchCriteria()
         {
-            Console.Write("Ingrese la descripción a buscar: ");
+            Console.Write("Ingrese las habilidades (separadas por coma): ");
 
             string searchCriteria = this.CancelableReadLine();
 
             return searchCriteria;
+        }
+
+        private List<SkillDTO> NormalizeSearchCriteriaIntoSkills(string searchCriteria)
+        {
+            List<SkillDTO> resultantSkills = new();
+
+            string[] words = searchCriteria.Split(',');
+
+            foreach (var skill in words)
+            {
+                resultantSkills.Add(new SkillDTO() { Name = skill.Trim() });
+            }
+
+            return resultantSkills;
         }
 
         private void PrintResultsInTable(List<WorkProfileDTO> results)

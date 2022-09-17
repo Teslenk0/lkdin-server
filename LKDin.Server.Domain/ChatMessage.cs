@@ -18,7 +18,7 @@ namespace LKDin.Server.Domain
                    + "Content=" + Content + "|" 
                    + "SenderId=" + SenderId + "|" 
                    + "ReceiverId=" + ReceiverId + "|"
-                   + "Read=" + Read.ToString();
+                   + "Read(boolean)=" + Read.ToString();
         }
     }
 }

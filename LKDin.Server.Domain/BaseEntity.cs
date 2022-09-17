@@ -26,10 +26,21 @@ namespace LKDin.Server.Domain
             {
                 var data = field.Split('=');
 
-                entity.GetType()
-                    .GetProperty(data[0])
-                    .SetValue(entity, data[1], null);
-                
+                // The fiel
+                if (data[0].Contains("(boolean)"))
+                {
+                    var fieldName = data[0].Replace("(boolean)", "");
+                    entity
+                        .GetType()
+                        .GetProperty(fieldName)
+                        .SetValue(entity, Boolean.Parse(data[1]), null);
+                } else
+                {
+                    entity
+                        .GetType()
+                        .GetProperty(data[0])
+                        .SetValue(entity, data[1], null);
+                }
             }
 
             return entity;
