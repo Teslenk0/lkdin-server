@@ -1,4 +1,5 @@
 ﻿using LKDin.DTOs;
+using LKDin.Exceptions;
 using LKDin.IBusinessLogic;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
@@ -12,29 +13,18 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._userService = userService;
         }
 
-        public override void Execute()
+        protected override void PerformExecution()
         {
-            try
+            UserDTO userDTO = new()
             {
-                this.PrintHeader(this.MessageToPrint);
-    
-                UserDTO userDTO = new()
-                {
-                    Id = this.RequestUserId(),
-                    Name = this.RequestName(),
-                    Password = this.RequestPassword(),
-                };
+                Id = this.RequestUserId(),
+                Name = this.RequestName(),
+                Password = this.RequestPassword(),
+            };
 
-                this._userService.CreateUser(userDTO);
+            this._userService.CreateUser(userDTO);
 
-                this.PrintFinishedExecutionMessage("Se creo el usuario exitosamente");
-            }
-            catch (Exception e)
-            {
-                this.PrintError(e.Message);
-
-                this.PrintFinishedExecutionMessage(null, false);
-            }
+            this.PrintFinishedExecutionMessage("Se creo el usuario exitosamente");
         }
 
         private string RequestName()
@@ -45,7 +35,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             do
             {
-                name = Console.ReadLine();
+                name = this.CancelableReadLine();
 
                 if (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)))
                 {

@@ -2,6 +2,6 @@
 {
     public class UnauthorizedException : Exception
     {
-        public UnauthorizedException() : base($"La contaseña es incorrecta") { }
+        public UnauthorizedException() : base($"La contraseña es incorrecta") { }
     }
 }

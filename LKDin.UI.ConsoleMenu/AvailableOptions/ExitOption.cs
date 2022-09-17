@@ -6,7 +6,7 @@
         {
         }
 
-        public override void Execute()
+        protected override void PerformExecution()
         {
             Console.WriteLine("Muchas gracias por utilizar LKDin!");
 

@@ -55,8 +55,8 @@ public class ConsoleMenuService : IUIService
                 Console.WriteLine("==========================");
                 Console.WriteLine("ERROR: Opcion no soportada");
                 Console.WriteLine("==========================");
-                Console.WriteLine("Presiona cualquier tecla para continuar...");
-                Console.ReadLine();
+                Console.WriteLine("Presione cualquier tecla para continuar...");
+                Console.ReadKey();
                 Console.Clear();
             }
         }

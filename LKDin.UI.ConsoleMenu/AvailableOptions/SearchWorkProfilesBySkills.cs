@@ -14,33 +14,22 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        public override void Execute()
+        protected override void PerformExecution()
         {
-            try
-            {
-                this.PrintHeader(this.MessageToPrint);
+            var searchCriteria = this.RequestSearchCriteria();
 
-                var searchCriteria = this.RequestSearchCriteria();
+            var data = this._workProfileService.GetWorkProfilesBySkills(NormalizeSearchCriteriaIntoSkills(searchCriteria));
 
-                var data = this._workProfileService.GetWorkProfilesBySkills(NormalizeSearchCriteriaIntoSkills(searchCriteria));
+            this.PrintResultsInTable(data);
 
-                this.PrintResultsInTable(data);
-
-                this.PrintFinishedExecutionMessage(null);
-            }
-            catch (Exception e)
-            {
-                this.PrintError(e.Message);
-
-                this.PrintFinishedExecutionMessage(null, false);
-            }
+            this.PrintFinishedExecutionMessage(null);
         }
 
         private string RequestSearchCriteria()
         {
             Console.Write("Ingrese las habilidades (separadas por coma): ");
 
-            string searchCriteria = Console.ReadLine() ?? "";
+            string searchCriteria = this.CancelableReadLine();
 
             return searchCriteria;
         }

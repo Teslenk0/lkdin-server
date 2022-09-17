@@ -1,7 +1,7 @@
 ﻿using LKDin.DTOs;
 using LKDin.Helpers;
 using LKDin.IBusinessLogic;
-using LKDin.Server.Domain;
+using LKDin.Exceptions;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
@@ -14,29 +14,18 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        public override void Execute()
+        protected override void PerformExecution()
         {
-            try
+            WorkProfileDTO workProfileDTO = new()
             {
-                this.PrintHeader(this.MessageToPrint);
+                UserId = this.RequestUserId(),
+                UserPassword = this.RequestPassword(),
+                ImagePath = this.RequestImagePath()
+            };
 
-                WorkProfileDTO workProfileDTO = new()
-                {
-                    UserId = this.RequestUserId(),
-                    UserPassword = this.RequestPassword(),
-                    ImagePath = this.RequestImagePath()
-                };
+            this._workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
-                this._workProfileService.AssignImageToWorkProfile(workProfileDTO);
-
-                this.PrintFinishedExecutionMessage("Se asigno la imagen al perfil de trabajo exitosamente");
-            }
-            catch (Exception e)
-            {
-                this.PrintError(e.Message);
-
-                this.PrintFinishedExecutionMessage(null, false);
-            }
+            this.PrintFinishedExecutionMessage("Se asigno la imagen al perfil de trabajo exitosamente");
         }
 
         private string RequestImagePath()
@@ -47,7 +36,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             do
             {
-                imagePath = Console.ReadLine();
+                imagePath = this.CancelableReadLine();
 
                 if (imagePath == null || imagePath.Length < 5)
                 {

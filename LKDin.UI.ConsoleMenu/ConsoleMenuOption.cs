@@ -1,4 +1,6 @@
-﻿using LKDin.DTOs;
+﻿using System.Text;
+using LKDin.DTOs;
+using LKDin.Exceptions;
 using LKDin.IUI;
 using LKDin.UI.ConsoleMenu.Extensions;
 
@@ -21,7 +23,28 @@ public abstract class ConsoleMenuOption : IMenuOption
         MessageToPrint = messageToPrint;
     }
 
-    public abstract void Execute();
+    protected abstract void PerformExecution();
+
+    public void Execute()
+    {
+        try
+        {
+            this.PrintHeader(this.MessageToPrint);
+
+            this.PerformExecution();
+
+        }
+        catch (AbortCommandExecutionException)
+        {
+            this.PrintFinishedExecutionMessage("Operación abortada", true);
+        }
+        catch (Exception e)
+        {
+            this.PrintError(e.Message);
+
+            this.PrintFinishedExecutionMessage(null, false);
+        }
+    }
 
     public void PrintMenuOptionMessage()
     {
@@ -76,15 +99,86 @@ public abstract class ConsoleMenuOption : IMenuOption
             this.PrintInfoDiv();
         }
 
-        if(message != null)
+        if (message != null)
         {
             Console.Write($"{message}. Presione cualquier tecla para continuar...");
-        } else
+        }
+        else
         {
             Console.Write("Presione cualquier tecla para continuar...");
         }
-        
-        Console.ReadLine();
+
+        Console.ReadKey();
+    }
+
+    protected string CancelableReadLine()
+    {
+        var clOffset = Console.CursorLeft;
+        var line = string.Empty;
+        var buffer = new StringBuilder();
+        var key = Console.ReadKey(true);
+        while (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape)
+        {
+            if (key.Key == ConsoleKey.Backspace && Console.CursorLeft - clOffset > 0)
+            {
+                var cli = Console.CursorLeft - clOffset - 1;
+                buffer.Remove(cli, 1);
+                Console.CursorLeft = clOffset;
+                Console.Write(new string(' ', buffer.Length + 1));
+                Console.CursorLeft = clOffset;
+                Console.Write(buffer.ToString());
+                Console.CursorLeft = cli + clOffset;
+                key = Console.ReadKey(true);
+            }
+            else if (key.Key == ConsoleKey.Delete && Console.CursorLeft - clOffset < buffer.Length)
+            {
+                var cli = Console.CursorLeft - clOffset;
+                buffer.Remove(cli, 1);
+                Console.CursorLeft = clOffset;
+                Console.Write(new string(' ', buffer.Length + 1));
+                Console.CursorLeft = clOffset;
+                Console.Write(buffer.ToString());
+                Console.CursorLeft = cli + clOffset;
+                key = Console.ReadKey(true);
+            }
+            else if (char.IsLetterOrDigit(key.KeyChar) || char.IsPunctuation(key.KeyChar) || char.IsWhiteSpace(key.KeyChar))
+            {
+                var cli = Console.CursorLeft - clOffset;
+                buffer.Insert(cli, key.KeyChar);
+                Console.CursorLeft = clOffset;
+                Console.Write(buffer.ToString());
+                Console.CursorLeft = cli + clOffset + 1;
+                key = Console.ReadKey(true);
+            }
+            else if (key.Key == ConsoleKey.LeftArrow && Console.CursorLeft - clOffset > 0)
+            {
+                Console.CursorLeft--;
+                key = Console.ReadKey(true);
+            }
+            else if (key.Key == ConsoleKey.RightArrow && Console.CursorLeft - clOffset < buffer.Length)
+            {
+                Console.CursorLeft++;
+                key = Console.ReadKey(true);
+            }
+            else
+            {
+                key = Console.ReadKey(true);
+            }
+        }
+
+        if(key.Key == ConsoleKey.Escape)
+        {
+            Console.WriteLine();
+            throw new AbortCommandExecutionException();
+        }
+
+        if (key.Key == ConsoleKey.Enter)
+        {
+            Console.WriteLine();
+            line = buffer.ToString();
+            return line;
+        }
+        return line;
     }
 
     protected void PrintDataInTable<T>(List<T> data, string[] columnNames, params Func<T, object>[] valueSelectors)

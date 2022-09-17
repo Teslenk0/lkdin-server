@@ -17,7 +17,7 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
 
         do
         {
-            id = Console.ReadLine();
+            id = this.CancelableReadLine();
 
             if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
             {
@@ -38,7 +38,7 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
 
         do
         {
-            password = Console.ReadLine();
+            password = this.CancelableReadLine();
 
             if (password == null || password.Length < 5)
             {

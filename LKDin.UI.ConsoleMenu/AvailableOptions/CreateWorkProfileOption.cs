@@ -13,30 +13,19 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        public override void Execute()
+        protected override void PerformExecution()
         {
-            try
+            WorkProfileDTO workProfileDTO = new()
             {
-                this.PrintHeader(this.MessageToPrint);
+                UserId = this.RequestUserId(),
+                UserPassword = this.RequestPassword(),
+                Description = this.RequestDescription(),
+                Skills = this.RequestSkills()
+            };
 
-                WorkProfileDTO workProfileDTO = new()
-                {
-                    UserId = this.RequestUserId(),
-                    UserPassword = this.RequestPassword(),
-                    Description = this.RequestDescription(),
-                    Skills = this.RequestSkills()
-                };
+            this._workProfileService.CreateWorkProfile(workProfileDTO);
 
-                this._workProfileService.CreateWorkProfile(workProfileDTO);
-
-                this.PrintFinishedExecutionMessage("Se creo el perfil de trabajo exitosamente");
-            }
-            catch (Exception e)
-            {
-                this.PrintError(e.Message);
-
-                this.PrintFinishedExecutionMessage(null, false);
-            }
+            this.PrintFinishedExecutionMessage("Se creo el perfil de trabajo exitosamente");
         }
 
         private string RequestDescription()
@@ -47,7 +36,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             do
             {
-                description = Console.ReadLine();
+                description = this.CancelableReadLine();
 
                 if (description == null || description.Length < 2)
                 {
@@ -70,7 +59,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             do
             {
-                skills = Console.ReadLine();
+                skills = this.CancelableReadLine();
 
                 if (skills.Length > 2)
                 {
