@@ -2,7 +2,6 @@
 using LKDin.Exceptions;
 using LKDin.IBusinessLogic;
 using LKDin.Server.DataAccess.Repositories;
-using LKDin.Server.Domain;
 using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.BusinessLogic

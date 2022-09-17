@@ -2,7 +2,7 @@
 
 namespace LKDin.DTOs
 {
-    public class ChatMessageDTO
+    public class ChatMessageDTO : ProtectedDTO
     {
         public string Id { get; set; }
 
@@ -13,6 +13,8 @@ namespace LKDin.DTOs
         public string ReceiverId { get; set; }
 
         public bool Read { get; set; }
+
+        public UserDTO User { get; set; }
 
         public static ChatMessageDTO EntityToDTO(ChatMessage chatMessage)
         {

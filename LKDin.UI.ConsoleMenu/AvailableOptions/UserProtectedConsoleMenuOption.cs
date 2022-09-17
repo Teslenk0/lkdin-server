@@ -9,9 +9,9 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
         MessageToPrint = messageToPrint;
     }
 
-    protected string RequestUserId()
+    protected string RequestUserId(string userAlias = " ")
     {
-        Console.Write("ID (CI, DNI): ");
+        Console.Write("ID Usuario{0}(CI, DNI): ", userAlias);
 
         string id;
 
@@ -22,7 +22,7 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
             if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
             {
                 PrintError("Valor incorrecto (solo caracteres alfanumericos)");
-                Console.Write("ID (CI, DNI): ");
+                Console.Write("ID Usuario{0}(CI, DNI): ", userAlias);
             }
         }
         while (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit));
