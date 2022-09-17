@@ -2,8 +2,9 @@
 using System.IO;
 using System.Text;
 using LKDin.Exceptions;
+using LKDin.Helpers.Configuration;
 
-namespace LKDin.Helpers
+namespace LKDin.Helpers.Assets
 {
     public static class LKDinAssetManager
     {
@@ -12,7 +13,7 @@ namespace LKDin.Helpers
         // Returns the new path for the file
         public static string CopyAssetToAssetsFolder<T>(string sourceFile, string id)
         {
-            if(sourceFile == null)
+            if (sourceFile == null)
             {
                 throw new AssetDoesNotExistException(sourceFile);
             }

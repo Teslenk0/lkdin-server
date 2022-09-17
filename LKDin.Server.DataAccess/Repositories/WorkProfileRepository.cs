@@ -1,4 +1,4 @@
-﻿using LKDin.Helpers;
+﻿using LKDin.Helpers.Assets;
 using LKDin.Server.Domain;
 using LKDin.Server.IDataAccess.Repositories;
 

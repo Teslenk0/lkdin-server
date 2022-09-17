@@ -1,4 +1,5 @@
-﻿using LKDin.IUI;
+﻿using LKDin.Helpers.Configuration;
+using LKDin.IUI;
 using LKDin.Server.BusinessLogic;
 using LKDin.UI.ConsoleMenu;
 using LKDin.UI.ConsoleMenu.AvailableOptions;
@@ -35,13 +36,28 @@ public class LKDinServer
         uiService.Render();
     }
 
-    static void Main()
+    private static void InitBackgroundService()
+    {
+        var port = LKDinConfigManager.GetConfig("PORT");
+
+        var ip = LKDinConfigManager.GetConfig("IP_ADDRESS");
+
+        Console.WriteLine(ip);
+
+        Console.WriteLine(port);
+    }
+
+    public static void Main()
     {
         Thread serverUIThread = new(InitServerUI);
 
         serverUIThread.Name = UI_THREAD_NAME;
 
         serverUIThread.Start();
+
+        Thread backgroundService = new(InitBackgroundService);
+
+        backgroundService.Start();
     }
 }
 

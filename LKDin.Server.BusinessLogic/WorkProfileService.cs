@@ -51,7 +51,6 @@ namespace LKDin.Server.BusinessLogic
             this._skillRepository.CreateMany(skills);
         }
 
-
         public void AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
         {
             this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
