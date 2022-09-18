@@ -11,14 +11,14 @@ namespace LKDin.Server.DataAccess.Repositories
 
             chatMessage.SentAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            LKDinDataManager.AddDataToStore<ChatMessage>(chatMessage);
+            DataManager.AddDataToStore<ChatMessage>(chatMessage);
 
             return chatMessage;
         }
 
         public List<ChatMessage> GetByReceiverId(string userId, bool includeReadMessages)
         {
-            var messages = LKDinDataManager.ChatMessages.Where(chatMessage => chatMessage.ReceiverId.Equals(userId));
+            var messages = DataManager.ChatMessages.Where(chatMessage => chatMessage.ReceiverId.Equals(userId));
 
             if (!includeReadMessages)
             {
@@ -30,7 +30,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public List<ChatMessage> GetBySenderId(string userId, bool includeReadMessages)
         {
-            var messages = LKDinDataManager.ChatMessages.Where(chatMessage => chatMessage.SenderId.Equals(userId));
+            var messages = DataManager.ChatMessages.Where(chatMessage => chatMessage.SenderId.Equals(userId));
 
             if (!includeReadMessages)
             {
@@ -42,7 +42,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public void MarkMessagesAsRead(List<string> messagesIds)
         {
-            var messages = LKDinDataManager.ChatMessages.Where(message => messagesIds.Contains(message.Id)).ToList();
+            var messages = DataManager.ChatMessages.Where(message => messagesIds.Contains(message.Id)).ToList();
 
             messages.ForEach(message =>
             {
@@ -50,7 +50,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
                 message.ReadAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-                LKDinDataManager.UpdateDataFromStore<ChatMessage>(message);
+                DataManager.UpdateDataFromStore<ChatMessage>(message);
             });
         }
     }

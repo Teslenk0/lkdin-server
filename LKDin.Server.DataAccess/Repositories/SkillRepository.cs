@@ -12,7 +12,7 @@ namespace LKDin.Server.DataAccess.Repositories
             {
                 skill.Id = Guid.NewGuid().ToString();
 
-                LKDinDataManager.AddDataToStore<Skill>(skill);
+                DataManager.AddDataToStore<Skill>(skill);
             }
 
             return skills;
@@ -35,16 +35,16 @@ namespace LKDin.Server.DataAccess.Repositories
 
             if (isNotEmptySearch)
             {
-                return LKDinDataManager.Skills.Where(skill => normalizedSearchCriteria.Contains(skill.Name.ToUpper())).ToList();
+                return DataManager.Skills.Where(skill => normalizedSearchCriteria.Contains(skill.Name.ToUpper())).ToList();
             } else
             {
-                return LKDinDataManager.Skills.ToList();
+                return DataManager.Skills.ToList();
             }
         }
 
         public List<Skill> GetByWorkProfileIds(List<string> workProfileIds)
         {
-            return LKDinDataManager.Skills
+            return DataManager.Skills
                 .Where(skill => workProfileIds
                     .Contains(skill.WorkProfileId))
                 .ToList();

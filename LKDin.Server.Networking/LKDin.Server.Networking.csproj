@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LKDin.INetworking\LKDin.INetworking.csproj" />
+    <ProjectReference Include="..\LKDin.Exceptions\LKDin.Exceptions.csproj" />
+    <ProjectReference Include="..\LKDin.Networking\LKDin.Networking.csproj" />
+  </ItemGroup>
+</Project>

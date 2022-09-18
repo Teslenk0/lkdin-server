@@ -43,7 +43,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                     this.PrintError("Valor incorrecto");
                     Console.Write("Ruta a la imagen (absoluta): ");
                 }
-                else if (!LKDinAssetManager.DoesFileExist(imagePath))
+                else if (!AssetManager.DoesFileExist(imagePath))
                 {
                     this.PrintError("Archivo no existe");
                     Console.Write("Ruta a la imagen (absoluta): ");
@@ -52,7 +52,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             while (
                     imagePath == null
                 || imagePath.Length < 5
-                || !LKDinAssetManager.DoesFileExist(imagePath));
+                || !AssetManager.DoesFileExist(imagePath));
 
             return imagePath;
         }

@@ -25,6 +25,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Exceptions", "..\LKDi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Helpers", "..\LKDin.Helpers\LKDin.Helpers.csproj", "{3D578468-E4D0-414B-9F89-2D8D7ED96692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Server.Networking", "..\LKDin.Server.Networking\LKDin.Server.Networking.csproj", "{D35D8B9F-9997-429B-9FA2-1C3DE9163FE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Networking", "..\LKDin.Networking\LKDin.Networking.csproj", "{CDBAE0C6-3CBF-4295-8796-5FB4A87AAC19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Client", "..\LKDin.Client\LKDin.Client.csproj", "{92462795-A460-4794-97C8-03A02CE21613}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,11 +81,35 @@ Global
 		{3D578468-E4D0-414B-9F89-2D8D7ED96692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D578468-E4D0-414B-9F89-2D8D7ED96692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D578468-E4D0-414B-9F89-2D8D7ED96692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35D8B9F-9997-429B-9FA2-1C3DE9163FE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35D8B9F-9997-429B-9FA2-1C3DE9163FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35D8B9F-9997-429B-9FA2-1C3DE9163FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35D8B9F-9997-429B-9FA2-1C3DE9163FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDBAE0C6-3CBF-4295-8796-5FB4A87AAC19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBAE0C6-3CBF-4295-8796-5FB4A87AAC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBAE0C6-3CBF-4295-8796-5FB4A87AAC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBAE0C6-3CBF-4295-8796-5FB4A87AAC19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92462795-A460-4794-97C8-03A02CE21613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92462795-A460-4794-97C8-03A02CE21613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92462795-A460-4794-97C8-03A02CE21613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92462795-A460-4794-97C8-03A02CE21613}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A96BDD90-66F5-4D3A-9659-BDD4839D362A}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 80
+		$3.TabsToSpaces = True
+		$3.scope = text/plain
 	EndGlobalSection
 EndGlobal

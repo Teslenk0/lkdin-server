@@ -20,5 +20,7 @@
     <ProjectReference Include="..\LKDin.Helpers\LKDin.Helpers.csproj" />
     <ProjectReference Include="..\LKDin.DTOs\LKDin.DTOs.csproj" />
     <ProjectReference Include="..\LKDin.Exceptions\LKDin.Exceptions.csproj" />
+    <ProjectReference Include="..\LKDin.INetworking\LKDin.INetworking.csproj" />
+    <ProjectReference Include="..\LKDin.Networking\LKDin.Networking.csproj" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LKDin.Server.DataAccess
 {
-    public static class LKDinDataManager
+    public static class DataManager
     {
         private readonly static Dictionary<string, object> _lockers = new();
 
@@ -19,11 +19,11 @@ namespace LKDin.Server.DataAccess
 
         private static void EnsureStorageExistance(string storeName)
         {
-            var folderDataPath = LKDinConfigManager.GetDataFolderPath();
+            var folderDataPath = ConfigManager.GetDataFolderPath();
 
             Directory.CreateDirectory(folderDataPath);
 
-            var storePath = LKDinConfigManager.GetStoreFilePath(storeName);
+            var storePath = ConfigManager.GetStoreFilePath(storeName);
 
             if (!File.Exists(storePath))
             {
@@ -44,7 +44,7 @@ namespace LKDin.Server.DataAccess
                 _lockers.TryAdd(storeName, new object());
             }
 
-            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
+            var filePath = ConfigManager.GetStoreFilePath(storeName);
 
             var locker = _lockers[storeName];
 
@@ -69,7 +69,7 @@ namespace LKDin.Server.DataAccess
                 _lockers.TryAdd(storeName, new object());
             }
 
-            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
+            var filePath = ConfigManager.GetStoreFilePath(storeName);
 
             var locker = _lockers[storeName];
 
@@ -100,7 +100,7 @@ namespace LKDin.Server.DataAccess
 
             List<T> parsedDataList = new();
 
-            var filePath = LKDinConfigManager.GetStoreFilePath(storeName);
+            var filePath = ConfigManager.GetStoreFilePath(storeName);
 
             lock (locker)
             {

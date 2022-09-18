@@ -6,7 +6,7 @@ using LKDin.Helpers.Configuration;
 
 namespace LKDin.Helpers.Assets
 {
-    public static class LKDinAssetManager
+    public static class AssetManager
     {
         private readonly static Dictionary<string, object> _lockers = new();
 
@@ -22,7 +22,7 @@ namespace LKDin.Helpers.Assets
 
             EnsureAssetFolderExistance(storeName);
 
-            var destinationFile = LKDinConfigManager
+            var destinationFile = ConfigManager
         .GetAssetsFolderPath(storeName) + $"/{id}{Path.GetExtension(sourceFile)}";
 
             if (!_lockers.ContainsKey(sourceFile))
@@ -70,7 +70,7 @@ namespace LKDin.Helpers.Assets
 
         private static void EnsureAssetFolderExistance(string storeName)
         {
-            var folderDataPath = LKDinConfigManager.GetAssetsFolderPath(storeName);
+            var folderDataPath = ConfigManager.GetAssetsFolderPath(storeName);
 
             Directory.CreateDirectory(folderDataPath);
         }

@@ -7,19 +7,19 @@ namespace LKDin.Server.DataAccess.Repositories
     {
         public User Create(User user)
         {
-            LKDinDataManager.AddDataToStore<User>(user);
+            DataManager.AddDataToStore<User>(user);
 
             return user;
         }
 
         public bool Exists(string id)
         {
-            return LKDinDataManager.Users.Any(u => u.Id == id);
+            return DataManager.Users.Any(u => u.Id == id);
         }
 
         public User? Get(string id)
         {
-            return LKDinDataManager.Users.Find(u => u.Id == id);
+            return DataManager.Users.Find(u => u.Id == id);
         }
     }
 }

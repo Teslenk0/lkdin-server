@@ -2,15 +2,15 @@
 
 namespace LKDin.Helpers.Configuration
 {
-    public static class LKDinConfigManager
+    public static class ConfigManager
     {
         private static readonly object _configLock = new();
 
         public static string? GetConfig(string configKey)
         {
-            var path = GetAppDataBasePath();
+            var basePath = GetAppDataBasePath();
 
-            var configFilePath = Path.Join(path, "LKDin.config");
+            var configFilePath = Path.Join(basePath, "LKDin.config");
 
             lock (_configLock)
             {
@@ -20,7 +20,7 @@ namespace LKDin.Helpers.Configuration
 
                 var found = false;
 
-                var configValue = "";
+                string? configValue = null;
 
                 while (!reader.EndOfStream && !found)
                 {
