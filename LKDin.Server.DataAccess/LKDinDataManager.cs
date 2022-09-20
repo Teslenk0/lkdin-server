@@ -1,4 +1,5 @@
-﻿using LKDin.Helpers.Configuration;
+﻿using LKDin.Helpers;
+using LKDin.Helpers.Configuration;
 using LKDin.Server.Domain;
 using System.IO;
 using System.Text;
@@ -33,7 +34,7 @@ namespace LKDin.Server.DataAccess
             }
         }
 
-        public static void AddDataToStore<T>(BaseEntity baseEntity)
+        public static void AddDataToStore<T>(T baseEntity)
         {
             var storeName = typeof(T).Name.ToLower();
 
@@ -54,7 +55,7 @@ namespace LKDin.Server.DataAccess
 
                 using StreamWriter writer = new(file);
 
-                writer.WriteLine(baseEntity.Serialize());
+                writer.WriteLine(SerializationManager.Serialize<T>(baseEntity));
 
                 writer.Flush();
             }
@@ -76,10 +77,10 @@ namespace LKDin.Server.DataAccess
             lock (locker)
             {
                 var linesToKeep = File.ReadLines(filePath)
-                         .Where(l => !l.Contains($"Id={baseEntity.Id}"))
+                         .Where(l => !l.Contains($"Id(string)={baseEntity.Id}"))
                          .ToList();
 
-                var updatedData = baseEntity.Serialize();
+                var updatedData = SerializationManager.Serialize<T>(baseEntity);
 
                 linesToKeep.Add(updatedData);
 
@@ -114,7 +115,7 @@ namespace LKDin.Server.DataAccess
 
                     if (data != null && data != "")
                     {
-                        parsedDataList.Add(BaseEntity.Deserialize<T>(data));
+                        parsedDataList.Add(SerializationManager.Deserialize<T>(data));
                     }
                 }
 

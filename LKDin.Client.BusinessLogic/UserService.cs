@@ -1,4 +1,5 @@
 ﻿using LKDin.DTOs;
+using LKDin.Helpers;
 using LKDin.IBusinessLogic;
 using LKDin.Networking;
 
@@ -15,7 +16,9 @@ namespace LKDin.Server.BusinessLogic
 
         public void CreateUser(UserDTO userDTO)
         {
-            throw new NotImplementedException();
+            var serializedUser = SerializationManager.Serialize<UserDTO>(userDTO);
+
+            this._networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
         }
 
         public UserDTO? GetUser(string userId)

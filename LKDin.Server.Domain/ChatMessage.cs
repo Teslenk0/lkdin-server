@@ -13,22 +13,5 @@
         public long SentAt { get; set; }
 
         public long? ReadAt { get; set; }
-
-        public override string Serialize()
-        {
-            var serializedChatMessage = "Id=" + Id + "|"
-                   + "Content=" + Content + "|"
-                   + "SenderId=" + SenderId + "|"
-                   + "ReceiverId=" + ReceiverId + "|"
-                   + "SentAt(long)=" + SentAt.ToString() + "|"
-                   + "Read(boolean)=" + Read.ToString();
-
-            if(ReadAt != null)
-            {
-                serializedChatMessage += "|ReadAt(long)=" + ReadAt.ToString();
-            }
-
-            return serializedChatMessage;
-        }
     }
 }

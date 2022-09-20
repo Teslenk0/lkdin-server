@@ -44,14 +44,16 @@ namespace LKDin.Networking
                 messageBodySize = $"0{messageBodySize}";
             }
 
-            var operation = availableOperation.ToString();
+            var operation = ((int)availableOperation).ToString();
 
             while (operation.Length != SIZE_CMD_HEADER)
             {
                 operation = $"0{operation}";
             }
 
-            byte[] rawHeaders = this.SerializeMessage($"CMD={operation}|LENGTH={messageBodySize}");
+            var headers = $"CMD={operation}|LENGTH={messageBodySize}";
+
+            byte[] rawHeaders = this.SerializeMessage(headers);
 
             byte[] messageBytes = this.SerializeMessage(messageBody);
 
