@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using LKDin.Exceptions;
+using LKDin.Helpers.Configuration;
 using LKDin.Networking;
 
 namespace LKDin.Server.Networking
@@ -9,14 +9,16 @@ namespace LKDin.Server.Networking
     // [SINGLETON]
     public sealed class ServerNetworkingManager : NetworkingManager, INetworkingManager
     {
+        private const int QUEUE_SIZE = 100;
+
         private static readonly object SingletonSyncRoot = new object();
 
         private static volatile ServerNetworkingManager _instance;
 
-        private ServerNetworkingManager()
+        private ServerNetworkingManager() : base(ConfigNameSpace.SERVER)
         { }
 
-        public override void InitSocketV4Connection(string ipAddress, int port, int backlog)
+        public override void InitSocketV4Connection()
         {
             this._socketV4 = new Socket(
                 AddressFamily.InterNetwork,
@@ -24,11 +26,11 @@ namespace LKDin.Server.Networking
                 ProtocolType.Tcp
             );
 
-            var endpoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            var endpoint = new IPEndPoint(this.ServerIPAddress, this.ServerPort);
 
             this._socketV4.Bind(endpoint);
 
-            this._socketV4.Listen(backlog);
+            this._socketV4.Listen(QUEUE_SIZE);
 
             this._isWorking = true;
         }
@@ -41,7 +43,7 @@ namespace LKDin.Server.Networking
                 {
                     Socket clientSocket = this._socketV4.Accept();
 
-                    new Thread(() => handler(clientSocket));
+                    new Thread(() => handler(clientSocket)).Start();
                 }
             } else
             {
@@ -59,7 +61,7 @@ namespace LKDin.Server.Networking
                 }
                 lock (SingletonSyncRoot)
                 {
-                    return _instance ?? (_instance = new ServerNetworkingManager());
+                    return _instance ??= new ServerNetworkingManager();
                 }
             }
         }

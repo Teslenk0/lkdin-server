@@ -8,31 +8,54 @@ namespace LKDin.Networking
     {
         private readonly Socket _socket;
 
-        private const int SIZE_DATA_LENGTH_INDICATOR = 4;
+        private const int SIZE_LENGTH_HEADER = 10;
 
-        public NetworkDataHelper(Socket socker)
+        private const int SIZE_CMD_HEADER = 4;
+
+        // HEADER => "CMD=1111|LENGTH=1234567890"
+        private const int HEADER_SIZE = 26;
+
+        private const string LENGTH_HEADER_NAME = "LENGTH";
+
+        private const string CMD_HEADER_NAME = "CMD";
+
+        public NetworkDataHelper(Socket socket)
         {
-            _socket = socker;
+            _socket = socket;
         }
 
         public string ReceiveMessage()
         {
-            byte[] dataLength = this.PerformReception(SIZE_DATA_LENGTH_INDICATOR);
+            byte[] rawHeaders = this.PerformReception(HEADER_SIZE);
 
-            byte[] data = this.PerformReception(BitConverter.ToInt32(dataLength));
+            var parsedHeaders = this.DeserializeHeaders(rawHeaders);
 
-            string message = Encoding.UTF8.GetString(data);
+            byte[] data = this.PerformReception(int.Parse(parsedHeaders[LENGTH_HEADER_NAME]));
 
-            return message;
+            return this.DeserializeMessage(data);
         }
 
-        public void SendMessage(string messageBody)
+        public void SendMessage(string messageBody, AvailableOperation availableOperation)
         {
-            byte[] messageBytes = Encoding.UTF8.GetBytes(messageBody);
+            var messageBodySize = messageBody.Length.ToString();
 
-            byte[] messageSizeBytes = BitConverter.GetBytes(messageBytes.Length);
+            while (messageBodySize.Length != SIZE_LENGTH_HEADER)
+            {
+                messageBodySize = $"0{messageBodySize}";
+            }
 
-            this.PerformTransmission(messageSizeBytes);
+            var operation = availableOperation.ToString();
+
+            while (operation.Length != SIZE_CMD_HEADER)
+            {
+                operation = $"0{operation}";
+            }
+
+            byte[] rawHeaders = this.SerializeMessage($"CMD={operation}|LENGTH={messageBodySize}");
+
+            byte[] messageBytes = this.SerializeMessage(messageBody);
+
+            this.PerformTransmission(rawHeaders);
 
             this.PerformTransmission(messageBytes);
         }
@@ -70,6 +93,36 @@ namespace LKDin.Networking
             }
 
             return response;
+        }
+
+        private byte[] SerializeMessage(string message)
+        {
+            return Encoding.UTF8.GetBytes(message);
+        }
+
+        private string DeserializeMessage(byte[] rawMessage)
+        {
+            string message = Encoding.UTF8.GetString(rawMessage);
+
+            return message;
+        }
+
+        private Dictionary<string, string> DeserializeHeaders(byte[] rawHeaders)
+        {
+            string headers = this.DeserializeMessage(rawHeaders);
+
+            var results = new Dictionary<string, string>();
+
+            var fields = headers.Split('|');
+
+            foreach (string field in fields)
+            {
+                var data = field.Split('=');
+
+                results[data[0]] = data[1];
+            }
+
+            return results;
         }
     }
 }

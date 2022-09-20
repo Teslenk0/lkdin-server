@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LKDin.Helpers.Configuration;
+using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace LKDin.Networking
@@ -9,7 +11,18 @@ namespace LKDin.Networking
 
         protected bool _isWorking;
 
-        public abstract void InitSocketV4Connection(string ipAddress, int port, int backlog);
+        protected readonly int ServerPort;
+
+        protected readonly IPAddress ServerIPAddress;
+
+        protected NetworkingManager(ConfigNameSpace configNameSpace)
+        {
+            this.ServerPort = int.Parse(ConfigManager.GetConfig("SERVER_PORT", configNameSpace) ?? "5000");
+
+            this.ServerIPAddress = IPAddress.Parse(ConfigManager.GetConfig("SERVER_IP", configNameSpace) ?? "127.0.0.1");
+        }
+
+        public abstract void InitSocketV4Connection();
 
         public bool IsSocketConnected()
         {
@@ -31,6 +44,11 @@ namespace LKDin.Networking
 
                 this._socketV4.Close();
             }
+        }
+
+        public Socket GetSocket()
+        {
+            return this._socketV4;
         }
     }
 }

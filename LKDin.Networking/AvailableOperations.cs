@@ -1,7 +1,7 @@
 ﻿using System;
 namespace LKDin.Networking
 {
-    public enum AvailableOperations
+    public enum AvailableOperation
     {
         ACK = 00,
         ERR = 01,

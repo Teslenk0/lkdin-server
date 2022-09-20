@@ -44,16 +44,10 @@ public class LKDinServer
 
     private static void InitBackgroundService()
     {
-        var ip = ConfigManager.GetConfig("IP_ADDRESS") ?? "127.0.0.1";
-
-        var port = ConfigManager.GetConfig("PORT") ?? "5000";
-
-        var pendingQueueSize = ConfigManager.GetConfig("PENDING_QUEUE_SIZE") ?? "100";
-
         var networkingManager = ServerNetworkingManager.Instance;
 
         // Start listening
-        networkingManager.InitSocketV4Connection(ip, int.Parse(port), int.Parse(pendingQueueSize));
+        networkingManager.InitSocketV4Connection();
 
         // Start accepting connections
         networkingManager.AcceptSocketConnections(ServerConnectionHandler.HandleConnection);
@@ -70,7 +64,7 @@ public class LKDinServer
         backgroundServiceThread.Start();
 
         
-        // Init the UI in a different thread
+        //// Init the UI in a different thread
         Thread serverUIThread = new(InitServerUI);
 
         serverUIThread.Name = UI_THREAD_NAME;

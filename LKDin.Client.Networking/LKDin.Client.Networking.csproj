@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LKDin.Client.BusinessLogic\LKDin.Client.BusinessLogic.csproj" />
-    <ProjectReference Include="..\LKDin.Client.Networking\LKDin.Client.Networking.csproj" />
+    <ProjectReference Include="..\LKDin.Exceptions\LKDin.Exceptions.csproj" />
+    <ProjectReference Include="..\LKDin.Helpers\LKDin.Helpers.csproj" />
     <ProjectReference Include="..\LKDin.Networking\LKDin.Networking.csproj" />
-    <ProjectReference Include="..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj" />
   </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ namespace LKDin.Server.Networking
         {
             bool clientIsConnected = true;
 
-            NetworkDataHelper networkDataHelper = new NetworkDataHelper(clientSocket);
+            NetworkDataHelper networkDataHelper = new(clientSocket);
 
             while (clientIsConnected)
             {
@@ -27,7 +27,7 @@ namespace LKDin.Server.Networking
 
                     string response = $"Message '{message}' received successfully";
 
-                    networkDataHelper.SendMessage(response);
+                    networkDataHelper.SendMessage(response, AvailableOperation.ACK);
                 }
                 catch (SocketException)
                 {

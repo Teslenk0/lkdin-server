@@ -6,11 +6,19 @@ namespace LKDin.Helpers.Configuration
     {
         private static readonly object _configLock = new();
 
-        public static string? GetConfig(string configKey)
+        public static string? GetConfig(string configKey, ConfigNameSpace configNameSpace)
         {
             var basePath = GetAppDataBasePath();
 
-            var configFilePath = Path.Join(basePath, "LKDin.config");
+            string configFilePath;
+
+            if(configNameSpace == ConfigNameSpace.SERVER)
+            {
+                configFilePath = Path.Join(basePath, "LKDin.server.config");
+            } else
+            {
+                configFilePath = Path.Join(basePath, "LKDin.client.config");
+            }
 
             lock (_configLock)
             {

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net.Sockets;
+
 namespace LKDin.Networking
 {
     public interface INetworkingManager
     {
-        public void InitSocketV4Connection(string ipAddress, int port, int backlog);
+        public void InitSocketV4Connection();
 
         public void ShutdownSocketConnections();
     }
