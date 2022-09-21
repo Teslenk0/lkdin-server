@@ -19,6 +19,8 @@ namespace LKDin.Server.BusinessLogic
             var serializedUser = SerializationManager.Serialize<UserDTO>(userDTO);
 
             this._networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
+
+            this._networkDataHelper.ReceiveMessage();
         }
 
         public UserDTO? GetUser(string userId)

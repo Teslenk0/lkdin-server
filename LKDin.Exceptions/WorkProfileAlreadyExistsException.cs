@@ -2,6 +2,6 @@
 {
     public class WorkProfileAlreadyExistsException : Exception
     {
-        public WorkProfileAlreadyExistsException(string userId) : base($"El usuario {userId} ya tiene un perfil de trabajo") { }
+        public WorkProfileAlreadyExistsException(string message, bool isFullMessage = false) : base(isFullMessage ? message : $"El usuario {message} ya tiene un perfil de trabajo") { }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LKDin.DTOs\LKDin.DTOs.csproj" />
     <ProjectReference Include="..\LKDin.Helpers\LKDin.Helpers.csproj" />
   </ItemGroup>
 </Project>

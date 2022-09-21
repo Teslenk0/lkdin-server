@@ -1,4 +1,5 @@
-﻿using LKDin.Helpers;
+﻿using LKDin.Exceptions;
+using LKDin.Helpers;
 using LKDin.Helpers.Configuration;
 using LKDin.Server.Domain;
 using System.IO;
@@ -34,7 +35,7 @@ namespace LKDin.Server.DataAccess
             }
         }
 
-        public static void AddDataToStore<T>(T baseEntity)
+        public static void AddDataToStore<T>(BaseEntity baseEntity)
         {
             var storeName = typeof(T).Name.ToLower();
 
@@ -51,6 +52,14 @@ namespace LKDin.Server.DataAccess
 
             lock (locker)
             {
+                var existenceDoubleCheck = File.ReadLines(filePath)
+                     .Any(l => l.Contains($"Id(string)={baseEntity.Id}"));
+
+                if (existenceDoubleCheck)
+                {
+                    throw new EntityAlreadyExistsException(baseEntity.Id);
+                }
+
                 using FileStream file = new(filePath, FileMode.Append, FileAccess.Write, FileShare.None);
 
                 using StreamWriter writer = new(file);

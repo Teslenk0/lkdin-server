@@ -2,6 +2,6 @@
 {
     public class WorkProfileDoesNotExistException : Exception
     {
-        public WorkProfileDoesNotExistException(string userId) : base($"El usuario {userId} no tiene un perfil de trabajo") { }
+        public WorkProfileDoesNotExistException(string message, bool isFullMessage = false) : base(isFullMessage ? message : $"El usuario {message} no tiene un perfil de trabajo") { }
     }
 }

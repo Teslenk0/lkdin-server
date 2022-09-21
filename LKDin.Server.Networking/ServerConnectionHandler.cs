@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Net.Sockets;
-using System.Text;
-using LKDin.Helpers.Configuration;
+﻿using System.Net.Sockets;
+using LKDin.DTOs;
+using LKDin.Exceptions;
+using LKDin.Helpers;
 using LKDin.Networking;
+using LKDin.Server.BusinessLogic;
 
 namespace LKDin.Server.Networking
 {
@@ -21,18 +21,33 @@ namespace LKDin.Server.Networking
             {
                 try
                 {
-                    string message = networkDataHelper.ReceiveMessage();
+                    var data = networkDataHelper.ReceiveMessage();
 
-                    Console.WriteLine(message);
+                    var messagePayload = data[NetworkDataHelper.MSG_NAME];
 
-                    string response = $"Message '{message}' received successfully";
+                    var cmd = int.Parse(data[NetworkDataHelper.CMD_HEADER_NAME] ?? "01");
 
-                    networkDataHelper.SendMessage(response, AvailableOperation.ACK);
+                    switch ((AvailableOperation)cmd)
+                    {
+                        case AvailableOperation.CREATE_USER:
+                            var userService = new UserService();
+
+                            userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
+
+                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                            break;
+                        default:
+                            throw new CommandNotSupportedException(cmd.ToString());
+                    }
                 }
                 catch (SocketException)
                 {
                     Console.WriteLine("Client disconnected");
                     clientIsConnected = false;
+                }
+                catch(Exception e)
+                {
+                    networkDataHelper.SendException(e);
                 }
             }
         }

@@ -2,6 +2,6 @@
 {
     public class AssetDoesNotExistException : Exception
     {
-        public AssetDoesNotExistException(string assetPath) : base($"El archivo {assetPath} no existe") { }
+        public AssetDoesNotExistException(string message, bool isFullMessage = false) : base(isFullMessage ? message : $"El archivo {message} no existe") { }
     }
 }

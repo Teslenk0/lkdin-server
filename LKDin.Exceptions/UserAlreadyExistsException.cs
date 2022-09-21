@@ -2,6 +2,7 @@
 {
     public class UserAlreadyExistsException : Exception
     {
-        public UserAlreadyExistsException(string userId) : base($"El usuario {userId} ya existe") { }
+        public UserAlreadyExistsException(string message, bool isFullMessage = false) : base(isFullMessage ? message : $"El usuario {message} ya existe")
+        { }
     }
 }
