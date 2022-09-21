@@ -34,7 +34,7 @@ namespace LKDin.Helpers.Serialization
 
                     var collection = (IList)field.GetValue(entity, null);
                     
-                    if(listType == typeof(SkillDTO))
+                    if(listType == typeof(SkillDTO) && collection != null)
                     {
                         var serializedList = $"{field.Name}(list(skilldto))={LIST_START_MARKER}";
 

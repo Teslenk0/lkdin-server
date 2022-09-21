@@ -16,7 +16,11 @@ namespace LKDin.Client.BusinessLogic
 
         public void AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
         {
-            throw new NotImplementedException();
+            var serializedWorkProfile = SerializationManager.Serialize<WorkProfileDTO>(partialWorkProfileDTO);
+
+            _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE);
+
+            _networkDataHelper.ReceiveMessage();
         }
 
         public void CreateWorkProfile(WorkProfileDTO workProfileDTO)

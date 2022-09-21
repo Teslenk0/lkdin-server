@@ -1,5 +1,6 @@
 ﻿using LKDin.Client.BusinessLogic;
 using LKDin.Client.Networking;
+using LKDin.IBusinessLogic;
 using LKDin.IUI;
 using LKDin.Networking;
 using LKDin.UI.ConsoleMenu;
@@ -23,10 +24,17 @@ public class LKDinClient
 
         var workProfileService = new WorkProfileClientService(networkDataHelper);
 
+        //    new SendChatMessageOption("Enviar Mensaje", chatMessageService),
+        //    new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
+        //    new ShowUserOption("Buscar Perfil por ID", workProfileService),
+
         var enabledOptions = new List<IMenuOption>()
         {
             new CreateUserOption("Crear Usuario", userService),
             new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
+            new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
+            // new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
+            // new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
             new ExitOption("Salir", networkingManager)
         };
 

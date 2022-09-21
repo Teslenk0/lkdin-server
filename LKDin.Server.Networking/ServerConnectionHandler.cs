@@ -30,18 +30,31 @@ namespace LKDin.Server.Networking
                     switch ((AvailableOperation)cmd)
                     {
                         case AvailableOperation.CREATE_USER:
-                            var userService = new UserService();
+                            {
+                                var userService = new UserService();
 
-                            userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
+                                userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
-                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                            }
                             break;
                         case AvailableOperation.CREATE_WORK_PROFILE:
-                            var workProfileService = new WorkProfileService(new UserService());
+                            {
+                                var workProfileService = new WorkProfileService(new UserService());
 
-                            workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+                                workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
-                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                            }
+                            break;
+                        case AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE:
+                            {
+                                var workProfileService = new WorkProfileService(new UserService());
+
+                                workProfileService.AssignImageToWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+
+                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                            }
                             break;
                         default:
                             throw new CommandNotSupportedException(cmd.ToString());
