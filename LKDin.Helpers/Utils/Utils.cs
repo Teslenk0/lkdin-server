@@ -15,6 +15,13 @@ namespace LKDin.Helpers.Utils
             return t.IsValueType || t.GetConstructor(Type.EmptyTypes) != null;
         }
 
+        public static bool IsGenericList(this Object obj)
+        {
+            var type = obj.GetType();
+
+            return type.IsGenericList();
+        }
+
         public static bool IsGenericList(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);

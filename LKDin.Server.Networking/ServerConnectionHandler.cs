@@ -30,32 +30,54 @@ namespace LKDin.Server.Networking
                     switch ((AvailableOperation)cmd)
                     {
                         case AvailableOperation.CREATE_USER:
-                            {
-                                var userService = new UserService();
+                        {
+                            var userService = new UserService();
 
-                                userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
+                            userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
-                            }
-                            break;
+                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                        }
+                        break;
                         case AvailableOperation.CREATE_WORK_PROFILE:
-                            {
-                                var workProfileService = new WorkProfileService(new UserService());
+                        {
+                            var workProfileService = new WorkProfileService(new UserService());
 
-                                workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+                            workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
-                            }
-                            break;
+                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                        }
+                        break;
                         case AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE:
-                            {
-                                var workProfileService = new WorkProfileService(new UserService());
+                        {
+                            var workProfileService = new WorkProfileService(new UserService());
 
-                                workProfileService.AssignImageToWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+                            workProfileService.AssignImageToWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
-                            }
-                            break;
+                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                        }
+                        break;
+                        case AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION:
+                        {
+                            var workProfileService = new WorkProfileService(new UserService());
+
+                            var profiles = workProfileService.GetWorkProfilesByDescription(messagePayload);
+
+                            var serializedProfiles = SerializationManager.Serialize<List<WorkProfileDTO>>(profiles);
+                                
+                            networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
+                        }
+                        break;
+                        case AvailableOperation.SEARCH_PROFILES_BY_SKILLS:
+                        {
+                            var workProfileService = new WorkProfileService(new UserService());
+
+                            var profiles = workProfileService.GetWorkProfilesBySkills(SerializationManager.Deserialize<List<SkillDTO>>(messagePayload));
+
+                            var serializedProfiles = SerializationManager.Serialize<List<WorkProfileDTO>>(profiles);
+
+                            networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
+                        }
+                        break;
                         default:
                             throw new CommandNotSupportedException(cmd.ToString());
                     }
@@ -65,7 +87,7 @@ namespace LKDin.Server.Networking
                     Console.WriteLine("Client disconnected");
                     clientIsConnected = false;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     networkDataHelper.SendException(e);
                 }

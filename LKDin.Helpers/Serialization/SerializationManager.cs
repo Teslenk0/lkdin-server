@@ -20,45 +20,55 @@ namespace LKDin.Helpers.Serialization
         {
             var serializedData = "";
 
-            var fields = entity.GetType().GetProperties();
-
-            for (int i = 0; i < fields.Length; i++)
+            if (entity.IsGenericList())
             {
-                var field = fields[i];
+                var list = (IList)entity;
 
-                var propertyType = Nullable.GetUnderlyingType(field.PropertyType) ?? field.PropertyType;
+                serializedData += $"{LIST_START_MARKER}";
 
-                if (propertyType.IsGenericList())
+                for (int j = 0; j < list.Count; j++)
                 {
-                    Type listType = propertyType.GetGenericArguments()[0];
+                    var serializedObj = Serialize<T>(list[j]);
 
-                    var collection = (IList)field.GetValue(entity, null);
-                    
-                    if(listType == typeof(SkillDTO) && collection != null)
+                    serializedData += serializedObj;
+
+                    if (j < list.Count - 1)
                     {
-                        var serializedList = $"{field.Name}(list(skilldto))={LIST_START_MARKER}";
-
-                        for (int j = 0; j < collection.Count; j++)
-                        {
-                            var serializedObj = Serialize<SkillDTO>(collection[j]);
-
-                            serializedList += serializedObj;
-
-                            if(j < collection.Count - 1)
-                            {
-                                serializedList += LIST_SEPARATOR;
-                            }
-                        }
-                        serializedData += $"{serializedList}{LIST_END_MARKER}{FIELD_SEPARATOR}";
+                        serializedData += LIST_SEPARATOR;
                     }
                 }
-                else
-                {
-                    serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
 
-                    if (i != fields.Length - 1)
+                serializedData += $"{LIST_END_MARKER}";
+            }
+            else
+            {
+                var fields = entity.GetType().GetProperties();
+
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    var field = fields[i];
+
+                    var propertyType = Nullable.GetUnderlyingType(field.PropertyType) ?? field.PropertyType;
+
+                    if (propertyType.IsGenericList())
                     {
-                        serializedData += FIELD_SEPARATOR;
+                        Type listType = propertyType.GetGenericArguments()[0];
+
+                        var collection = (IList)field.GetValue(entity, null);
+
+                        if (listType == typeof(SkillDTO) && collection != null)
+                        {
+                            serializedData = $"{field.Name}(list(skilldto))={Serialize<List<SkillDTO>>(collection)}{FIELD_SEPARATOR}";
+                        }
+                    }
+                    else
+                    {
+                        serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
+
+                        if (i != fields.Length - 1)
+                        {
+                            serializedData += FIELD_SEPARATOR;
+                        }
                     }
                 }
             }
@@ -77,7 +87,7 @@ namespace LKDin.Helpers.Serialization
             {
                 var amountOfLists = serializedEntity.Count(c => c == LIST_START_MARKER);
 
-                for(int i = 0; i < amountOfLists; i++)
+                for (int i = 0; i < amountOfLists; i++)
                 {
                     var from = serializedEntity.IndexOf(LIST_START_MARKER);
 
@@ -124,7 +134,7 @@ namespace LKDin.Helpers.Serialization
 
                     var serializedListObjects = serializedList.Split(LIST_SEPARATOR);
 
-                    foreach(var item in serializedListObjects)
+                    foreach (var item in serializedListObjects)
                     {
                         var skill = Deserialize<SkillDTO>(item);
 

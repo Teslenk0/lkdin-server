@@ -39,12 +39,22 @@ namespace LKDin.Client.BusinessLogic
 
         public List<WorkProfileDTO> GetWorkProfilesByDescription(string description)
         {
-            throw new NotImplementedException();
+            _networkDataHelper.SendMessage(description, AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION);
+
+            _networkDataHelper.ReceiveMessage();
+
+            return new List<WorkProfileDTO>();
         }
 
         public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
         {
-            throw new NotImplementedException();
+            var serializedSkills = SerializationManager.Serialize<List<SkillDTO>>(skillsToSearchFor);
+
+            _networkDataHelper.SendMessage(serializedSkills, AvailableOperation.SEARCH_PROFILES_BY_SKILLS);
+
+            _networkDataHelper.ReceiveMessage();
+
+            return new List<WorkProfileDTO>();
         }
     }
 }

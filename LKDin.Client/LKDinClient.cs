@@ -33,8 +33,8 @@ public class LKDinClient
             new CreateUserOption("Crear Usuario", userService),
             new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
             new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
-            // new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
-            // new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
+            new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
+            new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
             new ExitOption("Salir", networkingManager)
         };
 
