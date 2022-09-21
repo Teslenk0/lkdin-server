@@ -1,8 +1,6 @@
 ﻿using LKDin.DTOs;
 using LKDin.Helpers.Utils;
 using System.Collections;
-using System.Linq;
-using System.Reflection;
 
 namespace LKDin.Helpers.Serialization
 {
@@ -10,13 +8,15 @@ namespace LKDin.Helpers.Serialization
     {
         private const string LIST_SEPARATOR = "::::";
 
+        private const string NESTED_LIST_SEPARATOR = ":_:";
+
         private const char FIELD_SEPARATOR = '|';
 
         private const char LIST_START_MARKER = '<';
 
         private const char LIST_END_MARKER = '>';
 
-        public static string Serialize<T>(object entity)
+        public static string Serialize<T>(object entity, string separator = LIST_SEPARATOR)
         {
             var serializedData = "";
 
@@ -34,7 +34,7 @@ namespace LKDin.Helpers.Serialization
 
                     if (j < list.Count - 1)
                     {
-                        serializedData += LIST_SEPARATOR;
+                        serializedData += separator;
                     }
                 }
 
@@ -58,17 +58,17 @@ namespace LKDin.Helpers.Serialization
 
                         if (listType == typeof(SkillDTO) && collection != null)
                         {
-                            serializedData = $"{field.Name}(list(skilldto))={Serialize<List<SkillDTO>>(collection)}{FIELD_SEPARATOR}";
+                            serializedData += $"{field.Name}(list(skilldto))={Serialize<List<SkillDTO>>(collection, NESTED_LIST_SEPARATOR)}";
                         }
                     }
                     else
                     {
                         serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
+                    }
 
-                        if (i != fields.Length - 1)
-                        {
-                            serializedData += FIELD_SEPARATOR;
-                        }
+                    if (i != fields.Length - 1)
+                    {
+                        serializedData += FIELD_SEPARATOR;
                     }
                 }
             }
@@ -76,40 +76,76 @@ namespace LKDin.Helpers.Serialization
             return serializedData;
         }
 
+        public static T DeserializeList<T>(string rawSerializedList, string separator = LIST_SEPARATOR) where T : new()
+        {
+            var genericList = (IList)new T();
+
+            Type type = genericList.GetType();
+
+            Type listType = type.GetGenericArguments()[0];
+
+            // Remove fist and last markers (can't use replace)
+            var serializedListObjects = rawSerializedList.Substring(1, rawSerializedList.Length - 2).Split(separator);
+
+            foreach (var item in serializedListObjects)
+            {
+                if (listType == typeof(SkillDTO))
+                {
+                    genericList.Add(Deserialize<SkillDTO>(item));
+                } else if (listType == typeof(WorkProfileDTO)) 
+                {
+                    genericList.Add(Deserialize<WorkProfileDTO>(item));
+                } else if(listType == typeof(ChatMessageDTO))
+                {
+                    genericList.Add(Deserialize<ChatMessageDTO>(item));
+                }
+            }
+
+            return (T)genericList;
+        }
+
         public static T Deserialize<T>(string rawSerializedEntity)
             where T : new()
         {
+            var entity = new T();
+
+            if (entity.IsGenericList())
+            {
+                return DeserializeList<T>(rawSerializedEntity);
+            }
+
+            Type type = entity.GetType();
+
             var serializedEntity = rawSerializedEntity;
 
             var serializedListsQ = new Queue<string>();
 
+            // If the serialized entity contains a list
             if (serializedEntity.Contains(LIST_END_MARKER) && serializedEntity.Contains(LIST_START_MARKER))
             {
+                // Count the amount of lists available
                 var amountOfLists = serializedEntity.Count(c => c == LIST_START_MARKER);
 
                 for (int i = 0; i < amountOfLists; i++)
                 {
+                    // Take the start position of the first list 
                     var from = serializedEntity.IndexOf(LIST_START_MARKER);
 
+                    // Take the end position of the first list
                     var to = serializedEntity.IndexOf(LIST_END_MARKER);
 
                     // Get the string between LIST_START_MARKER and LIST_END_MARKER
-                    var listContent = serializedEntity.Substring(from + 1, (to - from) - 1);
+                    var listContent = serializedEntity[from..to];
 
-                    // Replace the string from LIST_START_MARKER to LIST_END_MARKER
+                    // Remove the string from LIST_START_MARKER to LIST_END_MARKER so it's not deserialized more than one time
                     serializedEntity = serializedEntity.ReplaceAt(from, (to - from) + 1, "");
 
-                    // Add to FIFO queue
+                    // Add to FIFO queue so it can be processed
                     serializedListsQ.Enqueue(listContent);
                 }
             }
 
             var fields = serializedEntity.Split(FIELD_SEPARATOR);
-
-            var entity = new T();
-
-            Type type = entity
-                        .GetType();
 
             foreach (string field in fields)
             {
@@ -127,22 +163,25 @@ namespace LKDin.Helpers.Serialization
                 {
                     var fieldName = data[0].Replace("(list(skilldto))", "");
 
-                    var skills = new List<SkillDTO>();
+                    // Get the first element from the Queue and removes it
+                    var serializedList = serializedListsQ.Dequeue();
+
+                    var deserializedList = DeserializeList<List<SkillDTO>>(serializedList, NESTED_LIST_SEPARATOR);
+
+                    type.GetProperty(fieldName)
+                        .SetValue(entity, deserializedList);
+                }
+                else if (data[0].Contains("(list(chatmessagedto))"))
+                {
+                    var fieldName = data[0].Replace("(list(chatmessagedto))", "");
 
                     // Get the first element from the Queue and removes it
                     var serializedList = serializedListsQ.Dequeue();
 
-                    var serializedListObjects = serializedList.Split(LIST_SEPARATOR);
-
-                    foreach (var item in serializedListObjects)
-                    {
-                        var skill = Deserialize<SkillDTO>(item);
-
-                        skills.Add(skill);
-                    }
+                    var deserializedList = DeserializeList<List<ChatMessageDTO>>(serializedList);
 
                     type.GetProperty(fieldName)
-                        .SetValue(entity, skills);
+                        .SetValue(entity, deserializedList);
                 }
                 else if (data[0].Contains("(int64)"))
                 {

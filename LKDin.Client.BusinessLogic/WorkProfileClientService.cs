@@ -41,9 +41,11 @@ namespace LKDin.Client.BusinessLogic
         {
             _networkDataHelper.SendMessage(description, AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION);
 
-            _networkDataHelper.ReceiveMessage();
+            var data = _networkDataHelper.ReceiveMessage();
 
-            return new List<WorkProfileDTO>();
+            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+
+            return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
         }
 
         public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
@@ -52,9 +54,11 @@ namespace LKDin.Client.BusinessLogic
 
             _networkDataHelper.SendMessage(serializedSkills, AvailableOperation.SEARCH_PROFILES_BY_SKILLS);
 
-            _networkDataHelper.ReceiveMessage();
+            var data = _networkDataHelper.ReceiveMessage();
 
-            return new List<WorkProfileDTO>();
+            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+
+            return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
         }
     }
 }
