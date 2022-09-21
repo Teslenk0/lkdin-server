@@ -1,9 +1,9 @@
 ﻿using LKDin.DTOs;
-using LKDin.Helpers;
+using LKDin.Helpers.Serialization;
 using LKDin.IBusinessLogic;
 using LKDin.Networking;
 
-namespace LKDin.Server.BusinessLogic
+namespace LKDin.Client.BusinessLogic
 {
     public class UserClientService : IUserService
     {
@@ -11,16 +11,16 @@ namespace LKDin.Server.BusinessLogic
 
         public UserClientService(NetworkDataHelper networkDataHelper)
         {
-            this._networkDataHelper = networkDataHelper;
+            _networkDataHelper = networkDataHelper;
         }
 
         public void CreateUser(UserDTO userDTO)
         {
             var serializedUser = SerializationManager.Serialize<UserDTO>(userDTO);
 
-            this._networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
+            _networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
 
-            this._networkDataHelper.ReceiveMessage();
+            _networkDataHelper.ReceiveMessage();
         }
 
         public UserDTO? GetUser(string userId)

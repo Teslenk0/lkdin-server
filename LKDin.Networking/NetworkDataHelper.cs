@@ -1,5 +1,8 @@
 ﻿using LKDin.DTOs;
-using LKDin.Helpers;
+using LKDin.Exceptions;
+using LKDin.Helpers.Serialization;
+using LKDin.Helpers.Utils;
+using System;
 using System.Net.Sockets;
 using System.Text;
 
@@ -33,19 +36,35 @@ namespace LKDin.Networking
 
             var assemblyName = exceptionDTO.AssemblyName.Replace("#", "=");
 
+            Exception e = null;
+
+            var availableTypes = new Dictionary<Type, Action> {
+                { typeof(AssetDoesNotExistException), () => { e = new AssetDoesNotExistException(exceptionDTO.Message, true); } },
+                { typeof(CommandNotSupportedException), () => { e = new CommandNotSupportedException(exceptionDTO.Message, true); } },
+                { typeof(EntityAlreadyExistsException), () => { e = new EntityAlreadyExistsException(exceptionDTO.Message, true); } },
+                { typeof(UnauthorizedException), () => { e = new UnauthorizedException(); } },
+                { typeof(UserAlreadyExistsException), () => { e = new UserAlreadyExistsException(exceptionDTO.Message, true); } },
+                { typeof(UserDoesNotExistException), () => { e = new UserDoesNotExistException(exceptionDTO.Message, true); } },
+                { typeof(WorkProfileAlreadyExistsException), () => { e = new WorkProfileAlreadyExistsException(exceptionDTO.Message, true); } },
+                { typeof(WorkProfileDoesNotExistException), () => { e = new WorkProfileDoesNotExistException(exceptionDTO.Message, true); } },
+            };
+
             var type = Type.GetType($"{exceptionDTO.ExceptionType},{assemblyName}");
 
-            Exception exception;
-
-            if(exceptionDTO.Message != null && exceptionDTO.Message != "")
+            if (availableTypes.ContainsKey(type))
             {
-                exception = (Exception)Activator.CreateInstance(type, exceptionDTO.Message, true);
+               availableTypes[type]();
+
             } else
             {
-                exception = (Exception)Activator.CreateInstance(type);
+                e = new Exception(exceptionDTO.Message);
             }
-
-            throw exception;
+           
+            if(e != null)
+            {
+                throw e;
+            }
+            
         }
 
         public Dictionary<string, string> ReceiveMessage()

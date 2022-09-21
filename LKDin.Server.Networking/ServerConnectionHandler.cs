@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using LKDin.DTOs;
 using LKDin.Exceptions;
-using LKDin.Helpers;
+using LKDin.Helpers.Serialization;
 using LKDin.Networking;
 using LKDin.Server.BusinessLogic;
 
@@ -33,6 +33,13 @@ namespace LKDin.Server.Networking
                             var userService = new UserService();
 
                             userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
+
+                            networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                            break;
+                        case AvailableOperation.CREATE_WORK_PROFILE:
+                            var workProfileService = new WorkProfileService(new UserService());
+
+                            workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
                             networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             break;

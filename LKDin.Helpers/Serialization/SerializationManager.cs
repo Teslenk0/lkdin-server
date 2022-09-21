@@ -1,11 +1,8 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-
-namespace LKDin.Helpers
+﻿namespace LKDin.Helpers.Serialization
 {
     public class SerializationManager
     {
-        public static string Serialize<T>(Object entity)
+        public static string Serialize<T>(object entity)
         {
             var serializedData = "";
 
@@ -46,7 +43,7 @@ namespace LKDin.Helpers
                     entity
                         .GetType()
                         .GetProperty(fieldName)
-                        .SetValue(entity, Boolean.Parse(data[1]), null);
+                        .SetValue(entity, bool.Parse(data[1]), null);
                 }
                 else if (data[0].Contains("(int64)"))
                 {
@@ -54,7 +51,7 @@ namespace LKDin.Helpers
                     entity
                         .GetType()
                         .GetProperty(fieldName)
-                        .SetValue(entity, Int64.Parse(data[1] != "" ? data[1] : "0"), null);
+                        .SetValue(entity, long.Parse(data[1] != "" ? data[1] : "0"), null);
                 }
                 else if (data[0].Contains("(string)"))
                 {

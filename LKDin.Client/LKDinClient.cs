@@ -1,7 +1,7 @@
-﻿using LKDin.IUI;
+﻿using LKDin.Client.BusinessLogic;
+using LKDin.Client.Networking;
+using LKDin.IUI;
 using LKDin.Networking;
-using LKDin.Server.BusinessLogic;
-using LKDin.Server.Networking;
 using LKDin.UI.ConsoleMenu;
 using LKDin.UI.ConsoleMenu.AvailableOptions;
 
@@ -21,9 +21,12 @@ public class LKDinClient
 
         var userService = new UserClientService(networkDataHelper);
 
+        var workProfileService = new WorkProfileClientService(networkDataHelper);
+
         var enabledOptions = new List<IMenuOption>()
         {
             new CreateUserOption("Crear Usuario", userService),
+            new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
             new ExitOption("Salir", networkingManager)
         };
 
