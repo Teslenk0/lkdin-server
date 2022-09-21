@@ -19,5 +19,11 @@ namespace LKDin.Helpers.Utils
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
         }
+
+        public static string ReplaceAt(this string str, int index, int length, string replace)
+        {
+            return str.Remove(index, Math.Min(length, str.Length - index))
+                    .Insert(index, replace);
+        }
     }
 }

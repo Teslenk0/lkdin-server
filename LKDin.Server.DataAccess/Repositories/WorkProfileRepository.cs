@@ -8,8 +8,11 @@ namespace LKDin.Server.DataAccess.Repositories
     {
         public WorkProfile Create(WorkProfile workProfile)
         {
-            workProfile.Id = Guid.NewGuid().ToString();
-
+            if(workProfile.Id == null)
+            {
+                workProfile.Id = Guid.NewGuid().ToString();
+            }
+           
             DataManager.AddDataToStore<WorkProfile>(workProfile);
 
             return workProfile;

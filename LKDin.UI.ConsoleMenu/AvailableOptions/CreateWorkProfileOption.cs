@@ -63,17 +63,23 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
                 if (skills.Length > 2)
                 {
-                    string[] words = skills.Split(',');
+                    string[] words = skills
+                        .Split(',')
+                        .Select(s => s.Trim())
+                        .Where(s => !string.IsNullOrWhiteSpace(s))
+                        .Distinct()
+                        .ToArray();
 
                     foreach (var skill in words)
                     {
-                        resultantSkills.Add(new SkillDTO() { Name = skill.Trim() });
+                        resultantSkills.Add(new SkillDTO() { Name = skill });
                     }
                 }
 
                 if (resultantSkills.Count < 3)
                 {
-                    this.PrintError("Valor incorrecto (debes ingresar al menos 3)");
+                    resultantSkills.Clear();
+                    this.PrintError("Valor incorrecto (debes ingresar al menos 3, no pueden repetirse ni estar vacias)");
                     Console.Write("Habilidades (separadas por coma): ");
                 }
             }

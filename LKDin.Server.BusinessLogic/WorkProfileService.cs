@@ -37,6 +37,8 @@ namespace LKDin.Server.BusinessLogic
 
             var workProfile = WorkProfileDTO.DTOToEntity(workProfileDTO);
 
+            workProfile.Id = workProfileDTO.UserId;
+
             this._workProfileRepository.Create(workProfile);
 
             List<Skill> skills = new();

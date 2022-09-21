@@ -93,7 +93,9 @@ namespace LKDin.Networking
 
         public void SendMessage(string messageBody, AvailableOperation availableOperation)
         {
-            var messageBodySize = messageBody.Length.ToString();
+            byte[] messageBytes = this.SerializeMessage(messageBody);
+
+            var messageBodySize = messageBytes.Length.ToString();
 
             while (messageBodySize.Length != SIZE_LENGTH_HEADER)
             {
@@ -111,8 +113,6 @@ namespace LKDin.Networking
 
             byte[] rawHeaders = this.SerializeMessage(headers);
 
-            byte[] messageBytes = this.SerializeMessage(messageBody);
-
             this.PerformTransmission(rawHeaders);
 
             this.PerformTransmission(messageBytes);
@@ -129,7 +129,9 @@ namespace LKDin.Networking
 
             var stringifiedMessage = SerializationManager.Serialize<ExceptionDTO>(message);
 
-            var messageBodySize = stringifiedMessage.Length.ToString();
+            byte[] messageBytes = this.SerializeMessage(stringifiedMessage);
+
+            var messageBodySize = messageBytes.Length.ToString();
 
             while (messageBodySize.Length != SIZE_LENGTH_HEADER)
             {
@@ -146,8 +148,6 @@ namespace LKDin.Networking
             var headers = $"CMD={operation}|LENGTH={messageBodySize}";
 
             byte[] rawHeaders = this.SerializeMessage(headers);
-
-            byte[] messageBytes = this.SerializeMessage(stringifiedMessage);
 
             this.PerformTransmission(rawHeaders);
 

@@ -32,7 +32,7 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
 
     protected string RequestPassword()
     {
-        Console.Write("Contrasena: ");
+        Console.Write("Contraseña: ");
 
         string password;
 
@@ -43,7 +43,7 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
             if (password == null || password.Length < 5)
             {
                 PrintError("Valor incorrecto (al menos 5 caracteres)");
-                Console.Write("Contrasena: ");
+                Console.Write("Contraseña: ");
             }
         }
         while (password == null || password.Length < 5);
