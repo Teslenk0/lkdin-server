@@ -1,4 +1,5 @@
-﻿using LKDin.Helpers.Utils;
+﻿using LKDin.DTOs;
+using LKDin.Helpers.Utils;
 using System.Collections;
 using System.Reflection;
 
@@ -22,14 +23,27 @@ namespace LKDin.Helpers.Serialization
                 {
                     Type listType = propertyType.GetGenericArguments()[0];
 
-                    var collection = (IEnumerable)field.GetValue(entity, null);
-
-                    var methodInfo = typeof(SerializationManager).GetMethod("Serialize");
-
-                    foreach (var item in collection)
+                    var collection = (IList)field.GetValue(entity, null);
+                    
+                    if(listType == typeof(SkillDTO))
                     {
-                        var genericMethod = methodInfo.MakeGenericMethod(item);
+                        var serializedList = $"{field.Name}(list<skilldto>)=<";
 
+                        for (int j = 0; j < collection.Count; j++)
+                        {
+                            var serializedObj = Serialize<SkillDTO>(collection[j]);
+
+                            serializedList += serializedObj;
+
+                            if(j < collection.Count - 1)
+                            {
+                                serializedList += ":::";
+                            } else
+                            {
+                                serializedList += ">";
+                            }
+                        }
+                        serializedData += serializedList;
                     }
                 }
                 else
