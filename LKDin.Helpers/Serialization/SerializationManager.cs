@@ -1,4 +1,8 @@
-﻿namespace LKDin.Helpers.Serialization
+﻿using LKDin.Helpers.Utils;
+using System.Collections;
+using System.Reflection;
+
+namespace LKDin.Helpers.Serialization
 {
     public class SerializationManager
     {
@@ -14,11 +18,28 @@
 
                 var propertyType = Nullable.GetUnderlyingType(field.PropertyType) ?? field.PropertyType;
 
-                serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
-
-                if (i != fields.Length - 1)
+                if (propertyType.IsGenericList())
                 {
-                    serializedData += "|";
+                    Type listType = propertyType.GetGenericArguments()[0];
+
+                    var collection = (IEnumerable)field.GetValue(entity, null);
+
+                    var methodInfo = typeof(SerializationManager).GetMethod("Serialize");
+
+                    foreach (var item in collection)
+                    {
+                        var genericMethod = methodInfo.MakeGenericMethod(item);
+
+                    }
+                }
+                else
+                {
+                    serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
+
+                    if (i != fields.Length - 1)
+                    {
+                        serializedData += "|";
+                    }
                 }
             }
 
