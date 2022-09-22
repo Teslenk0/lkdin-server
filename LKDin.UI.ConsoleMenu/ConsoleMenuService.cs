@@ -15,9 +15,9 @@ public class ConsoleMenuService : IUIService
     {
         while (true)
         {
-            Console.WriteLine("---------------------");
+            Console.WriteLine("----------------------");
             Console.WriteLine("    LKDin (v1.0.0)   ");
-            Console.WriteLine("---------------------");
+            Console.WriteLine("----------------------");
 
             for (var i = 0; i < MenuOptions.Count; i++)
             {

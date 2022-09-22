@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LKDin.Helpers.Utils
+﻿namespace LKDin.Helpers.Utils
 {
     public static class Utils
     {
@@ -17,6 +9,11 @@ namespace LKDin.Helpers.Utils
 
         public static bool IsGenericList(this Object obj)
         {
+            if(obj == null)
+            {
+                return false;
+            }
+
             var type = obj.GetType();
 
             return type.IsGenericList();

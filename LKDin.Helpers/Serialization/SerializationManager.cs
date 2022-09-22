@@ -16,9 +16,18 @@ namespace LKDin.Helpers.Serialization
 
         private const char LIST_END_MARKER = '>';
 
+        private const char COMPLEX_OBJ_START_MARKER = '[';
+
+        private const char COMPLEX_OBJ_END_MARKER = ']';
+
         public static string Serialize<T>(object entity, string separator = LIST_SEPARATOR)
         {
             var serializedData = "";
+
+            if(entity == null)
+            {
+                return serializedData;
+            }
 
             if (entity.IsGenericList())
             {
@@ -61,6 +70,10 @@ namespace LKDin.Helpers.Serialization
                             serializedData += $"{field.Name}(list(skilldto))={Serialize<List<SkillDTO>>(collection, NESTED_LIST_SEPARATOR)}";
                         }
                     }
+                    else if(propertyType == typeof(UserDTO))
+                    {
+                        serializedData += $"{field.Name}(userdto)={COMPLEX_OBJ_START_MARKER}{Serialize<UserDTO>(field.GetValue(entity))}{COMPLEX_OBJ_END_MARKER}";
+                    }
                     else
                     {
                         serializedData += $"{field.Name}({propertyType.Name.ToLower()})={field.GetValue(entity)}";
@@ -85,7 +98,13 @@ namespace LKDin.Helpers.Serialization
             Type listType = type.GetGenericArguments()[0];
 
             // Remove fist and last markers (can't use replace)
-            var serializedListObjects = rawSerializedList.Substring(1, rawSerializedList.Length - 2).Split(separator);
+            var serializedListObjects = rawSerializedList
+                .Substring(1, rawSerializedList.Length - 2)
+                .Split(separator)
+                .Select(l => l.Trim())
+                .Where(l => !string.IsNullOrWhiteSpace(l))
+                .ToList()
+                .Distinct();
 
             foreach (var item in serializedListObjects)
             {
@@ -145,58 +164,104 @@ namespace LKDin.Helpers.Serialization
                 }
             }
 
+            var serializedComplexObjQ = new Queue<string>();
+
+            if (serializedEntity.Contains(COMPLEX_OBJ_START_MARKER) && serializedEntity.Contains(COMPLEX_OBJ_END_MARKER))
+            {
+                // Count the amount of lists available
+                var amountOfComplexObjs = serializedEntity.Count(c => c == COMPLEX_OBJ_START_MARKER);
+
+                for (int i = 0; i < amountOfComplexObjs; i++)
+                {
+                    // Take the start position of the first complex obj 
+                    var from = serializedEntity.IndexOf(COMPLEX_OBJ_START_MARKER);
+
+                    // Take the end position of the complex obj
+                    var to = serializedEntity.IndexOf(COMPLEX_OBJ_END_MARKER);
+
+                    // Get the string between COMPLEX_OBJ_START_MARKER and COMPLEX_OBJ_END_MARKER
+
+                    string serializedComplexObj = "";
+
+                    if (from + 1 < to)
+                    {
+                        serializedComplexObj = serializedEntity[(from + 1)..(to - 1)];
+                    }
+                    
+                    // Remove the string from LIST_START_MARKER to LIST_END_MARKER so it's not deserialized more than one time
+                    serializedEntity = serializedEntity.ReplaceAt(from, (to - from) + 1, "");
+
+                    // Add to FIFO queue so it can be processed
+                    serializedComplexObjQ.Enqueue(serializedComplexObj);
+                }
+            }
+
             var fields = serializedEntity.Split(FIELD_SEPARATOR);
 
             foreach (string field in fields)
             {
                 var data = field.Split('=');
 
-                // The field must explicitly say to which type should be deserialized.
-                if (data[0].Contains("(boolean)"))
+                if (data.Length == 2)
                 {
-                    var fieldName = data[0].Replace("(boolean)", "");
+                    if (data[0].Contains("(boolean)"))
+                    {
+                        var fieldName = data[0].Replace("(boolean)", "");
 
-                    type.GetProperty(fieldName)
-                        .SetValue(entity, bool.Parse(data[1]), null);
-                }
-                else if (data[0].Contains("(list(skilldto))"))
-                {
-                    var fieldName = data[0].Replace("(list(skilldto))", "");
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, bool.Parse(data[1]), null);
+                    }
+                    else if (data[0].Contains("(list(skilldto))"))
+                    {
+                        var fieldName = data[0].Replace("(list(skilldto))", "");
 
-                    // Get the first element from the Queue and removes it
-                    var serializedList = serializedListsQ.Dequeue();
+                        // Get the first element from the Queue and removes it
+                        var serializedList = serializedListsQ.Dequeue();
 
-                    var deserializedList = DeserializeList<List<SkillDTO>>(serializedList, NESTED_LIST_SEPARATOR);
+                        var deserializedList = DeserializeList<List<SkillDTO>>(serializedList, NESTED_LIST_SEPARATOR);
 
-                    type.GetProperty(fieldName)
-                        .SetValue(entity, deserializedList);
-                }
-                else if (data[0].Contains("(list(chatmessagedto))"))
-                {
-                    var fieldName = data[0].Replace("(list(chatmessagedto))", "");
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, deserializedList);
+                    }
+                    else if (data[0].Contains("(list(chatmessagedto))"))
+                    {
+                        var fieldName = data[0].Replace("(list(chatmessagedto))", "");
 
-                    // Get the first element from the Queue and removes it
-                    var serializedList = serializedListsQ.Dequeue();
+                        // Get the first element from the Queue and removes it
+                        var serializedList = serializedListsQ.Dequeue();
 
-                    var deserializedList = DeserializeList<List<ChatMessageDTO>>(serializedList);
+                        var deserializedList = DeserializeList<List<ChatMessageDTO>>(serializedList);
 
-                    type.GetProperty(fieldName)
-                        .SetValue(entity, deserializedList);
-                }
-                else if (data[0].Contains("(int64)"))
-                {
-                    var fieldName = data[0].Replace("(int64)", "");
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, deserializedList);
+                    }
+                    else if (data[0].Contains("(userdto)"))
+                    {
+                        var fieldName = data[0].Replace("(userdto)", "");
 
-                    type.GetProperty(fieldName)
-                        .SetValue(entity, long.Parse(data[1] != "" ? data[1] : "0"), null);
-                }
-                else if (data[0].Contains("(string)"))
-                {
-                    var fieldName = data[0].Replace("(string)", "");
+                        // Get the first element from the Queue and removes it
+                        var serializedComplexObj = serializedComplexObjQ.Dequeue();
 
-                    type.GetProperty(fieldName)
-                        .SetValue(entity, data[1], null);
-                }
+                        var deserializedComplexObj = Deserialize<UserDTO>(serializedComplexObj);
+
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, deserializedComplexObj);
+                    }
+                    else if (data[0].Contains("(int64)"))
+                    {
+                        var fieldName = data[0].Replace("(int64)", "");
+
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, long.Parse(data[1] != "" ? data[1] : "0"), null);
+                    }
+                    else if (data[0].Contains("(string)"))
+                    {
+                        var fieldName = data[0].Replace("(string)", "");
+
+                        type.GetProperty(fieldName)
+                            .SetValue(entity, data[1], null);
+                    }
+                }                
             }
 
             return entity;

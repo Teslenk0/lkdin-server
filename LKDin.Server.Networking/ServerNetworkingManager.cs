@@ -39,6 +39,10 @@ namespace LKDin.Server.Networking
         {
             if(this._socketV4 != null)
             {
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Server escuchando en {0}:{1}", this.ServerIPAddress, this.ServerPort);
+                Console.WriteLine("---------------------------------");
+
                 while (this._isWorking)
                 {
                     Socket clientSocket = this._socketV4.Accept();

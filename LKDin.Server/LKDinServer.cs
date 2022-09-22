@@ -55,7 +55,6 @@ public class LKDinServer
 
     public static void Main()
     {
-
         // Init the background service in a different thread
         Thread backgroundServiceThread = new(InitBackgroundService);
 
@@ -63,7 +62,11 @@ public class LKDinServer
 
         backgroundServiceThread.Start();
 
-        
+        // Wait a couple seconds to print the message
+        Console.WriteLine("Cargando...");
+        Thread.Sleep(2000);
+        Console.Clear();
+
         //// Init the UI in a different thread
         Thread serverUIThread = new(InitServerUI);
 
