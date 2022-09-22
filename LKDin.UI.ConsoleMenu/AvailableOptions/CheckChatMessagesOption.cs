@@ -21,47 +21,21 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 Password = this.RequestPassword()
             };
 
-            var includeReadMessages = this.RequestIncludeReadMessages();
+            var messagesSent = this._chatMessageService.GetBySenderId(userDTO);
 
-            var messagesSent = this._chatMessageService.GetBySenderId(userDTO, includeReadMessages);
-
-            var messagesReceived = this._chatMessageService.GetByReceiverId(userDTO, includeReadMessages);
+            var messagesReceived = this._chatMessageService.GetByReceiverId(userDTO);
 
             this.PrintMessages(messagesReceived, messagesSent);
 
-            var receivedMessagesIds = messagesReceived.Select(message => message.Id).ToList();
+            var receivedMessagesIds = messagesReceived
+                .Where(message => !message.Read)
+                .Select(message => message.Id)
+                .ToList();
 
             // Chat messages are marked as read after pressing a key requested by PrintFinishedExecutionMessage
-            this._chatMessageService.MarkMessagesAsRead(receivedMessagesIds);
-        }
-
-        private bool RequestIncludeReadMessages()
-        {
-            string includeReadMessages;
-
-            string[] availableOptions = new string[] { "s", "n" };
-
-            Console.Write("Incluir mensajes leidos? (S/N): ");
-
-            do
+            if (receivedMessagesIds.Count > 0)
             {
-                includeReadMessages = this.CancelableReadLine().ToLower();
-
-                if (!availableOptions.Contains(includeReadMessages))
-                {
-                    this.PrintError("Valor incorrecto");
-                    Console.Write("Incluir mensajes leidos? (S/N): ");
-                }
-
-            } while (!availableOptions.Contains(includeReadMessages));
-
-            if (includeReadMessages.Equals("s"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
+                this._chatMessageService.MarkMessagesAsRead(receivedMessagesIds);
             }
         }
 

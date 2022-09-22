@@ -16,28 +16,32 @@ namespace LKDin.Server.DataAccess.Repositories
             return chatMessage;
         }
 
-        public List<ChatMessage> GetByReceiverId(string userId, bool includeReadMessages)
+        public List<ChatMessage> GetByReceiverId(string userId)
         {
             var messages = DataManager.ChatMessages.Where(chatMessage => chatMessage.ReceiverId.Equals(userId));
-
-            if (!includeReadMessages)
-            {
-                return messages.Where(chatMessage => chatMessage.Read == false).ToList();
-            }
 
             return messages.ToList();
         }
 
-        public List<ChatMessage> GetBySenderId(string userId, bool includeReadMessages)
+        public List<ChatMessage> GetBySenderId(string userId)
         {
             var messages = DataManager.ChatMessages.Where(chatMessage => chatMessage.SenderId.Equals(userId));
 
-            if (!includeReadMessages)
-            {
-                return messages.Where(chatMessage => chatMessage.Read == false).ToList();
-            }
-
             return messages.ToList();
+        }
+
+        public void MarkMessageAsRead(string messageId)
+        {
+            var message = DataManager.ChatMessages.Where(message => messageId.Contains(message.Id)).FirstOrDefault();
+
+            if(message != null)
+            {
+                message.Read = true;
+
+                message.ReadAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+                DataManager.UpdateDataFromStore<ChatMessage>(message);
+            }
         }
 
         public void MarkMessagesAsRead(List<string> messagesIds)

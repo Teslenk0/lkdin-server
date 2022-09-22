@@ -38,20 +38,20 @@ namespace LKDin.Server.BusinessLogic
             this._chatMessageRepository.Create(message);
         }
 
-        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO, bool includeReadMessages)
+        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO)
         {
             this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
 
-            var receivedMessages = this._chatMessageRepository.GetByReceiverId(userDTO.Id, includeReadMessages);
+            var receivedMessages = this._chatMessageRepository.GetByReceiverId(userDTO.Id);
            
             return this.AssignUsersToChatMessages(receivedMessages);
         }
 
-        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO, bool includeReadMessages)
+        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO)
         {
             this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
 
-            var sentMessages = this._chatMessageRepository.GetBySenderId(userDTO.Id, includeReadMessages);
+            var sentMessages = this._chatMessageRepository.GetBySenderId(userDTO.Id);
 
             return this.AssignUsersToChatMessages(sentMessages);
         }
@@ -59,6 +59,11 @@ namespace LKDin.Server.BusinessLogic
         public void MarkMessagesAsRead(List<string> messagesIds)
         {
             this._chatMessageRepository.MarkMessagesAsRead(messagesIds);
+        }
+
+        public void MarkMessageAsRead(string messageId)
+        {
+            this._chatMessageRepository.MarkMessageAsRead(messageId);
         }
 
         private List<ChatMessageDTO> AssignUsersToChatMessages(List<ChatMessage> chatMessages)

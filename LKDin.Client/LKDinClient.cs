@@ -24,17 +24,18 @@ public class LKDinClient
 
         var workProfileService = new WorkProfileClientService(networkDataHelper);
 
-        //    new SendChatMessageOption("Enviar Mensaje", chatMessageService),
-        //    new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
-        //    new ShowUserOption("Buscar Perfil por ID", workProfileService),
+        var chatMessageService = new ChatMessageClientService(networkDataHelper);
 
         var enabledOptions = new List<IMenuOption>()
         {
             new CreateUserOption("Crear Usuario", userService),
             new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
             new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
+            new SendChatMessageOption("Enviar Mensaje", chatMessageService),
+            new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
             new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
             new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
+            new ShowUserOption("Buscar Perfil por ID", workProfileService),
             new ExitOption("Salir", networkingManager)
         };
 

@@ -34,7 +34,13 @@ namespace LKDin.Client.BusinessLogic
 
         public WorkProfileDTO GetWorkProfileByUserId(string userId)
         {
-            throw new NotImplementedException();
+            _networkDataHelper.SendMessage(userId, AvailableOperation.SHOW_WORK_PROFILE_BY_ID);
+
+            var data = _networkDataHelper.ReceiveMessage();
+
+            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+
+            return SerializationManager.Deserialize<WorkProfileDTO>(messagePayload);
         }
 
         public List<WorkProfileDTO> GetWorkProfilesByDescription(string description)

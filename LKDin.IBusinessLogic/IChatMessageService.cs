@@ -6,9 +6,9 @@ namespace LKDin.IBusinessLogic
     {
         public void CreateChatMessage(ChatMessageDTO chatMessageDTO);
 
-        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO, bool includeReadMessages);
+        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO);
 
-        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO, bool includeReadMessages);
+        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO);
 
         public void MarkMessagesAsRead(List<string> messagesIds);
     }
