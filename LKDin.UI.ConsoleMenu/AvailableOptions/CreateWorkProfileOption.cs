@@ -1,6 +1,7 @@
 ﻿using LKDin.DTOs;
 using LKDin.IBusinessLogic;
 using LKDin.Server.Domain;
+using System.Xml.Linq;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
@@ -38,13 +39,13 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 description = this.CancelableReadLine();
 
-                if (description == null || description.Length < 2)
+                if (string.IsNullOrWhiteSpace(description) || description.Length < 2)
                 {
                     this.PrintError("Valor incorrecto");
                     Console.Write("Descripcion: ");
                 }
             }
-            while (description == null || description.Length < 2);
+            while (string.IsNullOrWhiteSpace(description) || description.Length < 2);
 
             return description;
         }

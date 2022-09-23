@@ -1,6 +1,5 @@
 ﻿using LKDin.Client.BusinessLogic;
 using LKDin.Client.Networking;
-using LKDin.IBusinessLogic;
 using LKDin.IUI;
 using LKDin.Networking;
 using LKDin.UI.ConsoleMenu;
@@ -39,7 +38,7 @@ public class LKDinClient
             new ExitOption("Salir", networkingManager)
         };
 
-        IUIService uiService = new ConsoleMenuService(enabledOptions);
+        IUIService uiService = new ConsoleMenuService(enabledOptions, false);
 
         uiService.Render();
     }

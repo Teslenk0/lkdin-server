@@ -252,7 +252,7 @@ namespace LKDin.Helpers.Serialization
                         var fieldName = data[0].Replace("(int64)", "");
 
                         type.GetProperty(fieldName)
-                            .SetValue(entity, long.Parse(data[1] != "" ? data[1] : "0"), null);
+                            .SetValue(entity, long.Parse(!string.IsNullOrWhiteSpace(data[1]) ? data[1] : "0"), null);
                     }
                     else if (data[0].Contains("(string)"))
                     {

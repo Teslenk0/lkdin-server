@@ -1,10 +1,9 @@
 ﻿using LKDin.DTOs;
 using LKDin.Exceptions;
+using LKDin.Helpers.Assets;
+using LKDin.Helpers.Configuration;
 using LKDin.Helpers.Serialization;
-using LKDin.Helpers.Utils;
-using System;
 using System.Net.Sockets;
-using System.Text;
 
 namespace LKDin.Networking
 {
@@ -12,25 +11,202 @@ namespace LKDin.Networking
     {
         private readonly Socket _socket;
 
-        private const int SIZE_LENGTH_HEADER = 10;
-
-        private const int SIZE_CMD_HEADER = 4;
-
-        // HEADER => "CMD=1111|LENGTH=1234567890"
-        private const int HEADER_SIZE = 26;
-
-        public const string LENGTH_HEADER_NAME = "LENGTH";
-
-        public const string CMD_HEADER_NAME = "CMD";
-
-        public const string MSG_NAME = "MESSAGE";
-
         public NetworkDataHelper(Socket socket)
         {
             _socket = socket;
         }
 
-        public void ThrowException(string exceptionMessage)
+        public Dictionary<string, string> ReceiveMessage()
+        {
+            var resultantData = new Dictionary<string, string>();
+
+            byte[] rawHeaders = this.PerformReception(Protocol.HEADER_SIZE);
+
+            var parsedHeaders = this.DeserializeHeaders(rawHeaders);
+
+            byte[] data = this.PerformReception(int.Parse(parsedHeaders[Protocol.LENGTH_HEADER_NAME]));
+
+            var message = ConversionHandler.ConvertBytesToString(data);
+
+            if ((AvailableOperation)int.Parse(parsedHeaders[Protocol.CMD_HEADER_NAME] ?? "01") == AvailableOperation.ERR)
+            {
+                this.ThrowException(message);
+            }
+
+            resultantData.Add(Protocol.MSG_NAME, message);
+
+            resultantData.Add(Protocol.CMD_HEADER_NAME, parsedHeaders[Protocol.CMD_HEADER_NAME]);
+
+            return resultantData;
+        }
+
+        public void SendMessage(string messageBody, AvailableOperation availableOperation)
+        {
+            byte[] messageBytes = ConversionHandler.ConvertStringToBytes(messageBody);
+
+            var messageBodySize = messageBytes.Length.ToString();
+
+            while (messageBodySize.Length != Protocol.SIZE_LENGTH_HEADER)
+            {
+                messageBodySize = $"0{messageBodySize}";
+            }
+
+            var operation = ((int)availableOperation).ToString();
+
+            while (operation.Length != Protocol.SIZE_CMD_HEADER)
+            {
+                operation = $"0{operation}";
+            }
+
+            var headers = $"CMD={operation}|LENGTH={messageBodySize}";
+
+            byte[] rawHeaders = ConversionHandler.ConvertStringToBytes(headers);
+
+            this.PerformTransmission(rawHeaders);
+
+            this.PerformTransmission(messageBytes);
+        }
+
+        public void SendException(Exception exception)
+        {
+            var message = new ExceptionDTO()
+            {
+                Message = exception.Message,
+                ExceptionType = exception.GetType().FullName,
+                AssemblyName = exception.GetType().Assembly.FullName.Replace("=", "#")
+            };
+
+            var stringifiedMessage = SerializationManager.Serialize<ExceptionDTO>(message);
+
+            byte[] messageBytes = ConversionHandler.ConvertStringToBytes(stringifiedMessage);
+
+            var messageBodySize = messageBytes.Length.ToString();
+
+            while (messageBodySize.Length != Protocol.SIZE_LENGTH_HEADER)
+            {
+                messageBodySize = $"0{messageBodySize}";
+            }
+
+            var operation = ((int)AvailableOperation.ERR).ToString();
+
+            while (operation.Length != Protocol.SIZE_CMD_HEADER)
+            {
+                operation = $"0{operation}";
+            }
+
+            var headers = $"CMD={operation}|LENGTH={messageBodySize}";
+
+            byte[] rawHeaders = ConversionHandler.ConvertStringToBytes(headers);
+
+            this.PerformTransmission(rawHeaders);
+
+            this.PerformTransmission(messageBytes);
+        }
+
+        public void SendFile(string path)
+        {
+            var fileName = AssetManager.GetFileName(path);
+
+            // Send file name length
+            this.PerformTransmission(ConversionHandler.ConvertIntToBytes(fileName.Length));
+
+            // Send the file name
+            this.PerformTransmission(ConversionHandler.ConvertStringToBytes(fileName));
+
+            // Get the file size
+            long fileSize = AssetManager.GetFileSize(path);
+
+            // Send the file size
+            this.PerformTransmission(ConversionHandler.ConvertLongToBytes(fileSize));
+
+            // Send the file
+            SendFileWithStream(fileSize, path);
+        }
+
+        public string ReceiveFile()
+        {
+            // Receive file name size
+            int fileNameSize = ConversionHandler.ConvertBytesToInt(this.PerformReception(FileTransmissionProtocol.FIXED_DATA_SIZE));
+
+            // Receive file name
+            string fileName = ConversionHandler.ConvertBytesToString(this.PerformReception(fileNameSize));
+
+            // Receive file size
+            long fileSize = ConversionHandler.ConvertBytesToLong(this.PerformReception(FileTransmissionProtocol.FIXED_FILE_SIZE));
+
+            // Receive the file and return the temporal name
+            var tmpFolder = ConfigManager.GetTmpAssetsFolderPath();
+
+            var tmpFilePath = ReceiveFileWithStreams(fileSize, fileName);
+
+            return Path.Join(tmpFolder, tmpFilePath);
+        }
+
+        private void SendFileWithStream(long fileSize, string path)
+        {
+            long fileParts = FileTransmissionProtocol.CalculateFileParts(fileSize);
+            long offset = 0;
+            long currentPart = 1;
+
+            while (fileSize > offset)
+            {
+                byte[] data;
+                if (currentPart == fileParts)
+                {
+                    var lastPartSize = (int)(fileSize - offset);
+                    data = AssetManager.ReadAsset(path, offset, lastPartSize);
+                    offset += lastPartSize;
+                }
+                else
+                {
+                    data = AssetManager.ReadAsset(path, offset, FileTransmissionProtocol.MAX_PACKET_SIZE);
+                    offset += FileTransmissionProtocol.MAX_PACKET_SIZE;
+                }
+
+                this.PerformTransmission(data);
+
+                currentPart++;
+            }
+        }
+
+        private string ReceiveFileWithStreams(long fileSize, string fileName)
+        {
+            long fileParts = FileTransmissionProtocol.CalculateFileParts(fileSize);
+            long offset = 0;
+            long currentPart = 1;
+
+            var finalFileName = fileName;
+
+            while (fileSize > offset)
+            {
+                byte[] data;
+                if (currentPart == fileParts)
+                {
+                    var lastPartSize = (int)(fileSize - offset);
+                    data = this.PerformReception(lastPartSize);
+                    offset += lastPartSize;
+                }
+                else
+                {
+                    data = this.PerformReception(FileTransmissionProtocol.MAX_PACKET_SIZE);
+                    offset += FileTransmissionProtocol.MAX_PACKET_SIZE;
+                }
+                
+                if(finalFileName.Equals(fileName))
+                {
+                    finalFileName = AssetManager.WriteAssetToTmp(finalFileName, data);
+                } else
+                {
+                    AssetManager.WriteAssetToTmp(finalFileName, data);
+                }
+
+                currentPart++;
+            }
+
+            return finalFileName;
+        }
+
+        private void ThrowException(string exceptionMessage)
         {
             var exceptionDTO = SerializationManager.Deserialize<ExceptionDTO>(exceptionMessage);
 
@@ -53,105 +229,19 @@ namespace LKDin.Networking
 
             if (availableTypes.ContainsKey(type))
             {
-               availableTypes[type]();
+                availableTypes[type]();
 
-            } else
+            }
+            else
             {
                 e = new Exception(exceptionDTO.Message);
             }
-           
-            if(e != null)
+
+            if (e != null)
             {
                 throw e;
             }
-            
-        }
 
-        public Dictionary<string, string> ReceiveMessage()
-        {
-            var resultantData = new Dictionary<string, string>();
-
-            byte[] rawHeaders = this.PerformReception(HEADER_SIZE);
-
-            var parsedHeaders = this.DeserializeHeaders(rawHeaders);
-
-            byte[] data = this.PerformReception(int.Parse(parsedHeaders[LENGTH_HEADER_NAME]));
-
-            var message = this.DeserializeMessage(data);
-
-            if ((AvailableOperation)int.Parse(parsedHeaders[CMD_HEADER_NAME] ?? "01") == AvailableOperation.ERR)
-            {
-                this.ThrowException(message);
-            }
-
-            resultantData.Add(MSG_NAME, message);
-
-            resultantData.Add(CMD_HEADER_NAME, parsedHeaders[CMD_HEADER_NAME]);
-
-            return resultantData;
-        }
-
-        public void SendMessage(string messageBody, AvailableOperation availableOperation)
-        {
-            byte[] messageBytes = this.SerializeMessage(messageBody);
-
-            var messageBodySize = messageBytes.Length.ToString();
-
-            while (messageBodySize.Length != SIZE_LENGTH_HEADER)
-            {
-                messageBodySize = $"0{messageBodySize}";
-            }
-
-            var operation = ((int)availableOperation).ToString();
-
-            while (operation.Length != SIZE_CMD_HEADER)
-            {
-                operation = $"0{operation}";
-            }
-
-            var headers = $"CMD={operation}|LENGTH={messageBodySize}";
-
-            byte[] rawHeaders = this.SerializeMessage(headers);
-
-            this.PerformTransmission(rawHeaders);
-
-            this.PerformTransmission(messageBytes);
-        }
-
-        public void SendException(Exception exception)
-        {
-            var message = new ExceptionDTO()
-            {
-                Message = exception.Message,
-                ExceptionType = exception.GetType().FullName,
-                AssemblyName = exception.GetType().Assembly.FullName.Replace("=", "#")
-            };
-
-            var stringifiedMessage = SerializationManager.Serialize<ExceptionDTO>(message);
-
-            byte[] messageBytes = this.SerializeMessage(stringifiedMessage);
-
-            var messageBodySize = messageBytes.Length.ToString();
-
-            while (messageBodySize.Length != SIZE_LENGTH_HEADER)
-            {
-                messageBodySize = $"0{messageBodySize}";
-            }
-
-            var operation = ((int)AvailableOperation.ERR).ToString();
-
-            while (operation.Length != SIZE_CMD_HEADER)
-            {
-                operation = $"0{operation}";
-            }
-
-            var headers = $"CMD={operation}|LENGTH={messageBodySize}";
-
-            byte[] rawHeaders = this.SerializeMessage(headers);
-
-            this.PerformTransmission(rawHeaders);
-
-            this.PerformTransmission(messageBytes);
         }
 
         private void PerformTransmission(byte[] data)
@@ -189,21 +279,9 @@ namespace LKDin.Networking
             return response;
         }
 
-        private byte[] SerializeMessage(string message)
-        {
-            return Encoding.UTF8.GetBytes(message);
-        }
-
-        private string DeserializeMessage(byte[] rawMessage)
-        {
-            string message = Encoding.UTF8.GetString(rawMessage);
-
-            return message;
-        }
-
         private Dictionary<string, string> DeserializeHeaders(byte[] rawHeaders)
         {
-            string headers = this.DeserializeMessage(rawHeaders);
+            string headers = ConversionHandler.ConvertBytesToString(rawHeaders);
 
             var results = new Dictionary<string, string>();
 

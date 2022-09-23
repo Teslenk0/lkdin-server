@@ -20,6 +20,8 @@ namespace LKDin.Client.BusinessLogic
 
             _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE);
 
+            _networkDataHelper.SendFile(partialWorkProfileDTO.ImagePath);
+
             _networkDataHelper.ReceiveMessage();
         }
 
@@ -38,7 +40,7 @@ namespace LKDin.Client.BusinessLogic
 
             var data = _networkDataHelper.ReceiveMessage();
 
-            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+            var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.Deserialize<WorkProfileDTO>(messagePayload);
         }
@@ -49,7 +51,7 @@ namespace LKDin.Client.BusinessLogic
 
             var data = _networkDataHelper.ReceiveMessage();
 
-            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+            var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
         }
@@ -62,7 +64,7 @@ namespace LKDin.Client.BusinessLogic
 
             var data = _networkDataHelper.ReceiveMessage();
 
-            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+            var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
         }

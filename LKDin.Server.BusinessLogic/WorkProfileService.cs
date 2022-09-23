@@ -1,5 +1,6 @@
 ﻿using LKDin.DTOs;
 using LKDin.Exceptions;
+using LKDin.Helpers.Assets;
 using LKDin.IBusinessLogic;
 using LKDin.Server.DataAccess.Repositories;
 using LKDin.Server.Domain;
@@ -64,7 +65,9 @@ namespace LKDin.Server.BusinessLogic
                 throw new WorkProfileDoesNotExistException(partialWorkProfileDTO.UserId);
             }
 
-            workProfile.ImagePath = partialWorkProfileDTO.ImagePath;
+            var assetPath = AssetManager.CopyAssetToAssetsFolder<WorkProfile>(partialWorkProfileDTO.ImagePath, workProfile.Id);
+           
+            workProfile.ImagePath = assetPath;
 
             this._workProfileRepository.AssignImageToWorkProfile(workProfile);
         }

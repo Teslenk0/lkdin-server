@@ -23,9 +23,9 @@ namespace LKDin.Server.Networking
                 {
                     var data = networkDataHelper.ReceiveMessage();
 
-                    var messagePayload = data[NetworkDataHelper.MSG_NAME];
+                    var messagePayload = data[Protocol.MSG_NAME];
 
-                    var cmd = int.Parse(data[NetworkDataHelper.CMD_HEADER_NAME] ?? "01");
+                    var cmd = int.Parse(data[Protocol.CMD_HEADER_NAME] ?? "01");
 
                     switch ((AvailableOperation)cmd)
                     {
@@ -49,9 +49,15 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE:
                             {
+                                var tmpFilePath = networkDataHelper.ReceiveFile();
+
+                                var workProfileDTO = SerializationManager.Deserialize<WorkProfileDTO>(messagePayload);
+
+                                workProfileDTO.ImagePath = tmpFilePath;
+
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                workProfileService.AssignImageToWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+                                workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
                                 networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
@@ -135,7 +141,6 @@ namespace LKDin.Server.Networking
                 }
                 catch (SocketException)
                 {
-                    Console.WriteLine("Client disconnected");
                     clientIsConnected = false;
                 }
                 catch (Exception e)

@@ -37,7 +37,7 @@ public class LKDinServer
             new ExitOption("Salir", serverNetworkingManager)
         };
 
-        IUIService uiService = new ConsoleMenuService(enabledOptions);
+        IUIService uiService = new ConsoleMenuService(enabledOptions, true);
 
         uiService.Render();
     }

@@ -19,13 +19,13 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
         {
             id = this.CancelableReadLine();
 
-            if (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit))
+            if (string.IsNullOrWhiteSpace(id) || id.Length < 1 || !id.All(char.IsLetterOrDigit))
             {
                 PrintError("Valor incorrecto (solo caracteres alfanumericos)");
                 Console.Write("ID Usuario{0}(CI, DNI): ", userAlias);
             }
         }
-        while (id == null || id.Length < 1 || !id.All(char.IsLetterOrDigit));
+        while (string.IsNullOrWhiteSpace(id) || id.Length < 1 || !id.All(char.IsLetterOrDigit));
 
         return id;
     }
@@ -40,13 +40,13 @@ public abstract class UserProtectedConsoleMenuOption : ConsoleMenuOption
         {
             password = this.CancelableReadLine();
 
-            if (password == null || password.Length < 5)
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 5)
             {
                 PrintError("Valor incorrecto (al menos 5 caracteres)");
                 Console.Write("Contraseña: ");
             }
         }
-        while (password == null || password.Length < 5);
+        while (string.IsNullOrWhiteSpace(password) || password.Length < 5);
 
         return password;
     }

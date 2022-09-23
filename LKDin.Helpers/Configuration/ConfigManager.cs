@@ -34,7 +34,7 @@ namespace LKDin.Helpers.Configuration
                 {
                     var data = reader.ReadLine();
 
-                    if (data != null && data != "")
+                    if (!string.IsNullOrWhiteSpace(data))
                     {
                         var config = data.Trim().Split("=");
 
@@ -82,6 +82,15 @@ namespace LKDin.Helpers.Configuration
             var path = GetAppDataBasePath();
 
             var assetsFolderPath = Path.Join(path + "/assets", storeName);
+
+            return assetsFolderPath;
+        }
+
+        public static string GetTmpAssetsFolderPath()
+        {
+            var path = GetAppDataBasePath();
+
+            var assetsFolderPath = Path.Join(path, "/tmp");
 
             return assetsFolderPath;
         }

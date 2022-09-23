@@ -20,16 +20,11 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public bool ExistsByUserId(string userId)
         {
-            return DataManager.WorkProfiles.Any(u => u.UserId == userId);
+            return DataManager.WorkProfiles.Any(u => u.UserId.Equals(userId));
         }
 
         public WorkProfile AssignImageToWorkProfile(WorkProfile workProfile)
         {
-            var assetPath = AssetManager
-                    .CopyAssetToAssetsFolder<WorkProfile>(workProfile.ImagePath, workProfile.Id);
-
-            workProfile.ImagePath = assetPath;
-
             DataManager.UpdateDataFromStore<WorkProfile>(workProfile);
 
             return workProfile;
@@ -37,7 +32,7 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public WorkProfile? GetByUserId(string userId)
         {
-            return DataManager.WorkProfiles.Find(wp => wp.UserId == userId);
+            return DataManager.WorkProfiles.Find(wp => wp.UserId.Equals(userId));
         }
 
         public List<WorkProfile> GetByIds(List<string> workProfileIds)

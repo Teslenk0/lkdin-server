@@ -6,18 +6,31 @@ public class ConsoleMenuService : IUIService
 {
     private readonly List<IMenuOption> MenuOptions;
 
-    public ConsoleMenuService(List<IMenuOption> menuOptions)
+    private readonly bool IsServer;
+
+    public ConsoleMenuService(List<IMenuOption> menuOptions, bool isServer)
     {
         MenuOptions = menuOptions;
+
+        IsServer = isServer;
     }
 
     public void Render()
     {
         while (true)
         {
-            Console.WriteLine("----------------------");
-            Console.WriteLine("    LKDin (v1.0.0)   ");
-            Console.WriteLine("----------------------");
+            Console.WriteLine("----------------------------");
+
+            if (IsServer)
+            {
+                Console.WriteLine("    LKDin Server (v1.0.0)   ");
+
+            } else
+            {
+                Console.WriteLine("    LKDin Client (v1.0.0)   ");
+            }
+
+            Console.WriteLine("----------------------------");
 
             for (var i = 0; i < MenuOptions.Count; i++)
             {
@@ -27,7 +40,7 @@ public class ConsoleMenuService : IUIService
                 MenuOptions[i].PrintMenuOptionMessage();
             }
 
-            Console.WriteLine("---------------------");
+            Console.WriteLine("----------------------------");
 
             Console.Write("Ingresa la opcion deseada: ");
 

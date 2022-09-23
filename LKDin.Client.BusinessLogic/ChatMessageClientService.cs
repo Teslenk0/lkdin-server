@@ -31,7 +31,7 @@ namespace LKDin.Client.BusinessLogic
 
             var data = _networkDataHelper.ReceiveMessage();
 
-            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+            var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<ChatMessageDTO>>(messagePayload);
         }
@@ -44,7 +44,7 @@ namespace LKDin.Client.BusinessLogic
 
             var data = _networkDataHelper.ReceiveMessage();
 
-            var messagePayload = data[NetworkDataHelper.MSG_NAME];
+            var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<ChatMessageDTO>>(messagePayload);
         }
@@ -56,7 +56,7 @@ namespace LKDin.Client.BusinessLogic
                 _networkDataHelper.SendMessage(messageId, AvailableOperation.MARK_MESSAGE_AS_READ);
 
                 _networkDataHelper.ReceiveMessage();
-            }
+            }   
         }
     }
 }

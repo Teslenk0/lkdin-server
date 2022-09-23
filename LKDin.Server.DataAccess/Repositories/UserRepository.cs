@@ -14,12 +14,12 @@ namespace LKDin.Server.DataAccess.Repositories
 
         public bool Exists(string id)
         {
-            return DataManager.Users.Any(u => u.Id == id);
+            return DataManager.Users.Any(u => u.Id.Equals(id));
         }
 
         public User? Get(string id)
         {
-            return DataManager.Users.Find(u => u.Id == id);
+            return DataManager.Users.Find(u => u.Id.Equals(id));
         }
     }
 }

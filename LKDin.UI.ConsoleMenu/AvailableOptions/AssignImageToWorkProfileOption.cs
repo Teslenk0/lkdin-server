@@ -1,6 +1,5 @@
 ﻿using LKDin.DTOs;
 using LKDin.IBusinessLogic;
-using LKDin.Exceptions;
 using LKDin.Helpers.Assets;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
@@ -38,7 +37,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 imagePath = this.CancelableReadLine();
 
-                if (imagePath == null || imagePath.Length < 5)
+                if (string.IsNullOrWhiteSpace(imagePath) || imagePath.Length < 5)
                 {
                     this.PrintError("Valor incorrecto");
                     Console.Write("Ruta a la imagen (absoluta): ");
@@ -50,7 +49,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 }
             }
             while (
-                    imagePath == null
+                    string.IsNullOrWhiteSpace(imagePath)
                 || imagePath.Length < 5
                 || !AssetManager.DoesFileExist(imagePath));
 

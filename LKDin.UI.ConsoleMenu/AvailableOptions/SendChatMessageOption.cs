@@ -40,13 +40,13 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 content = this.CancelableReadLine();
 
-                if (content == null || content.Length < 2)
+                if (string.IsNullOrWhiteSpace(content) || content.Length < 2)
                 {
                     this.PrintError("El mensaje no puede estar vacio");
                     Console.Write("Mensaje: ");
                 }
             }
-            while (content == null || content.Length < 2);
+            while (string.IsNullOrWhiteSpace(content) || content.Length < 2);
 
             return content;
         }

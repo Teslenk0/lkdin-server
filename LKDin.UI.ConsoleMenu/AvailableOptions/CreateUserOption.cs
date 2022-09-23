@@ -37,13 +37,13 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             {
                 name = this.CancelableReadLine();
 
-                if (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)))
+                if (string.IsNullOrWhiteSpace(name) || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)))
                 {
                     this.PrintError("Valor incorrecto");
                     Console.Write("Nombre: ");
                 }
             }
-            while (name == null || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)));
+            while (string.IsNullOrWhiteSpace(name) || name.Length < 2 || !name.All(c => char.IsWhiteSpace(c) || char.IsLetter(c)));
 
             return name;
         }

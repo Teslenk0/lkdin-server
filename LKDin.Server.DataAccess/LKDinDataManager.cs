@@ -122,7 +122,7 @@ namespace LKDin.Server.DataAccess
                 {
                     var data = reader.ReadLine();
 
-                    if (data != null && data != "")
+                    if (!string.IsNullOrWhiteSpace(data))
                     {
                         parsedDataList.Add(SerializationManager.Deserialize<T>(data));
                     }
