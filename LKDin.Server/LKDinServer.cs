@@ -43,37 +43,37 @@ public class LKDinServer
         uiService.Render();
     }
 
-    private static void InitBackgroundService()
-    {
-        var networkingManager = ServerNetworkingManager.Instance;
-
-        // Start listening
-        networkingManager.InitSocketV4Connection();
-
-        // Start accepting connections
-        networkingManager.AcceptSocketConnections(ServerConnectionHandler.HandleConnection);
-    }
-
     public static void Main()
     {
-        // Init the background service in a different thread
-        Thread backgroundServiceThread = new(InitBackgroundService);
+        Console.WriteLine("Iniciando...");
 
-        backgroundServiceThread.Name = BG_SOCKET_LISTENER_THREAD_NAME;
+        var networkingManager = ServerNetworkingManager.Instance;
 
-        backgroundServiceThread.Start();
+        var connected = networkingManager.InitSocketV4Connection();
 
-        // Wait a couple seconds to print the message
-        Console.WriteLine("Cargando...");
-        Thread.Sleep(2000);
-        Console.Clear();
+        if (connected)
+        {
+            Console.WriteLine("Información de la aplicación en: {0}", ConfigManager.GetAppDataBasePath());
 
-        //// Init the UI in a different thread
-        Thread serverUIThread = new(InitServerUI);
+            Thread backgroundServiceThread = new(() => networkingManager.AcceptSocketConnections(ServerConnectionHandler.HandleConnection))
+            {
+                Name = BG_SOCKET_LISTENER_THREAD_NAME
+            };
 
-        serverUIThread.Name = UI_THREAD_NAME;
+            backgroundServiceThread.Start();
 
-        serverUIThread.Start();
+            Console.WriteLine("Cargando...");
+            Thread.Sleep(3000);
+            Console.Clear();
+
+            //// Init the UI in a different thread
+            Thread serverUIThread = new(InitServerUI);
+
+            serverUIThread.Name = UI_THREAD_NAME;
+
+            serverUIThread.Start();
+        }
+        
     }
 }
 

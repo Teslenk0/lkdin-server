@@ -18,7 +18,7 @@ namespace LKDin.Server.Networking
         private ServerNetworkingManager() : base(ConfigNameSpace.SERVER)
         { }
 
-        public override void InitSocketV4Connection()
+        public override bool InitSocketV4Connection()
         {
             this._socketV4 = new Socket(
                 AddressFamily.InterNetwork,
@@ -28,16 +28,26 @@ namespace LKDin.Server.Networking
 
             var endpoint = new IPEndPoint(this.ServerIPAddress, this.ServerPort);
 
-            this._socketV4.Bind(endpoint);
+            try
+            {
+                this._socketV4.Bind(endpoint);
 
-            this._socketV4.Listen(QUEUE_SIZE);
+                this._socketV4.Listen(QUEUE_SIZE);
 
-            this._isWorking = true;
+                this._isWorking = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Falló la inicialización del servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
+                Console.WriteLine("Error: {0}", e.Message);
+            }
+
+            return this._isWorking;
         }
 
         public void AcceptSocketConnections(SocketConnectionHandler handler)
         {
-            if(this._socketV4 != null)
+            if (this._socketV4 != null)
             {
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine("Server escuchando en {0}:{1}", this.ServerIPAddress, this.ServerPort);
@@ -49,7 +59,8 @@ namespace LKDin.Server.Networking
 
                     new Thread(() => handler(clientSocket)).Start();
                 }
-            } else
+            }
+            else
             {
                 throw new SocketInitializationException();
             }

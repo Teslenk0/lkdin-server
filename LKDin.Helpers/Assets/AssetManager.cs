@@ -183,7 +183,7 @@ namespace LKDin.Helpers.Assets
             EnsureFolderExists(folderDataPath);
         }
 
-        private static void EnsureFolderExists(string folderPath)
+        public static void EnsureFolderExists(string folderPath)
         {
             Directory.CreateDirectory(folderPath);
         }

@@ -17,8 +17,12 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
             this._networkingManager.ShutdownSocketConnections();
 
+            Console.WriteLine("Saliendo...");
+
+            Thread.Sleep(3000);
+
             // TODO: Check that there are no networking stuff going on;
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }

@@ -55,9 +55,22 @@ namespace LKDin.Server.DataAccess
                 var existenceDoubleCheck = File.ReadLines(filePath)
                      .Any(l => l.Contains($"Id(string)={baseEntity.Id}"));
 
+                var type = typeof(T);
+
+                var secondType = typeof(User);
+
                 if (existenceDoubleCheck)
                 {
-                    throw new EntityAlreadyExistsException(baseEntity.Id);
+                    if(typeof(T) == typeof(User))
+                    {
+                        throw new UserAlreadyExistsException(baseEntity.Id);
+                    } else if (typeof(T) == typeof(WorkProfile))
+                    {
+                        throw new WorkProfileAlreadyExistsException(baseEntity.Id);
+                    } else
+                    {
+                        throw new EntityAlreadyExistsException(baseEntity.Id);
+                    }
                 }
 
                 using FileStream file = new(filePath, FileMode.Append, FileAccess.Write, FileShare.None);

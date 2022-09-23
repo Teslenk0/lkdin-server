@@ -4,8 +4,12 @@ using System.Net.Sockets;
 
 namespace LKDin.Networking
 {
+    public delegate void SocketShutdownHandler();
+
     public abstract class NetworkingManager : INetworkingManager
     {
+        private const int VALIDATE_CONNECTION_INTERVAL_MS = 1000;
+
         protected Socket _socketV4;
 
         protected bool _isWorking;
@@ -21,7 +25,25 @@ namespace LKDin.Networking
             this.ServerIPAddress = IPAddress.Parse(ConfigManager.GetConfig("SERVER_IP", configNameSpace) ?? "127.0.0.1");
         }
 
-        public abstract void InitSocketV4Connection();
+        public abstract bool InitSocketV4Connection();
+
+        public void ValidateConnectionOrShutDown(SocketShutdownHandler handler)
+        {
+            while (this._isWorking)
+            {
+                if (!this.IsSocketConnected())
+                {
+                    Console.Clear();
+
+                    Console.WriteLine("Se cerró la conexión al servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
+
+                    handler();
+                } else
+                {
+                    Thread.Sleep(VALIDATE_CONNECTION_INTERVAL_MS);
+                }
+            }
+        }
 
         public bool IsSocketConnected()
         {
@@ -37,12 +59,12 @@ namespace LKDin.Networking
         {
             if (this._socketV4 != null && IsSocketConnected())
             {
-                this._isWorking = false;
-
                 this._socketV4.Shutdown(SocketShutdown.Both);
 
                 this._socketV4.Close();
             }
+
+            this._isWorking = false;
         }
 
         public Socket GetSocket()

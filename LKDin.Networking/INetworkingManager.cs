@@ -5,7 +5,7 @@ namespace LKDin.Networking
 {
     public interface INetworkingManager
     {
-        public void InitSocketV4Connection();
+        public bool InitSocketV4Connection();
 
         public void ShutdownSocketConnections();
     }

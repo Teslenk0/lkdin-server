@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using LKDin.Helpers.Assets;
+using System.Net.Sockets;
 
 namespace LKDin.Helpers.Configuration
 {
@@ -7,7 +8,6 @@ namespace LKDin.Helpers.Configuration
         private static readonly object _configLock = new();
 
         private const string DOWNLOADS_FOLDER_KEY = "ABS_DOWNLOADS_PATH";
-
 
         public static string? GetConfig(string configKey, ConfigNameSpace configNameSpace)
         {
@@ -55,13 +55,15 @@ namespace LKDin.Helpers.Configuration
             }
         }
 
-        private static string GetAppDataBasePath()
+        public static string GetAppDataBasePath()
         {
             var folder = Environment.SpecialFolder.ApplicationData;
 
-            var path = Environment.GetFolderPath(folder);
+            var path = Path.Join(Environment.GetFolderPath(folder), "/LKDin");
 
-            return path + "/LKDin";
+            AssetManager.EnsureFolderExists(path);
+
+            return path;
         }
 
         public static string GetStoreFilePath(string storeName)

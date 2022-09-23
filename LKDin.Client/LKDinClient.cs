@@ -13,34 +13,46 @@ public class LKDinClient
     {
         var networkingManager = ClientNetworkingManager.Instance;
 
-        networkingManager.InitSocketV4Connection();
+        var connected = networkingManager.InitSocketV4Connection();
 
-        var socketClient = networkingManager.GetSocket();
+        var exitOption = new ExitOption("Salir", networkingManager);
 
-        var networkDataHelper = new NetworkDataHelper(socketClient);
-
-        var userService = new UserClientService(networkDataHelper);
-
-        var workProfileService = new WorkProfileClientService(networkDataHelper);
-
-        var chatMessageService = new ChatMessageClientService(networkDataHelper);
-
-        var enabledOptions = new List<IMenuOption>()
+        if (connected)
         {
-            new CreateUserOption("Crear Usuario", userService),
-            new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
-            new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
-            new DownloadWorkProfileImageOption("Descargar Imagen de Perfil de Trabajo", workProfileService),
-            new SendChatMessageOption("Enviar Mensaje", chatMessageService),
-            new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
-            new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
-            new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
-            new ShowUserOption("Buscar Perfil por ID", workProfileService),
-            new ExitOption("Salir", networkingManager)
-        };
+            var socketClient = networkingManager.GetSocket();
 
-        IUIService uiService = new ConsoleMenuService(enabledOptions, false);
+            new Thread(() => networkingManager.ValidateConnectionOrShutDown(exitOption.Execute)).Start();
 
-        uiService.Render();
+            var networkDataHelper = new NetworkDataHelper(socketClient);
+
+            var userService = new UserClientService(networkDataHelper);
+
+            var workProfileService = new WorkProfileClientService(networkDataHelper);
+
+            var chatMessageService = new ChatMessageClientService(networkDataHelper);
+
+            var enabledOptions = new List<IMenuOption>()
+            {
+                new CreateUserOption("Crear Usuario", userService),
+                new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
+                new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
+                new DownloadWorkProfileImageOption("Descargar Imagen de Perfil de Trabajo", workProfileService),
+                new SendChatMessageOption("Enviar Mensaje", chatMessageService),
+                new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
+                new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),
+                new SearchWorkProfilesByDescriptionOption("Buscar Perfiles por Descripción", workProfileService),
+                new ShowUserOption("Buscar Perfil por ID", workProfileService),
+                exitOption
+            };
+
+            IUIService uiService = new ConsoleMenuService(enabledOptions, false);
+
+            uiService.Render();
+        } else
+        {
+            exitOption.Execute();
+        }
+
+        
     }
 }
