@@ -13,5 +13,7 @@ namespace LKDin.IBusinessLogic
         public List<WorkProfileDTO> GetWorkProfilesByDescription(string description);
 
         public WorkProfileDTO GetWorkProfileByUserId(string userId);
+
+        public string DownloadWorkProfileImage(string userId);
     }
 }

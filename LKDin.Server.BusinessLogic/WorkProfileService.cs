@@ -177,5 +177,24 @@ namespace LKDin.Server.BusinessLogic
 
             return resultWP;
         }
+
+        public string DownloadWorkProfileImage(string userId)
+        {
+            var workProfile = this._workProfileRepository.GetByUserId(userId);
+
+            if (workProfile == null)
+            {
+                throw new WorkProfileDoesNotExistException(userId);
+            }
+
+            if (string.IsNullOrWhiteSpace(workProfile.ImagePath))
+            {
+                throw new NoImageAssignedException(userId);
+            }
+
+            var assetPath = AssetManager.CopyFileToDownloadsFolder<WorkProfileDTO>(workProfile.ImagePath, true);
+
+            return assetPath;
+        }
     }
 }

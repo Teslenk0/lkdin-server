@@ -6,6 +6,9 @@ namespace LKDin.Helpers.Configuration
     {
         private static readonly object _configLock = new();
 
+        private const string DOWNLOADS_FOLDER_KEY = "ABS_DOWNLOADS_PATH";
+
+
         public static string? GetConfig(string configKey, ConfigNameSpace configNameSpace)
         {
             var basePath = GetAppDataBasePath();
@@ -93,6 +96,21 @@ namespace LKDin.Helpers.Configuration
             var assetsFolderPath = Path.Join(path, "/tmp");
 
             return assetsFolderPath;
+        }
+
+        public static string GetDownloadsFolderPath(string storeName, bool isServer = false)
+        {
+            var path = "";
+
+            if (isServer)
+            {
+                path = GetConfig(DOWNLOADS_FOLDER_KEY, ConfigNameSpace.SERVER) ?? "/LKDin-Server-Downloads";
+            } else
+            {
+                path = GetConfig(DOWNLOADS_FOLDER_KEY, ConfigNameSpace.CLIENT) ?? "/LKDin-Client-Downloads";
+            }
+
+            return Path.Join(path, storeName);
         }
     }
 }

@@ -29,6 +29,7 @@ public class LKDinServer
             new CreateUserOption("Crear Usuario", userService),
             new CreateWorkProfileOption("Crear Perfil de Trabajo", workProfileService),
             new AssignImageToWorkProfile("Asignar Imagen a Perfil de Trabajo", workProfileService),
+            new DownloadWorkProfileImageOption("Descargar Imagen de Perfil de Trabajo", workProfileService),
             new SendChatMessageOption("Enviar Mensaje", chatMessageService),
             new CheckChatMessagesOption("Revisar Mensajes", chatMessageService),
             new SearchWorkProfilesBySkillsOption("Buscar Perfiles por Habilidades", workProfileService),

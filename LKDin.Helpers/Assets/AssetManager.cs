@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text;
-using LKDin.Exceptions;
+﻿using LKDin.Exceptions;
 using LKDin.Helpers.Configuration;
 
 namespace LKDin.Helpers.Assets
@@ -9,6 +6,24 @@ namespace LKDin.Helpers.Assets
     public static class AssetManager
     {
         private readonly static Dictionary<string, object> _lockers = new();
+
+        public static string CopyFileToDownloadsFolder<T>(string filePath, bool isServer)
+        {
+            if (!DoesFileExist(filePath))
+            {
+                throw new AssetDoesNotExistException(filePath);
+            }
+
+            var storeName = typeof(T).Name.ToLower();
+
+            EnsureDownloadFolderExistance(storeName, isServer);
+
+            var destinationPath = Path.Join(ConfigManager.GetDownloadsFolderPath(storeName, isServer), GetFileName(filePath));
+
+            CopyAsset(filePath, destinationPath);
+
+            return destinationPath;
+        }
 
         // Returns the new path for the file
         public static string CopyAssetToAssetsFolder<T>(string sourceFile, string resultFileName)
@@ -150,6 +165,13 @@ namespace LKDin.Helpers.Assets
         private static void EnsureAssetFolderExistance(string storeName)
         {
             var folderDataPath = ConfigManager.GetAssetsFolderPath(storeName);
+
+            EnsureFolderExists(folderDataPath);
+        }
+
+        private static void EnsureDownloadFolderExistance(string storeName, bool isServer)
+        {
+            var folderDataPath = ConfigManager.GetDownloadsFolderPath(storeName, isServer);
 
             EnsureFolderExists(folderDataPath);
         }

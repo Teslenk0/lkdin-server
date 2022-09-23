@@ -34,6 +34,8 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 
         private void PrintResultsInTable(List<WorkProfileDTO> results)
         {
+            var sortedResults = results.OrderBy(wp => wp.Id).ToList();
+
             var columnNames = new[]
             {
                 "ID Usuario",
@@ -42,7 +44,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 "Skills"
             };
 
-            this.PrintDataInTable<WorkProfileDTO>(results, columnNames,
+            this.PrintDataInTable<WorkProfileDTO>(sortedResults, columnNames,
                 wp => wp.User.Id,
                 wp => wp.User.Name,
                 wp => wp.Description,

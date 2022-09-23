@@ -135,6 +135,23 @@ namespace LKDin.Server.Networking
                                 networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
+                        case AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID:
+                            {
+                                var workProfileService = new WorkProfileService(new UserService());
+
+                                var workProfileDTO = workProfileService.GetWorkProfileByUserId(messagePayload);
+
+                                if (string.IsNullOrWhiteSpace(workProfileDTO.ImagePath))
+                                {
+                                    throw new NoImageAssignedException(messagePayload);
+                                }
+
+                                // Send ACK
+                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+
+                                networkDataHelper.SendFile(workProfileDTO.ImagePath);
+                            }
+                            break;
                         default:
                             throw new CommandNotSupportedException(cmd.ToString());
                     }

@@ -1,4 +1,5 @@
 ﻿using LKDin.DTOs;
+using LKDin.Helpers.Assets;
 using LKDin.Helpers.Serialization;
 using LKDin.IBusinessLogic;
 using LKDin.Networking;
@@ -32,6 +33,19 @@ namespace LKDin.Client.BusinessLogic
             _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.CREATE_WORK_PROFILE);
 
             _networkDataHelper.ReceiveMessage();
+        }
+
+        public string DownloadWorkProfileImage(string userId)
+        {
+            _networkDataHelper.SendMessage(userId, AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID);
+
+            // Receive ACK or ERR
+            _networkDataHelper.ReceiveMessage();
+
+            // Receive File
+            var tmpPath = _networkDataHelper.ReceiveFile();
+
+            return AssetManager.CopyFileToDownloadsFolder<WorkProfileDTO>(tmpPath, false);
         }
 
         public WorkProfileDTO GetWorkProfileByUserId(string userId)

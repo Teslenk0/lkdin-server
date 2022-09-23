@@ -14,7 +14,8 @@ namespace LKDin.Networking
         MARK_MESSAGE_AS_READ = 17,
         SEARCH_PROFILES_BY_SKILLS = 18,
         SEARCH_PROFILES_BY_DESCRIPTION = 19,
-        SHOW_WORK_PROFILE_BY_ID = 20
+        SHOW_WORK_PROFILE_BY_ID = 20,
+        DOWNLOAD_PROFILE_IMAGE_BY_ID = 21
     }
 }
 
