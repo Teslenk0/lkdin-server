@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LKDin.Server.DataAccess
 {
-    public static class DataManager
+    internal static class DataManager
     {
         private readonly static Dictionary<string, object> _lockers = new();
 

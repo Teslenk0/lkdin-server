@@ -1,5 +1,6 @@
 ﻿using LKDin.Client.BusinessLogic;
 using LKDin.Client.Networking;
+using LKDin.Helpers.Configuration;
 using LKDin.IUI;
 using LKDin.Networking;
 using LKDin.UI.ConsoleMenu;
@@ -11,6 +12,8 @@ public class LKDinClient
 {
     public static void Main()
     {
+        Console.WriteLine("Iniciando...");
+
         var networkingManager = ClientNetworkingManager.Instance;
 
         var connected = networkingManager.InitSocketV4Connection();
@@ -19,6 +22,12 @@ public class LKDinClient
 
         if (connected)
         {
+            Console.WriteLine("Información de la aplicación cliente en: {0}", ConfigManager.GetAppDataBasePath());
+
+            Console.WriteLine("Cargando...");
+            Thread.Sleep(3000);
+            Console.Clear();
+
             var socketClient = networkingManager.GetSocket();
 
             new Thread(() => networkingManager.ValidateConnectionOrShutDown(exitOption.Execute)).Start();
