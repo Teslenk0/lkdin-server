@@ -16,7 +16,7 @@ namespace LKDin.Client.Networking
 
         private const int TIME_BETWEEN_RETRIES_MS = 2000;
 
-        private ClientNetworkingManager() : base(ConfigNameSpace.CLIENT)
+        private ClientNetworkingManager() : base()
         { }
 
         public override bool InitSocketV4Connection()

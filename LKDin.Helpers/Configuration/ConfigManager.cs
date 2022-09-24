@@ -1,69 +1,44 @@
 ﻿using LKDin.Helpers.Assets;
-using System.Net.Sockets;
+using System.Configuration;
 
 namespace LKDin.Helpers.Configuration
 {
     public static class ConfigManager
     {
-        private static readonly object _configLock = new();
+        public const string DOWNLOADS_FOLDER_KEY = "ABS_DOWNLOADS_PATH";
 
-        private const string DOWNLOADS_FOLDER_KEY = "ABS_DOWNLOADS_PATH";
+        public const string SERVER_PORT_KEY = "SERVER_PORT";
 
-        public static string? GetConfig(string configKey, ConfigNameSpace configNameSpace)
+        public const string SERVER_IP_KEY = "SERVER_IP";
+
+        public const string APP_DATA_PATH_KEY = "ABS_APP_DATA_PATH";
+
+        public static string? GetConfig(string configKey)
         {
-            var basePath = GetAppDataBasePath();
-
-            string configFilePath;
-
-            if(configNameSpace == ConfigNameSpace.SERVER)
+            try
             {
-                configFilePath = Path.Join(basePath, "LKDin.server.config");
-            } else
-            {
-                configFilePath = Path.Join(basePath, "LKDin.client.config");
+                var appSettings = ConfigurationManager.AppSettings;
+                return appSettings[configKey] ?? string.Empty;
             }
-
-            lock (_configLock)
+            catch (ConfigurationErrorsException e)
             {
-                using FileStream file = new(configFilePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
-
-                using StreamReader reader = new(file);
-
-                var found = false;
-
-                string? configValue = null;
-
-                while (!reader.EndOfStream && !found)
-                {
-                    var data = reader.ReadLine();
-
-                    if (!string.IsNullOrWhiteSpace(data))
-                    {
-                        var config = data.Trim().Split("=");
-
-                        if (config[0].ToUpper().Equals(configKey.ToUpper()))
-                        {
-                            found = true;
-
-                            configValue = config[1].Trim();
-                        }
-                    }
-                }
-
-                return configValue;
-
+                Console.WriteLine("Error al leer la configuración. Error: {0}", e.Message);
+                return string.Empty;
             }
         }
 
         public static string GetAppDataBasePath()
         {
-            var folder = Environment.SpecialFolder.ApplicationData;
+            var folderPath = GetConfig(APP_DATA_PATH_KEY);
 
-            var path = Path.Join(Environment.GetFolderPath(folder), "/LKDin");
+            if (string.IsNullOrWhiteSpace(folderPath))
+            {
+                folderPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "/LKDin");
+            }
 
-            AssetManager.EnsureFolderExists(path);
+            AssetManager.EnsureFolderExists(folderPath);
 
-            return path;
+            return folderPath;
         }
 
         public static string GetStoreFilePath(string storeName)
@@ -106,10 +81,10 @@ namespace LKDin.Helpers.Configuration
 
             if (isServer)
             {
-                path = GetConfig(DOWNLOADS_FOLDER_KEY, ConfigNameSpace.SERVER) ?? "/LKDin-Server-Downloads";
+                path = GetConfig(DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Server-Downloads";
             } else
             {
-                path = GetConfig(DOWNLOADS_FOLDER_KEY, ConfigNameSpace.CLIENT) ?? "/LKDin-Client-Downloads";
+                path = GetConfig(DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Client-Downloads";
             }
 
             return Path.Join(path, storeName);

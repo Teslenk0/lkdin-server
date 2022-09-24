@@ -15,7 +15,7 @@ namespace LKDin.Server.Networking
 
         private static volatile ServerNetworkingManager _instance;
 
-        private ServerNetworkingManager() : base(ConfigNameSpace.SERVER)
+        private ServerNetworkingManager() : base()
         { }
 
         public override bool InitSocketV4Connection()

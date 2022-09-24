@@ -9,10 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LKDin.IUI\LKDin.IUI.csproj" />
     <ProjectReference Include="..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj" />
     <ProjectReference Include="..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj" />
     <ProjectReference Include="..\LKDin.Server.Networking\LKDin.Server.Networking.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

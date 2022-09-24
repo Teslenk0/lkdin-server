@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,9 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LKDin.Client.BusinessLogic\LKDin.Client.BusinessLogic.csproj" />
     <ProjectReference Include="..\LKDin.Client.Networking\LKDin.Client.Networking.csproj" />
     <ProjectReference Include="..\LKDin.Networking\LKDin.Networking.csproj" />
     <ProjectReference Include="..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

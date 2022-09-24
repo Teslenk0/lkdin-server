@@ -18,11 +18,25 @@ namespace LKDin.Networking
 
         protected readonly IPAddress ServerIPAddress;
 
-        protected NetworkingManager(ConfigNameSpace configNameSpace)
+        protected NetworkingManager()
         {
-            this.ServerPort = int.Parse(ConfigManager.GetConfig("SERVER_PORT", configNameSpace) ?? "5000");
+            try
+            {
+                var rawPort = ConfigManager.GetConfig(ConfigManager.SERVER_PORT_KEY);
 
-            this.ServerIPAddress = IPAddress.Parse(ConfigManager.GetConfig("SERVER_IP", configNameSpace) ?? "127.0.0.1");
+                // Defaulting in case it's null
+                this.ServerPort = int.Parse(string.IsNullOrWhiteSpace(rawPort) ? "5000" : rawPort);
+
+                var rawIp = ConfigManager.GetConfig(ConfigManager.SERVER_IP_KEY);
+
+                // Defaulting in case it's null
+                this.ServerIPAddress = IPAddress.Parse(string.IsNullOrWhiteSpace(rawIp) ? "127.0.0.1" : rawIp);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Error al cargar {ConfigManager.SERVER_IP_KEY} y {ConfigManager.SERVER_PORT_KEY}");
+            }
+            
         }
 
         public abstract bool InitSocketV4Connection();
