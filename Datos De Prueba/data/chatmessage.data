@@ -1,0 +1,9 @@
+Content(string)=Lucho, como estás?|SenderId(string)=1|ReceiverId(string)=2|Read(boolean)=True|SentAt(int64)=1664134450|ReadAt(int64)=1664134547|Id(string)=5cf9c229-44b4-48cb-8279-e79a024497c5
+Content(string)=A ver cuando sale algo loco|SenderId(string)=1|ReceiverId(string)=2|Read(boolean)=True|SentAt(int64)=1664134466|ReadAt(int64)=1664134547|Id(string)=2c6b5dc3-f87c-4d99-bb50-00005bacd78e
+Content(string)=Todo bien Leo crack|SenderId(string)=2|ReceiverId(string)=1|Read(boolean)=True|SentAt(int64)=1664134645|ReadAt(int64)=1664134741|Id(string)=496f7578-14c1-4885-86d1-7637c8c4da96
+Content(string)=Leeeeeo, sale un asádo el sabado? dale que si messi|SenderId(string)=2|ReceiverId(string)=1|Read(boolean)=True|SentAt(int64)=1664134645|ReadAt(int64)=1664134741|Id(string)=6befeede-7f78-4375-9929-c0a62c5b1376
+Content(string)=Marco, guten-tag, ein Barbecue kommt mit dem Kampf heraus?|SenderId(string)=1|ReceiverId(string)=3|Read(boolean)=True|SentAt(int64)=1664134978|ReadAt(int64)=1664135060|Id(string)=10e410b9-6f69-4873-bcff-f53eff07fca4
+Content(string)=Oi Cristiano, bora fazer um churrasco com o Luis na cassa dele? |SenderId(string)=1|ReceiverId(string)=4|Read(boolean)=True|SentAt(int64)=1664135106|ReadAt(int64)=1664135140|Id(string)=72fcf0f0-ee6b-425c-8f69-325a2b4d1091
+Content(string)=Bora, eu levo uma coca cola e mais nada|SenderId(string)=4|ReceiverId(string)=1|Read(boolean)=True|SentAt(int64)=1664135180|ReadAt(int64)=1664135196|Id(string)=c05edbab-060e-4da6-ab3e-068e3fa21170
+Content(string)=voce e muito machete mesmo|SenderId(string)=1|ReceiverId(string)=4|Read(boolean)=True|SentAt(int64)=1664135234|ReadAt(int64)=1664135252|Id(string)=23e911e3-3223-4c62-88f8-0e37f295a52d
+Content(string)=knein|SenderId(string)=3|ReceiverId(string)=1|Read(boolean)=False|SentAt(int64)=1664135461|ReadAt(int64)=0|Id(string)=88e1689a-a308-4820-b0a2-7579890ee276

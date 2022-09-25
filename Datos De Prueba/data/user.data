@@ -1,0 +1,4 @@
+Name(string)=Lionel Messi|Password(string)=$2a$11$mQamHa4UOe49Cs0gIk4Lw.NoCQD6.7azDlxrRVY9jiCx32WKKcXvu|Id(string)=1
+Name(string)=Luis Suarez|Password(string)=$2a$11$UBOG3c885GLPFlsqqZZtsucYZtmB6.1DWUv96EGVzrCgTViOhN7Bq|Id(string)=2
+Name(string)=Marco Reus|Password(string)=$2a$11$bZqFOLToYU2YeN8wrFqRpezCE5dWlqp6D/r21htGADGJRohvRn3QG|Id(string)=3
+Name(string)=Cristiano Ronaldo|Password(string)=$2a$11$5bKzPvb2498w5FDELc8TnO5XD/zxE96ySTYDpWQat.PkkoG4PBLkS|Id(string)=4
