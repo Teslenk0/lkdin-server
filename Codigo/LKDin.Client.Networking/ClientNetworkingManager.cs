@@ -44,7 +44,7 @@ namespace LKDin.Client.Networking
                     {
                         Console.WriteLine("Falló la conexión al servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
                         Console.WriteLine("Reintentando en {0}ms...", TIME_BETWEEN_RETRIES_MS);
-                        Thread.Sleep(TIME_BETWEEN_RETRIES_MS);
+                        await Task.Delay(TIME_BETWEEN_RETRIES_MS);
                     }
                     else
                     {
