@@ -11,11 +11,11 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             var userId = this.RequestUserId();
 
-            var path = this._workProfileService.DownloadWorkProfileImage(userId);
+            var path = await this._workProfileService.DownloadWorkProfileImage(userId);
 
             this.PrintFinishedExecutionMessage($"Se descargó la imagen correctamente en {path}");
         }

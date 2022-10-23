@@ -12,11 +12,11 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             var searchCriteria = this.RequestSearchCriteria();
 
-            var data = this._workProfileService.GetWorkProfilesByDescription(searchCriteria);
+            var data = await this._workProfileService.GetWorkProfilesByDescription(searchCriteria);
 
             this.PrintResultsInTable(data);
 

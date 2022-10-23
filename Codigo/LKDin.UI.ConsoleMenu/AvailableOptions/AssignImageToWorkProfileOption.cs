@@ -13,7 +13,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             WorkProfileDTO workProfileDTO = new()
             {
@@ -22,7 +22,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 ImagePath = this.RequestImagePath()
             };
 
-            this._workProfileService.AssignImageToWorkProfile(workProfileDTO);
+            await this._workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
             this.PrintFinishedExecutionMessage("Se asigno la imagen al perfil de trabajo exitosamente");
         }

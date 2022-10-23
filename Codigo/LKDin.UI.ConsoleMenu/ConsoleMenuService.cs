@@ -15,7 +15,7 @@ public class ConsoleMenuService : IUIService
         IsServer = isServer;
     }
 
-    public void Render()
+    public async Task Render()
     {
         while (true)
         {
@@ -59,7 +59,7 @@ public class ConsoleMenuService : IUIService
 
                 var optionHandler = MenuOptions[parsedOption - 1];
 
-                optionHandler.Execute();
+                await optionHandler.Execute();
 
                 Console.Clear();
             }

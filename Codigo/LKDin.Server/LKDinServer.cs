@@ -10,11 +10,9 @@ namespace LKDin.Server;
 
 public class LKDinServer
 {
-    private static string UI_THREAD_NAME = "LKDIN_SERVER_UI";
-
     private static string BG_SOCKET_LISTENER_THREAD_NAME = "BG_SOCKET_LISTENER";
 
-    private static void InitServerUI()
+    private static async Task InitServerUI()
     {
         var userService = new UserService();
 
@@ -40,38 +38,31 @@ public class LKDinServer
 
         IUIService uiService = new ConsoleMenuService(enabledOptions, true);
 
-        uiService.Render();
+        await uiService.Render();
     }
 
-    public static void Main()
+    public static async Task Main()
     {
         Console.WriteLine("Iniciando...");
 
         var networkingManager = ServerNetworkingManager.Instance;
 
-        var connected = networkingManager.InitSocketV4Connection();
+        var connected = await networkingManager.InitTCPConnection();
 
         if (connected)
         {
             Console.WriteLine("Información de la aplicación en: {0}", ConfigManager.GetAppDataBasePath());
 
-            Thread backgroundServiceThread = new(() => networkingManager.AcceptSocketConnections(ServerConnectionHandler.HandleConnection))
-            {
-                Name = BG_SOCKET_LISTENER_THREAD_NAME
-            };
-
-            backgroundServiceThread.Start();
+            // We don't need to await this.
+            networkingManager.AcceptTCPConnections(ServerConnectionHandler.HandleConnection);
 
             Console.WriteLine("Cargando...");
-            Thread.Sleep(3000);
+
+            await Task.Delay(3000);
+
             Console.Clear();
 
-            //// Init the UI in a different thread
-            Thread serverUIThread = new(InitServerUI);
-
-            serverUIThread.Name = UI_THREAD_NAME;
-
-            serverUIThread.Start();
+            await InitServerUI();
         }
         
     }

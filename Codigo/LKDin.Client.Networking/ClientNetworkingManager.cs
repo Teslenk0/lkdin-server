@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using LKDin.Helpers.Configuration;
 using LKDin.Networking;
 
 namespace LKDin.Client.Networking
@@ -16,20 +15,18 @@ namespace LKDin.Client.Networking
 
         private const int TIME_BETWEEN_RETRIES_MS = 2000;
 
+        private TcpClient _tcpClient;
+
         private ClientNetworkingManager() : base()
         { }
 
-        public override bool InitSocketV4Connection()
+        public override async Task<bool> InitTCPConnection()
         {
             int retries = 0;
 
-            _socketV4 = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.Tcp
-            );
-
             var endpoint = new IPEndPoint(ServerIPAddress, ServerPort);
+
+            _tcpClient = new TcpClient();
 
             while (!this._isWorking && retries < MAX_RETRIES)
             {
@@ -37,18 +34,19 @@ namespace LKDin.Client.Networking
                 {
                     retries++;
 
-                    _socketV4.Connect(endpoint);
+                    await _tcpClient.ConnectAsync(endpoint);
 
                     _isWorking = true;
                 }
                 catch (Exception e)
                 {
-                    if(retries < MAX_RETRIES)
+                    if (retries < MAX_RETRIES)
                     {
                         Console.WriteLine("Falló la conexión al servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
                         Console.WriteLine("Reintentando en {0}ms...", TIME_BETWEEN_RETRIES_MS);
                         Thread.Sleep(TIME_BETWEEN_RETRIES_MS);
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine("Limite de intentos alcanzado.");
                         Console.WriteLine("Error: {0}", e.Message);
@@ -72,6 +70,35 @@ namespace LKDin.Client.Networking
                     return _instance ??= new ClientNetworkingManager();
                 }
             }
+        }
+
+        public TcpClient GetClient()
+        {
+            return this._tcpClient;
+        }
+
+        public override bool IsConnected()
+        {
+            var rawSocket = _tcpClient.Client;
+
+            bool part1 = rawSocket.Poll(1000, SelectMode.SelectRead);
+
+            bool part2 = (rawSocket.Available == 0);
+
+            if ((part1 && part2) || !rawSocket.Connected)
+                return false;
+            else
+                return true;
+        }
+
+        public override void ShutdownTCPConnections()
+        {
+            if (_tcpClient != null && IsConnected())
+            {
+                _tcpClient.Close();
+            }
+
+            _isWorking = false;
         }
     }
 }

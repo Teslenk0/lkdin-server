@@ -25,9 +25,9 @@ namespace LKDin.Server.BusinessLogic
             this._userService = userService;
         }
 
-        public void CreateWorkProfile(WorkProfileDTO workProfileDTO)
+        public async Task CreateWorkProfile(WorkProfileDTO workProfileDTO)
         {
-            this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
+            await this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
 
             var exists = this._workProfileRepository.ExistsByUserId(workProfileDTO.UserId);
 
@@ -54,9 +54,9 @@ namespace LKDin.Server.BusinessLogic
             this._skillRepository.CreateMany(skills);
         }
 
-        public void AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
+        public async Task AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
         {
-            this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
+            await this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
 
             var workProfile = this._workProfileRepository.GetByUserId(partialWorkProfileDTO.UserId);
 
@@ -72,7 +72,7 @@ namespace LKDin.Server.BusinessLogic
             this._workProfileRepository.AssignImageToWorkProfile(workProfile);
         }
 
-        public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
+        public async Task <List<WorkProfileDTO>> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
         {
             var skillsThatMatch = this._skillRepository.GetByName(skillsToSearchFor.Select(skill => skill.Name).ToList());
 
@@ -87,11 +87,11 @@ namespace LKDin.Server.BusinessLogic
 
             var result = new List<WorkProfileDTO>();
 
-            workProfiles.ForEach(wp =>
+            workProfiles.ForEach(async wp =>
             {
                 var wpDTO = WorkProfileDTO.EntityToDTO(wp);
 
-                var userDTO = this._userService.GetUser(wp.UserId);
+                var userDTO = await this._userService.GetUser(wp.UserId);
 
                 wpDTO.User = userDTO;
 
@@ -110,7 +110,7 @@ namespace LKDin.Server.BusinessLogic
             return result;
         }
 
-        public List<WorkProfileDTO> GetWorkProfilesByDescription(string description)
+        public async Task <List<WorkProfileDTO>> GetWorkProfilesByDescription(string description)
         {
             var workProfilesThatMatch = this._workProfileRepository.GetByDescription(description);
 
@@ -123,11 +123,11 @@ namespace LKDin.Server.BusinessLogic
 
             var result = new List<WorkProfileDTO>();
 
-            workProfilesThatMatch.ForEach(wp =>
+            workProfilesThatMatch.ForEach(async wp =>
             {
                 var wpDTO = WorkProfileDTO.EntityToDTO(wp);
 
-                var userDTO = this._userService.GetUser(wp.UserId);
+                var userDTO = await this._userService.GetUser(wp.UserId);
 
                 wpDTO.User = userDTO;
 
@@ -146,9 +146,9 @@ namespace LKDin.Server.BusinessLogic
             return result;
         }
 
-        public WorkProfileDTO GetWorkProfileByUserId(string userId)
+        public async Task <WorkProfileDTO> GetWorkProfileByUserId(string userId)
         {
-            var userDTO = this._userService.GetUser(userId);
+            var userDTO = await this._userService.GetUser(userId);
 
             if (userDTO == null)
             {
@@ -178,7 +178,7 @@ namespace LKDin.Server.BusinessLogic
             return resultWP;
         }
 
-        public string DownloadWorkProfileImage(string userId)
+        public async Task<string> DownloadWorkProfileImage(string userId)
         {
             var workProfile = this._workProfileRepository.GetByUserId(userId);
 

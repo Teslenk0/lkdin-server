@@ -4,12 +4,12 @@ namespace LKDin.IBusinessLogic
 {
     public interface IChatMessageService
     {
-        public void CreateChatMessage(ChatMessageDTO chatMessageDTO);
+        public Task CreateChatMessage(ChatMessageDTO chatMessageDTO);
 
-        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO);
+        public Task<List<ChatMessageDTO>> GetByReceiverId(UserDTO userDTO);
 
-        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO);
+        public Task<List<ChatMessageDTO>> GetBySenderId(UserDTO userDTO);
 
-        public void MarkMessagesAsRead(List<string> messagesIds);
+        public Task MarkMessagesAsRead(List<string> messagesIds);
     }
 }

@@ -14,7 +14,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._workProfileService = workProfileService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             WorkProfileDTO workProfileDTO = new()
             {
@@ -24,7 +24,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 Skills = this.RequestSkills()
             };
 
-            this._workProfileService.CreateWorkProfile(workProfileDTO);
+            await this._workProfileService.CreateWorkProfile(workProfileDTO);
 
             this.PrintFinishedExecutionMessage("Se creo el perfil de trabajo exitosamente");
         }

@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using LKDin.Exceptions;
-using LKDin.Helpers.Configuration;
 using LKDin.Networking;
 
 namespace LKDin.Server.Networking
@@ -11,28 +11,24 @@ namespace LKDin.Server.Networking
     {
         private const int QUEUE_SIZE = 100;
 
-        private static readonly object SingletonSyncRoot = new object();
+        private static readonly object SingletonSyncRoot = new();
 
         private static volatile ServerNetworkingManager _instance;
+
+        private TcpListener _tcpListener;
 
         private ServerNetworkingManager() : base()
         { }
 
-        public override bool InitSocketV4Connection()
+        public override async Task<bool> InitTCPConnection()
         {
-            this._socketV4 = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Stream,
-                ProtocolType.Tcp
-            );
-
             var endpoint = new IPEndPoint(this.ServerIPAddress, this.ServerPort);
+
+            this._tcpListener = new TcpListener(endpoint);
 
             try
             {
-                this._socketV4.Bind(endpoint);
-
-                this._socketV4.Listen(QUEUE_SIZE);
+                this._tcpListener.Start(QUEUE_SIZE);
 
                 this._isWorking = true;
             }
@@ -45,9 +41,9 @@ namespace LKDin.Server.Networking
             return this._isWorking;
         }
 
-        public void AcceptSocketConnections(SocketConnectionHandler handler)
+        public async Task AcceptTCPConnections(TCPConnectionHandler handler)
         {
-            if (this._socketV4 != null)
+            if (this._tcpListener != null)
             {
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine("Server escuchando en {0}:{1}", this.ServerIPAddress, this.ServerPort);
@@ -55,14 +51,17 @@ namespace LKDin.Server.Networking
 
                 while (this._isWorking)
                 {
-                    Socket clientSocket = this._socketV4.Accept();
+                    var tcpClientSocket = await this._tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
 
-                    new Thread(() => handler(clientSocket)).Start();
+                    Task.Run(
+                        async () => await handler(tcpClientSocket)
+                        .ConfigureAwait(false)
+                    );
                 }
             }
             else
             {
-                throw new SocketInitializationException();
+                throw new TCPConnectionInitializationException();
             }
         }
 
@@ -79,6 +78,21 @@ namespace LKDin.Server.Networking
                     return _instance ??= new ServerNetworkingManager();
                 }
             }
+        }
+
+        public override bool IsConnected()
+        {
+            return this._isWorking;
+        }
+
+        public override void ShutdownTCPConnections()
+        {
+            if (_tcpListener != null && IsConnected())
+            {
+                _tcpListener.Stop();
+            }
+
+            _isWorking = false;
         }
     }
 }

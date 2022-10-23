@@ -2,7 +2,7 @@
 {
     public interface IUIService
     {
-        public void Render();
+        public Task Render();
     }
 }
 

@@ -15,68 +15,68 @@ namespace LKDin.Client.BusinessLogic
             _networkDataHelper = networkDataHelper;
         }
 
-        public void AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
+        public async Task AssignImageToWorkProfile(WorkProfileDTO partialWorkProfileDTO)
         {
             var serializedWorkProfile = SerializationManager.Serialize<WorkProfileDTO>(partialWorkProfileDTO);
 
-            _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE);
+            await _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE);
 
-            _networkDataHelper.SendFile(partialWorkProfileDTO.ImagePath);
+            await _networkDataHelper.SendFile(partialWorkProfileDTO.ImagePath);
 
-            _networkDataHelper.ReceiveMessage();
+            await _networkDataHelper.ReceiveMessage();
         }
 
-        public void CreateWorkProfile(WorkProfileDTO workProfileDTO)
+        public async Task CreateWorkProfile(WorkProfileDTO workProfileDTO)
         {
             var serializedWorkProfile = SerializationManager.Serialize<WorkProfileDTO>(workProfileDTO);
 
-            _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.CREATE_WORK_PROFILE);
+            await _networkDataHelper.SendMessage(serializedWorkProfile, AvailableOperation.CREATE_WORK_PROFILE);
 
-            _networkDataHelper.ReceiveMessage();
+            await _networkDataHelper.ReceiveMessage();
         }
 
-        public string DownloadWorkProfileImage(string userId)
+        public async Task<string> DownloadWorkProfileImage(string userId)
         {
-            _networkDataHelper.SendMessage(userId, AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID);
+            await _networkDataHelper.SendMessage(userId, AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID);
 
             // Receive ACK or ERR
-            _networkDataHelper.ReceiveMessage();
+            await _networkDataHelper.ReceiveMessage();
 
             // Receive File
-            var tmpPath = _networkDataHelper.ReceiveFile();
+            var tmpPath = await _networkDataHelper.ReceiveFile();
 
             return AssetManager.CopyFileToDownloadsFolder<WorkProfileDTO>(tmpPath, false);
         }
 
-        public WorkProfileDTO GetWorkProfileByUserId(string userId)
+        public async Task<WorkProfileDTO> GetWorkProfileByUserId(string userId)
         {
-            _networkDataHelper.SendMessage(userId, AvailableOperation.SHOW_WORK_PROFILE_BY_ID);
+            await _networkDataHelper.SendMessage(userId, AvailableOperation.SHOW_WORK_PROFILE_BY_ID);
 
-            var data = _networkDataHelper.ReceiveMessage();
+            var data = await _networkDataHelper.ReceiveMessage();
 
             var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.Deserialize<WorkProfileDTO>(messagePayload);
         }
 
-        public List<WorkProfileDTO> GetWorkProfilesByDescription(string description)
+        public async Task<List<WorkProfileDTO>> GetWorkProfilesByDescription(string description)
         {
-            _networkDataHelper.SendMessage(description, AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION);
+            await _networkDataHelper.SendMessage(description, AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION);
 
-            var data = _networkDataHelper.ReceiveMessage();
+            var data = await _networkDataHelper.ReceiveMessage();
 
             var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
         }
 
-        public List<WorkProfileDTO> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
+        public async Task<List<WorkProfileDTO>> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
         {
             var serializedSkills = SerializationManager.Serialize<List<SkillDTO>>(skillsToSearchFor);
 
-            _networkDataHelper.SendMessage(serializedSkills, AvailableOperation.SEARCH_PROFILES_BY_SKILLS);
+            await _networkDataHelper.SendMessage(serializedSkills, AvailableOperation.SEARCH_PROFILES_BY_SKILLS);
 
-            var data = _networkDataHelper.ReceiveMessage();
+            var data = await _networkDataHelper.ReceiveMessage();
 
             var messagePayload = data[Protocol.MSG_NAME];
 

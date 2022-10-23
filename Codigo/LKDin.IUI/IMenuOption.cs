@@ -6,7 +6,7 @@ public interface IMenuOption
 
     public int OptionNumber { get; set; }
 
-    public void Execute();
+    public Task Execute();
 
     public void PrintMenuOptionMessage();
 }

@@ -15,7 +15,7 @@ namespace LKDin.Server.BusinessLogic
             this._userRepository = new UserRepository();
         }
 
-        public void CreateUser(UserDTO userDTO)
+        public async Task CreateUser(UserDTO userDTO)
         {
 
             var exists = this._userRepository.Exists(userDTO.Id);
@@ -32,7 +32,7 @@ namespace LKDin.Server.BusinessLogic
             this._userRepository.Create(user);
         }
 
-        public UserDTO? GetUser(string userId)
+        public async Task<UserDTO?> GetUser(string userId)
         {
 
             var user = this._userRepository.Get(userId);
@@ -45,7 +45,7 @@ namespace LKDin.Server.BusinessLogic
             return null;
         }
 
-        public UserDTO ValidateUserCredentials(string userId, string password)
+        public async Task <UserDTO> ValidateUserCredentials(string userId, string password)
         {
             var user = this._userRepository.Get(userId);
 

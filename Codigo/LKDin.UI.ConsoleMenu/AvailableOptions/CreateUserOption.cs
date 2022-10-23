@@ -13,7 +13,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._userService = userService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             UserDTO userDTO = new()
             {
@@ -22,7 +22,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 Password = this.RequestPassword(),
             };
 
-            this._userService.CreateUser(userDTO);
+            await this._userService.CreateUser(userDTO);
 
             this.PrintFinishedExecutionMessage("Se creo el usuario exitosamente");
         }

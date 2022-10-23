@@ -11,15 +11,15 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._networkingManager = networkingManager;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             Console.WriteLine("Muchas gracias por utilizar LKDin!");
 
-            this._networkingManager.ShutdownSocketConnections();
+            this._networkingManager.ShutdownTCPConnections();
 
             Console.WriteLine("Saliendo...");
 
-            Thread.Sleep(3000);
+            Task.Delay(3000).Wait();
 
             // TODO: Check that there are no networking stuff going on;
             Environment.Exit(0);

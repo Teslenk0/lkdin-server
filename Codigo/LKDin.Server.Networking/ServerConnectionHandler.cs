@@ -7,21 +7,21 @@ using LKDin.Server.BusinessLogic;
 
 namespace LKDin.Server.Networking
 {
-    public delegate void SocketConnectionHandler(Socket socket);
+    public delegate Task TCPConnectionHandler(TcpClient tcpClient);
 
     public static class ServerConnectionHandler
     {
-        public static void HandleConnection(Socket clientSocket)
+        public static async Task HandleConnection(TcpClient tcpClient)
         {
             bool clientIsConnected = true;
 
-            NetworkDataHelper networkDataHelper = new(clientSocket);
+            NetworkDataHelper networkDataHelper = new(tcpClient);
 
             while (clientIsConnected)
             {
                 try
                 {
-                    var data = networkDataHelper.ReceiveMessage();
+                    var data = await networkDataHelper.ReceiveMessage();
 
                     var messagePayload = data[Protocol.MSG_NAME];
 
@@ -33,23 +33,23 @@ namespace LKDin.Server.Networking
                             {
                                 var userService = new UserService();
 
-                                userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
+                                await userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.CREATE_WORK_PROFILE:
                             {
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
+                                await workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.ASSIGN_IMAGE_TO_WORK_PROFILE:
                             {
-                                var tmpFilePath = networkDataHelper.ReceiveFile();
+                                var tmpFilePath = await networkDataHelper.ReceiveFile();
 
                                 var workProfileDTO = SerializationManager.Deserialize<WorkProfileDTO>(messagePayload);
 
@@ -57,89 +57,89 @@ namespace LKDin.Server.Networking
 
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                workProfileService.AssignImageToWorkProfile(workProfileDTO);
+                                await workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION:
                             {
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                var profiles = workProfileService.GetWorkProfilesByDescription(messagePayload);
+                                var profiles = await workProfileService.GetWorkProfilesByDescription(messagePayload);
 
                                 var serializedProfiles = SerializationManager.Serialize<List<WorkProfileDTO>>(profiles);
 
-                                networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.SEARCH_PROFILES_BY_SKILLS:
                             {
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                var profiles = workProfileService.GetWorkProfilesBySkills(SerializationManager.Deserialize<List<SkillDTO>>(messagePayload));
+                                var profiles = await workProfileService.GetWorkProfilesBySkills(SerializationManager.Deserialize<List<SkillDTO>>(messagePayload));
 
                                 var serializedProfiles = SerializationManager.Serialize<List<WorkProfileDTO>>(profiles);
 
-                                networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage(serializedProfiles, AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.SHOW_WORK_PROFILE_BY_ID:
                             {
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                var profile = workProfileService.GetWorkProfileByUserId(messagePayload);
+                                var profile = await workProfileService.GetWorkProfileByUserId(messagePayload);
 
                                 var serializedProfile = SerializationManager.Serialize<WorkProfileDTO>(profile);
 
-                                networkDataHelper.SendMessage(serializedProfile, AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage(serializedProfile, AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.CHECK_CHAT_MESSAGES_BY_SENDER_ID:
                             {
                                 var chatMessageService = new ChatMessageService(new UserService());
 
-                                var chatMessages = chatMessageService.GetBySenderId(SerializationManager.Deserialize<UserDTO>(messagePayload));
+                                var chatMessages = await chatMessageService.GetBySenderId(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
                                 var serializedChatMessages = SerializationManager.Serialize<List<ChatMessageDTO>>(chatMessages);
 
-                                networkDataHelper.SendMessage(serializedChatMessages, AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage(serializedChatMessages, AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.CHECK_CHAT_MESSAGES_BY_RECEIVER_ID:
                             {
                                 var chatMessageService = new ChatMessageService(new UserService());
 
-                                var chatMessages = chatMessageService.GetByReceiverId(SerializationManager.Deserialize<UserDTO>(messagePayload));
+                                var chatMessages = await chatMessageService.GetByReceiverId(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
                                 var serializedChatMessages = SerializationManager.Serialize<List<ChatMessageDTO>>(chatMessages);
 
-                                networkDataHelper.SendMessage(serializedChatMessages, AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage(serializedChatMessages, AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.SEND_CHAT_MESSAGE:
                             {
                                 var chatMessageService = new ChatMessageService(new UserService());
 
-                                chatMessageService.CreateChatMessage(SerializationManager.Deserialize<ChatMessageDTO>(messagePayload));
+                                await chatMessageService.CreateChatMessage(SerializationManager.Deserialize<ChatMessageDTO>(messagePayload));
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.MARK_MESSAGE_AS_READ:
                             {
                                 var chatMessageService = new ChatMessageService(new UserService());
 
-                                chatMessageService.MarkMessageAsRead(messagePayload);
+                                await chatMessageService.MarkMessageAsRead(messagePayload);
 
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
                             }
                             break;
                         case AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID:
                             {
                                 var workProfileService = new WorkProfileService(new UserService());
 
-                                var workProfileDTO = workProfileService.GetWorkProfileByUserId(messagePayload);
+                                var workProfileDTO = await workProfileService.GetWorkProfileByUserId(messagePayload);
 
                                 if (string.IsNullOrWhiteSpace(workProfileDTO.ImagePath))
                                 {
@@ -147,9 +147,9 @@ namespace LKDin.Server.Networking
                                 }
 
                                 // Send ACK
-                                networkDataHelper.SendMessage("", AvailableOperation.ACK);
+                                await networkDataHelper.SendMessage("", AvailableOperation.ACK);
 
-                                networkDataHelper.SendFile(workProfileDTO.ImagePath);
+                                await networkDataHelper.SendFile(workProfileDTO.ImagePath);
                             }
                             break;
                         default:
@@ -162,7 +162,7 @@ namespace LKDin.Server.Networking
                 }
                 catch (Exception e)
                 {
-                    networkDataHelper.SendException(e);
+                    await networkDataHelper.SendException(e);
                 }
             }
         }

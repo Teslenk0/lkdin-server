@@ -9,22 +9,22 @@ namespace LKDin.Networking
 {
     public class NetworkDataHelper
     {
-        private readonly Socket _socket;
+        private readonly TcpClient _tcpClient;
 
-        public NetworkDataHelper(Socket socket)
+        public NetworkDataHelper(TcpClient tcpClient)
         {
-            _socket = socket;
+            _tcpClient = tcpClient;
         }
 
-        public Dictionary<string, string> ReceiveMessage()
+        public async Task<Dictionary<string, string>> ReceiveMessage()
         {
             var resultantData = new Dictionary<string, string>();
 
-            byte[] rawHeaders = this.PerformReception(Protocol.HEADER_SIZE);
+            byte[] rawHeaders = await this.PerformReception(Protocol.HEADER_SIZE);
 
             var parsedHeaders = this.DeserializeHeaders(rawHeaders);
 
-            byte[] data = this.PerformReception(int.Parse(parsedHeaders[Protocol.LENGTH_HEADER_NAME]));
+            byte[] data = await this.PerformReception(int.Parse(parsedHeaders[Protocol.LENGTH_HEADER_NAME]));
 
             var message = ConversionHandler.ConvertBytesToString(data);
 
@@ -40,7 +40,7 @@ namespace LKDin.Networking
             return resultantData;
         }
 
-        public void SendMessage(string messageBody, AvailableOperation availableOperation)
+        public async Task SendMessage(string messageBody, AvailableOperation availableOperation)
         {
             byte[] messageBytes = ConversionHandler.ConvertStringToBytes(messageBody);
 
@@ -62,12 +62,12 @@ namespace LKDin.Networking
 
             byte[] rawHeaders = ConversionHandler.ConvertStringToBytes(headers);
 
-            this.PerformTransmission(rawHeaders);
+            await this.PerformTransmission(rawHeaders);
 
-            this.PerformTransmission(messageBytes);
+            await this.PerformTransmission(messageBytes);
         }
 
-        public void SendException(Exception exception)
+        public async Task SendException(Exception exception)
         {
             var message = new ExceptionDTO()
             {
@@ -98,51 +98,51 @@ namespace LKDin.Networking
 
             byte[] rawHeaders = ConversionHandler.ConvertStringToBytes(headers);
 
-            this.PerformTransmission(rawHeaders);
+            await this.PerformTransmission(rawHeaders);
 
-            this.PerformTransmission(messageBytes);
+            await this.PerformTransmission(messageBytes);
         }
 
-        public void SendFile(string path)
+        public async Task SendFile(string path)
         {
             var fileName = AssetManager.GetFileName(path);
 
             // Send file name length
-            this.PerformTransmission(ConversionHandler.ConvertIntToBytes(fileName.Length));
+            await this.PerformTransmission(ConversionHandler.ConvertIntToBytes(fileName.Length));
 
             // Send the file name
-            this.PerformTransmission(ConversionHandler.ConvertStringToBytes(fileName));
+            await this.PerformTransmission(ConversionHandler.ConvertStringToBytes(fileName));
 
             // Get the file size
             long fileSize = AssetManager.GetFileSize(path);
 
             // Send the file size
-            this.PerformTransmission(ConversionHandler.ConvertLongToBytes(fileSize));
+            await this.PerformTransmission(ConversionHandler.ConvertLongToBytes(fileSize));
 
             // Send the file
-            SendFileWithStream(fileSize, path);
+            await SendFileWithStream(fileSize, path);
         }
 
-        public string ReceiveFile()
+        public async Task<string> ReceiveFile()
         {
             // Receive file name size
-            int fileNameSize = ConversionHandler.ConvertBytesToInt(this.PerformReception(FileTransmissionProtocol.FIXED_DATA_SIZE));
+            int fileNameSize = ConversionHandler.ConvertBytesToInt(await this.PerformReception(FileTransmissionProtocol.FIXED_DATA_SIZE));
 
             // Receive file name
-            string fileName = ConversionHandler.ConvertBytesToString(this.PerformReception(fileNameSize));
+            string fileName = ConversionHandler.ConvertBytesToString(await this.PerformReception(fileNameSize));
 
             // Receive file size
-            long fileSize = ConversionHandler.ConvertBytesToLong(this.PerformReception(FileTransmissionProtocol.FIXED_FILE_SIZE));
+            long fileSize = ConversionHandler.ConvertBytesToLong(await this.PerformReception(FileTransmissionProtocol.FIXED_FILE_SIZE));
 
             // Receive the file and return the temporal name
             var tmpFolder = ConfigManager.GetTmpAssetsFolderPath();
 
-            var tmpFilePath = ReceiveFileWithStreams(fileSize, fileName);
+            var tmpFilePath = await ReceiveFileWithStreams(fileSize, fileName);
 
             return Path.Join(tmpFolder, tmpFilePath);
         }
 
-        private void SendFileWithStream(long fileSize, string path)
+        private async Task SendFileWithStream(long fileSize, string path)
         {
             long fileParts = FileTransmissionProtocol.CalculateFileParts(fileSize);
             long offset = 0;
@@ -163,13 +163,13 @@ namespace LKDin.Networking
                     offset += FileTransmissionProtocol.MAX_PACKET_SIZE;
                 }
 
-                this.PerformTransmission(data);
+                await this.PerformTransmission(data);
 
                 currentPart++;
             }
         }
 
-        private string ReceiveFileWithStreams(long fileSize, string fileName)
+        private async Task<string> ReceiveFileWithStreams(long fileSize, string fileName)
         {
             long fileParts = FileTransmissionProtocol.CalculateFileParts(fileSize);
             long offset = 0;
@@ -180,22 +180,24 @@ namespace LKDin.Networking
             while (fileSize > offset)
             {
                 byte[] data;
+
                 if (currentPart == fileParts)
                 {
                     var lastPartSize = (int)(fileSize - offset);
-                    data = this.PerformReception(lastPartSize);
+                    data = await this.PerformReception(lastPartSize);
                     offset += lastPartSize;
                 }
                 else
                 {
-                    data = this.PerformReception(FileTransmissionProtocol.MAX_PACKET_SIZE);
+                    data = await this.PerformReception(FileTransmissionProtocol.MAX_PACKET_SIZE);
                     offset += FileTransmissionProtocol.MAX_PACKET_SIZE;
                 }
-                
-                if(finalFileName.Equals(fileName))
+
+                if (finalFileName.Equals(fileName))
                 {
                     finalFileName = AssetManager.WriteAssetToTmp(finalFileName, data);
-                } else
+                }
+                else
                 {
                     AssetManager.WriteAssetToTmp(finalFileName, data);
                 }
@@ -230,7 +232,6 @@ namespace LKDin.Networking
             if (availableTypes.ContainsKey(type))
             {
                 availableTypes[type]();
-
             }
             else
             {
@@ -244,35 +245,32 @@ namespace LKDin.Networking
 
         }
 
-        private void PerformTransmission(byte[] data)
+        private async Task PerformTransmission(byte[] data)
         {
-            int offset = 0;
             int size = data.Length;
-            while (offset < size)
-            {
-                int sent = _socket.Send(data, offset, size - offset, SocketFlags.None);
 
-                if (sent == 0)
-                {
-                    throw new SocketException();
-                }
-                offset += sent;
-            }
+            var networkStream = _tcpClient.GetStream();
+
+            await networkStream.WriteAsync(data, 0, size).ConfigureAwait(false);
         }
 
-        private byte[] PerformReception(int length)
+        private async Task<byte[]> PerformReception(int length)
         {
             byte[] response = new byte[length];
 
             int offset = 0;
 
+            var networkStream = _tcpClient.GetStream();
+
             while (offset < length)
             {
-                int received = _socket.Receive(response, offset, length - offset, SocketFlags.None);
+                int received = await networkStream.ReadAsync(response, offset, length - offset).ConfigureAwait(false);
+                
                 if (received == 0)
                 {
                     throw new SocketException();
                 }
+                
                 offset += received;
             }
 

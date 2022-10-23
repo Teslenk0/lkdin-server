@@ -5,9 +5,9 @@ namespace LKDin.Networking
 {
     public interface INetworkingManager
     {
-        public bool InitSocketV4Connection();
+        public Task<bool> InitTCPConnection();
 
-        public void ShutdownSocketConnections();
+        public void ShutdownTCPConnections();
     }
 }
 

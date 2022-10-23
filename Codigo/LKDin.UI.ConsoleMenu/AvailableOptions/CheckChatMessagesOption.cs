@@ -1,6 +1,5 @@
 ﻿using LKDin.DTOs;
 using LKDin.IBusinessLogic;
-using LKDin.Server.Domain;
 
 namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
@@ -13,7 +12,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._chatMessageService = chatMessageService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             UserDTO userDTO = new()
             {
@@ -21,9 +20,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 Password = this.RequestPassword()
             };
 
-            var messagesSent = this._chatMessageService.GetBySenderId(userDTO);
+            var messagesSent = await this._chatMessageService.GetBySenderId(userDTO);
 
-            var messagesReceived = this._chatMessageService.GetByReceiverId(userDTO);
+            var messagesReceived = await this._chatMessageService.GetByReceiverId(userDTO);
 
             this.PrintMessages(messagesReceived, messagesSent);
 
@@ -35,7 +34,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             // Chat messages are marked as read after pressing a key requested by PrintFinishedExecutionMessage
             if (receivedMessagesIds.Count > 0)
             {
-                this._chatMessageService.MarkMessagesAsRead(receivedMessagesIds);
+                await this._chatMessageService.MarkMessagesAsRead(receivedMessagesIds);
             }
         }
 

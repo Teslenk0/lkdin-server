@@ -20,9 +20,9 @@ namespace LKDin.Server.BusinessLogic
             this._userService = userService;
         }
 
-        public void CreateChatMessage(ChatMessageDTO chatMessageDTO)
+        public async Task CreateChatMessage(ChatMessageDTO chatMessageDTO)
         {
-            this._userService.ValidateUserCredentials(chatMessageDTO.SenderId, chatMessageDTO.UserPassword);
+            await this._userService.ValidateUserCredentials(chatMessageDTO.SenderId, chatMessageDTO.UserPassword);
 
             var receiver = this._userService.GetUser(chatMessageDTO.ReceiverId);
 
@@ -38,41 +38,41 @@ namespace LKDin.Server.BusinessLogic
             this._chatMessageRepository.Create(message);
         }
 
-        public List<ChatMessageDTO> GetByReceiverId(UserDTO userDTO)
+        public async Task<List<ChatMessageDTO>> GetByReceiverId(UserDTO userDTO)
         {
-            this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
+            await this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
 
             var receivedMessages = this._chatMessageRepository.GetByReceiverId(userDTO.Id);
            
-            return this.AssignUsersToChatMessages(receivedMessages);
+            return await AssignUsersToChatMessages(receivedMessages);
         }
 
-        public List<ChatMessageDTO> GetBySenderId(UserDTO userDTO)
+        public async Task<List<ChatMessageDTO>> GetBySenderId(UserDTO userDTO)
         {
-            this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
+            await this._userService.ValidateUserCredentials(userDTO.Id, userDTO.Password);
 
             var sentMessages = this._chatMessageRepository.GetBySenderId(userDTO.Id);
 
-            return this.AssignUsersToChatMessages(sentMessages);
+            return await AssignUsersToChatMessages(sentMessages);
         }
 
-        public void MarkMessagesAsRead(List<string> messagesIds)
+        public async Task MarkMessagesAsRead(List<string> messagesIds)
         {
             this._chatMessageRepository.MarkMessagesAsRead(messagesIds);
         }
 
-        public void MarkMessageAsRead(string messageId)
+        public async Task MarkMessageAsRead(string messageId)
         {
             this._chatMessageRepository.MarkMessageAsRead(messageId);
         }
 
-        private List<ChatMessageDTO> AssignUsersToChatMessages(List<ChatMessage> chatMessages)
+        private async Task<List<ChatMessageDTO>> AssignUsersToChatMessages(List<ChatMessage> chatMessages)
         {
             var result = new List<ChatMessageDTO>();
 
             var localUsersCache = new Dictionary<string, UserDTO>();
 
-            chatMessages.ForEach(message =>
+            chatMessages.ForEach(async message =>
             {
                 var messageDTO = ChatMessageDTO.EntityToDTO(message);
 
@@ -82,7 +82,7 @@ namespace LKDin.Server.BusinessLogic
                 }
                 else
                 {
-                    var user = this._userService.GetUser(message.SenderId);
+                    var user = await _userService.GetUser(message.SenderId);
 
                     messageDTO.Sender = user;
 
@@ -95,7 +95,7 @@ namespace LKDin.Server.BusinessLogic
                 }
                 else
                 {
-                    var user = this._userService.GetUser(message.ReceiverId);
+                    var user = await _userService.GetUser(message.ReceiverId);
 
                     messageDTO.Receiver = user;
 

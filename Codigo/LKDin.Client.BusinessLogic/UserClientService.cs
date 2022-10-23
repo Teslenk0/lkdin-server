@@ -14,21 +14,21 @@ namespace LKDin.Client.BusinessLogic
             _networkDataHelper = networkDataHelper;
         }
 
-        public void CreateUser(UserDTO userDTO)
+        public async Task CreateUser(UserDTO userDTO)
         {
             var serializedUser = SerializationManager.Serialize<UserDTO>(userDTO);
 
-            _networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
+            await _networkDataHelper.SendMessage(serializedUser, AvailableOperation.CREATE_USER);
 
-            _networkDataHelper.ReceiveMessage();
+            await _networkDataHelper.ReceiveMessage();
         }
 
-        public UserDTO? GetUser(string userId)
+        public async Task <UserDTO?> GetUser(string userId)
         {
             throw new NotImplementedException();
         }
 
-        public UserDTO ValidateUserCredentials(string userId, string password)
+        public async Task<UserDTO> ValidateUserCredentials(string userId, string password)
         {
             throw new NotImplementedException();
         }

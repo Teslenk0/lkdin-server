@@ -12,7 +12,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
             this._chatMessageService = chatMessageService;
         }
 
-        protected override void PerformExecution()
+        protected override async Task PerformExecution()
         {
             var senderId = this.RequestUserId(" Emisor ");
 
@@ -25,7 +25,7 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
                 Content = this.RequestMessageContent(),
             };
 
-            this._chatMessageService.CreateChatMessage(chatMessageDTO);
+            await this._chatMessageService.CreateChatMessage(chatMessageDTO);
 
             this.PrintFinishedExecutionMessage("Se envió el mensaje exitosamente");
         }

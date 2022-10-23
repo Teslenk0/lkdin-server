@@ -1,7 +1,7 @@
 ﻿namespace LKDin.Exceptions
 {
-    public class SocketInitializationException : Exception
+    public class TCPConnectionInitializationException : Exception
     {
-        public SocketInitializationException() : base("Tiene que inicializar el socket antes de arrancar a aceptar conexiones") { }
+        public TCPConnectionInitializationException() : base("Tiene que inicializar la conexión antes de arrancar a aceptar conexiones") { }
     }
 }

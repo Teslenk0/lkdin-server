@@ -22,26 +22,26 @@ public abstract class ConsoleMenuOption : IMenuOption
         MessageToPrint = messageToPrint;
     }
 
-    protected abstract void PerformExecution();
+    protected abstract Task PerformExecution();
 
-    public void Execute()
+    public async Task Execute()
     {
         try
         {
-            this.PrintHeader(this.MessageToPrint);
+            PrintHeader(MessageToPrint);
 
-            this.PerformExecution();
+            await PerformExecution();
 
         }
         catch (AbortCommandExecutionException)
         {
-            this.PrintFinishedExecutionMessage("Operación abortada", true);
+            PrintFinishedExecutionMessage("Operación abortada", true);
         }
         catch (Exception e)
         {
-            this.PrintError(e.Message);
+            PrintError(e.Message);
 
-            this.PrintFinishedExecutionMessage(null, false);
+            PrintFinishedExecutionMessage(null, false);
         }
     }
 

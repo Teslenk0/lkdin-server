@@ -10,13 +10,13 @@ namespace LKDin.Client;
 
 public class LKDinClient
 {
-    public static void Main()
+    public static async Task Main()
     {
         Console.WriteLine("Iniciando...");
 
         var networkingManager = ClientNetworkingManager.Instance;
 
-        var connected = networkingManager.InitSocketV4Connection();
+        var connected = await networkingManager.InitTCPConnection();
 
         var exitOption = new ExitOption("Salir", networkingManager);
 
@@ -25,14 +25,17 @@ public class LKDinClient
             Console.WriteLine("Información de la aplicación cliente en: {0}", ConfigManager.GetAppDataBasePath());
 
             Console.WriteLine("Cargando...");
-            Thread.Sleep(3000);
+
+            await Task.Delay(3000);
+
             Console.Clear();
 
-            var socketClient = networkingManager.GetSocket();
+            var tcpClient = networkingManager.GetClient();
 
-            new Thread(() => networkingManager.ValidateConnectionOrShutDown(exitOption.Execute)).Start();
+            // We don't need to await this since it's ok for it to run in the background
+            networkingManager.ValidateConnectionOrShutDown(exitOption.Execute);
 
-            var networkDataHelper = new NetworkDataHelper(socketClient);
+            var networkDataHelper = new NetworkDataHelper(tcpClient);
 
             var userService = new UserClientService(networkDataHelper);
 
@@ -56,10 +59,10 @@ public class LKDinClient
 
             IUIService uiService = new ConsoleMenuService(enabledOptions, false);
 
-            uiService.Render();
+            await uiService.Render();
         } else
         {
-            exitOption.Execute();
+            await exitOption.Execute();
         }
 
         
