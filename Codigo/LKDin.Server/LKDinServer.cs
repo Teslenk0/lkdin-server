@@ -10,8 +10,6 @@ namespace LKDin.Server;
 
 public class LKDinServer
 {
-    private static string BG_SOCKET_LISTENER_THREAD_NAME = "BG_SOCKET_LISTENER";
-
     private static async Task InitServerUI()
     {
         var userService = new UserService();
