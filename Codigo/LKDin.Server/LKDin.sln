@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server", "LKDin.Server.csproj", "{983C468C-B4B4-4655-80DB-65E6597B8C7B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.UI.ConsoleMenu", "..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj", "{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.IUI", "..\LKDin.IUI\LKDin.IUI.csproj", "{136B46E2-5F7B-4FC4-A0F8-5CBD67E04EB7}"
@@ -31,9 +29,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Networking", "..\LKDi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Client", "..\LKDin.Client\LKDin.Client.csproj", "{92462795-A460-4794-97C8-03A02CE21613}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Client.BusinessLogic", "..\LKDin.Client.BusinessLogic\LKDin.Client.BusinessLogic.csproj", "{6E76BDAB-43F8-498D-B379-3DF617897A92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Client.BusinessLogic", "..\LKDin.Client.BusinessLogic\LKDin.Client.BusinessLogic.csproj", "{6E76BDAB-43F8-498D-B379-3DF617897A92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Client.Networking", "..\LKDin.Client.Networking\LKDin.Client.Networking.csproj", "{8EABF85E-BB93-409F-9DC8-D874230D7285}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Client.Networking", "..\LKDin.Client.Networking\LKDin.Client.Networking.csproj", "{8EABF85E-BB93-409F-9DC8-D874230D7285}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Logging.Service", "..\LKDin.Logging.Service\LKDin.Logging.Service.csproj", "{8526E86D-2375-4587-8C5C-89CB5EA09B94}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Logging", "..\LKDin.Logging\LKDin.Logging.csproj", "{DD195619-45B1-4DE3-878D-1672F9C00F82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Messaging", "..\LKDin.Messaging\LKDin.Messaging.csproj", "{D0183BA6-05AA-4F9C-86A5-215778F918E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Logging.Client", "..\LKDin.Logging.Client\LKDin.Logging.Client.csproj", "{1F77A799-E4AE-4B54-B444-548E6851B887}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.V2", "..\LKDin.Server.V2\LKDin.Server.V2.csproj", "{560C2C5C-AE49-4A8F-9444-F426C46D335B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +49,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{983C468C-B4B4-4655-80DB-65E6597B8C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{983C468C-B4B4-4655-80DB-65E6597B8C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{983C468C-B4B4-4655-80DB-65E6597B8C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{983C468C-B4B4-4655-80DB-65E6597B8C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CF7A0B0-315E-496B-A700-17A60F9E8FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -105,6 +109,26 @@ Global
 		{8EABF85E-BB93-409F-9DC8-D874230D7285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EABF85E-BB93-409F-9DC8-D874230D7285}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EABF85E-BB93-409F-9DC8-D874230D7285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8526E86D-2375-4587-8C5C-89CB5EA09B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8526E86D-2375-4587-8C5C-89CB5EA09B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8526E86D-2375-4587-8C5C-89CB5EA09B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8526E86D-2375-4587-8C5C-89CB5EA09B94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD195619-45B1-4DE3-878D-1672F9C00F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD195619-45B1-4DE3-878D-1672F9C00F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD195619-45B1-4DE3-878D-1672F9C00F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD195619-45B1-4DE3-878D-1672F9C00F82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0183BA6-05AA-4F9C-86A5-215778F918E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0183BA6-05AA-4F9C-86A5-215778F918E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0183BA6-05AA-4F9C-86A5-215778F918E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0183BA6-05AA-4F9C-86A5-215778F918E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F77A799-E4AE-4B54-B444-548E6851B887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F77A799-E4AE-4B54-B444-548E6851B887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F77A799-E4AE-4B54-B444-548E6851B887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F77A799-E4AE-4B54-B444-548E6851B887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{560C2C5C-AE49-4A8F-9444-F426C46D335B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{560C2C5C-AE49-4A8F-9444-F426C46D335B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{560C2C5C-AE49-4A8F-9444-F426C46D335B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{560C2C5C-AE49-4A8F-9444-F426C46D335B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

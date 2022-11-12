@@ -1,35 +1,28 @@
 ﻿using LKDin.Helpers.Assets;
+using Microsoft.Extensions.Configuration;
 using System.Configuration;
 
 namespace LKDin.Helpers.Configuration
 {
     public static class ConfigManager
     {
-        public const string DOWNLOADS_FOLDER_KEY = "ABS_DOWNLOADS_PATH";
-
-        public const string SERVER_PORT_KEY = "SERVER_PORT";
-
-        public const string SERVER_IP_KEY = "SERVER_IP";
-
-        public const string APP_DATA_PATH_KEY = "ABS_APP_DATA_PATH";
-
-        public static string? GetConfig(string configKey)
+        public static T GetConfig<T>(string configKey)
         {
             try
             {
-                var appSettings = ConfigurationManager.AppSettings;
-                return appSettings[configKey] ?? string.Empty;
+                var configurationRoot = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+                return configurationRoot.GetValue<T>(configKey);
             }
             catch (ConfigurationErrorsException e)
             {
-                Console.WriteLine("Error al leer la configuración. Error: {0}", e.Message);
-                return string.Empty;
+                throw new Exception($"Error al leer la configuración. Error: {e.Message}");
             }
         }
 
         public static string GetAppDataBasePath()
         {
-            var folderPath = GetConfig(APP_DATA_PATH_KEY);
+            var folderPath = GetConfig<string>(ConfigConstants.APP_DATA_PATH_KEY);
 
             if (string.IsNullOrWhiteSpace(folderPath))
             {
@@ -81,10 +74,11 @@ namespace LKDin.Helpers.Configuration
 
             if (isServer)
             {
-                path = GetConfig(DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Server-Downloads";
-            } else
+                path = GetConfig<string>(ConfigConstants.DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Server-Downloads";
+            }
+            else
             {
-                path = GetConfig(DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Client-Downloads";
+                path = GetConfig<string>(ConfigConstants.DOWNLOADS_FOLDER_KEY) ?? "/LKDin-Client-Downloads";
             }
 
             return Path.Join(path, storeName);

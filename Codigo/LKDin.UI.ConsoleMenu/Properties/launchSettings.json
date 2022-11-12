@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LKDin.UI.ConsoleMenu": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52390;http://localhost:52393"
+    }
+  }
+}

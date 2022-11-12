@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
 using LKDin.Exceptions;
+using LKDin.Logging.Client;
 using LKDin.Networking;
 
 namespace LKDin.Server.Networking
@@ -17,8 +17,12 @@ namespace LKDin.Server.Networking
 
         private TcpListener _tcpListener;
 
+        private readonly Logger _logger;
+
         private ServerNetworkingManager() : base()
-        { }
+        {
+            _logger = new Logger("server-v2:networking-manager");
+        }
 
         public override async Task<bool> InitTCPConnection()
         {
@@ -34,8 +38,8 @@ namespace LKDin.Server.Networking
             }
             catch (Exception e)
             {
-                Console.WriteLine("Falló la inicialización del servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
-                Console.WriteLine("Error: {0}", e.Message);
+                _logger.Error($"Falló la inicialización del socket server => IP = {this.ServerIPAddress} | PUERTO = {this.ServerPort}");
+                _logger.Error($"Error: {e.Message}");
             }
 
             return this._isWorking;
@@ -46,7 +50,7 @@ namespace LKDin.Server.Networking
             if (this._tcpListener != null)
             {
                 Console.WriteLine("---------------------------------");
-                Console.WriteLine("Server escuchando en {0}:{1}", this.ServerIPAddress, this.ServerPort);
+                _logger.Info($"Socket Server escuchando en {this.ServerIPAddress}:{this.ServerPort}");
                 Console.WriteLine("---------------------------------");
 
                 while (this._isWorking)

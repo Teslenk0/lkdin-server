@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LKDin.IUI\LKDin.IUI.csproj" />
+    <ProjectReference Include="..\LKDin.Logging.Client\LKDin.Logging.Client.csproj" />
     <ProjectReference Include="..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj" />
     <ProjectReference Include="..\LKDin.UI.ConsoleMenu\LKDin.UI.ConsoleMenu.csproj" />
     <ProjectReference Include="..\LKDin.Server.Networking\LKDin.Server.Networking.csproj" />

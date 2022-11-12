@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LKDin.Exceptions\LKDin.Exceptions.csproj" />
     <ProjectReference Include="..\LKDin.IBusinessLogic\LKDin.IBusinessLogic.csproj" />
+    <ProjectReference Include="..\LKDin.Logging.Client\LKDin.Logging.Client.csproj" />
     <ProjectReference Include="..\LKDin.Server.DataAccess\LKDin.Server.DataAccess.csproj" />
     <ProjectReference Include="..\LKDin.Server.IDataAccess\LKDin.Server.IDataAccess.csproj" />
   </ItemGroup>

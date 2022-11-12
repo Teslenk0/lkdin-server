@@ -5,6 +5,7 @@ using LKDin.Server.Networking;
 using LKDin.Networking;
 using LKDin.UI.ConsoleMenu;
 using LKDin.UI.ConsoleMenu.AvailableOptions;
+using LKDin.Logging.Service.Internal.Logging;
 
 namespace LKDin.Server;
 
@@ -42,6 +43,10 @@ public class LKDinServer
     public static async Task Main()
     {
         Console.WriteLine("Iniciando...");
+
+        var logger = new Logger("server");
+
+        logger.Info("Iniciando servidor");
 
         var networkingManager = ServerNetworkingManager.Instance;
 

@@ -20,19 +20,16 @@ namespace LKDin.Networking
         {
             try
             {
-                var rawPort = ConfigManager.GetConfig(ConfigManager.SERVER_PORT_KEY);
+                this.ServerPort = ConfigManager.GetConfig<int>(ConfigConstants.SOCKET_SERVER_PORT_KEY);
 
-                // Defaulting in case it's null
-                this.ServerPort = int.Parse(string.IsNullOrWhiteSpace(rawPort) ? "5000" : rawPort);
-
-                var rawIp = ConfigManager.GetConfig(ConfigManager.SERVER_IP_KEY);
+                var rawIp = ConfigManager.GetConfig<string>(ConfigConstants.SOCKET_SERVER_IP_KEY);
 
                 // Defaulting in case it's null
                 this.ServerIPAddress = IPAddress.Parse(string.IsNullOrWhiteSpace(rawIp) ? "127.0.0.1" : rawIp);
             }
             catch (Exception)
             {
-                Console.WriteLine($"Error al cargar {ConfigManager.SERVER_IP_KEY} y {ConfigManager.SERVER_PORT_KEY}");
+                Console.WriteLine($"Error al cargar {ConfigConstants.SOCKET_SERVER_IP_KEY} y {ConfigConstants.SOCKET_SERVER_PORT_KEY}");
             }
         }
 
@@ -55,7 +52,8 @@ namespace LKDin.Networking
                     Console.WriteLine("Se cerró la conexión al servidor => IP = {0} | PUERTO = {1}", this.ServerIPAddress, this.ServerPort);
 
                     await handler();
-                } else
+                }
+                else
                 {
                     await Task.Delay(VALIDATE_CONNECTION_INTERVAL_MS);
                 }
