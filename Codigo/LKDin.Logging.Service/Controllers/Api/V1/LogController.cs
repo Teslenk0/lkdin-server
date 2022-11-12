@@ -2,7 +2,7 @@ using LKDin.Logging.Service.Internal.DTOs;
 using LKDin.Logging.Service.Internal.Logging;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LKDin.Logging.Service.Controllers
+namespace LKDin.Logging.Service.Controllers.Api.V1
 {
     [ApiController]
     [Route("api/v1/[controller]")]

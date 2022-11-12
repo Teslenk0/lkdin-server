@@ -40,7 +40,13 @@ namespace LKDin.Server.V2
 
         private static void AttachServices(WebApplication app)
         {
-            app.MapGrpcService<GreeterService>();
+            app.MapGrpcService<UserService>();
+            app.MapGrpcService<WorkProfileService>();
+        }
+
+        private static void SetupServicesToInject(WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IMyDependency, MyDependency>();
         }
     }
 }

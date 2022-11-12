@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "LKDin.Admin";
+
+package work_profile;
+
+service WorkProfile {
+  rpc CreateWorkProfile(CreateWorkProfileRequest)
+      returns (CreateWorkProfileReply);
+
+  rpc DeleteWorkProfile(DeleteWorkProfileRequest)
+      returns (DeleteWorkProfileReply);
+
+  rpc UpdateWorkProfile(UpdateWorkProfileRequest)
+      returns (UpdateWorkProfileReply);
+
+  rpc DeleteWorkProfileImage(DeleteWorkProfileImageRequest)
+      returns (DeleteWorkProfileImageReply);
+}
+
+message CreateWorkProfileRequest {
+  string name = 1;
+}
+
+message DeleteWorkProfileRequest {
+  string name = 1;
+}
+
+message UpdateWorkProfileRequest {
+  string name = 1;
+}
+
+message DeleteWorkProfileImageRequest {
+  string name = 1;
+}
+
+message CreateWorkProfileReply {
+  string message = 1;
+}
+
+message DeleteWorkProfileReply {
+  string message = 1;
+}
+
+message UpdateWorkProfileReply {
+  string message = 1;
+}
+
+message DeleteWorkProfileImageReply {
+  string message = 1;
+}

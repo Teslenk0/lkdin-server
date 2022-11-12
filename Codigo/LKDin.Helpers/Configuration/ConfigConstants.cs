@@ -27,5 +27,7 @@ namespace LKDin.Helpers.Configuration
         public const string BROKER_EXCHANGE = "BROKER_EXCHANGE";
 
         public const string BROKER_QUEUE = "BROKER_QUEUE";
+
+        public const string GRPC_SERVER_URL = "GRPC_SERVER_URL";
     }
 }
