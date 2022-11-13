@@ -6,9 +6,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class CreateUserOption : UserProtectedConsoleMenuOption
     {
-        private readonly IUserService _userService;
+        private readonly IUserLogic _userService;
 
-        public CreateUserOption(string messageToPrint, IUserService userService) : base(messageToPrint)
+        public CreateUserOption(string messageToPrint, IUserLogic userService) : base(messageToPrint)
         {
             this._userService = userService;
         }

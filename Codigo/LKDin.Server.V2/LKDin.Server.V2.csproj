@@ -16,11 +16,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\LKDin.DTOs\LKDin.DTOs.csproj" />
+		<ProjectReference Include="..\LKDin.IBusinessLogic\LKDin.IBusinessLogic.csproj" />
 		<ProjectReference Include="..\LKDin.Logging.Client\LKDin.Logging.Client.csproj" />
+		<ProjectReference Include="..\LKDin.Server.BusinessLogic\LKDin.Server.BusinessLogic.csproj" />
 		<ProjectReference Include="..\LKDin.Server.Networking\LKDin.Server.Networking.csproj" />
 	</ItemGroup>
 

@@ -6,7 +6,7 @@ using LKDin.Networking;
 
 namespace LKDin.Client.BusinessLogic
 {
-    public class WorkProfileClientService : IWorkProfileService
+    public class WorkProfileClientService : IWorkProfileLogic
     {
         private readonly NetworkDataHelper _networkDataHelper;
 

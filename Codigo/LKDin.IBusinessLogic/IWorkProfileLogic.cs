@@ -2,7 +2,7 @@
 
 namespace LKDin.IBusinessLogic
 {
-    public interface IWorkProfileService
+    public interface IWorkProfileLogic
     {
         public Task CreateWorkProfile(WorkProfileDTO workProfileDTO);
 

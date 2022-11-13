@@ -2,6 +2,11 @@ using LKDin.Server.Networking;
 using LKDin.Server.V2.Services;
 using LKDin.Helpers.Configuration;
 using LKDin.Logging.Client;
+using LKDin.IBusinessLogic;
+using LKDin.Server.BusinessLogic;
+using AutoMapper;
+using LKDin.Server.V2.Internal.Interceptors;
+using LKDin.Server.V2.Internal.Mappings;
 
 namespace LKDin.Server.V2
 {
@@ -19,7 +24,15 @@ namespace LKDin.Server.V2
 
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddGrpc();
+            builder.Services.AddGrpc(options =>
+            {
+                {
+                    options.Interceptors.Add<GRPCErrorInterceptor>();
+                    options.EnableDetailedErrors = true;
+                }
+            });
+
+            SetupServicesToInject(builder);
 
             var app = builder.Build();
 
@@ -46,7 +59,20 @@ namespace LKDin.Server.V2
 
         private static void SetupServicesToInject(WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<IMyDependency, MyDependency>();
+            builder.Services.AddScoped<IUserLogic, UserLogic>(x =>
+     ActivatorUtilities.CreateInstance<UserLogic>(x, true));
+
+            builder.Services.AddScoped<IWorkProfileLogic, WorkProfileLogic>(x =>
+     ActivatorUtilities.CreateInstance<WorkProfileLogic>(x, true));
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ServerMappingProfile());
+            });
+
+            var mapper = config.CreateMapper();
+
+            builder.Services.AddSingleton(mapper);
         }
     }
 }

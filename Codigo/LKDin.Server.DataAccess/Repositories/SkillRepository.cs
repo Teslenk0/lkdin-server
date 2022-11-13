@@ -49,6 +49,13 @@ namespace LKDin.Server.DataAccess.Repositories
                     .Contains(skill.WorkProfileId))
                 .ToList();
         }
+
+        public void DeleteSkillsByWorkProfileId(string workProfileId)
+        {
+            var skills = GetByWorkProfileIds(new List<string>() { workProfileId });
+
+            skills.ForEach(skill => DataManager.DeleteDataFromStore<Skill>(skill));
+        }
     }
 }
 

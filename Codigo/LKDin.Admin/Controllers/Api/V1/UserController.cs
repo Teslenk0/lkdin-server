@@ -30,46 +30,31 @@ namespace LKDin.Admin.Controllers.Api.V1
 
         // POST api/v1/user
         [HttpPost]
-        public async Task Post([FromBody] UserDTO userDTO)
+        public async Task<ActionReply> Post([FromBody] UserDTO userDTO)
         {
-            try
-            {
-                var upsertReq = _mapper.Map<UpsertUserRequest>(userDTO);
+            var upsertReq = _mapper.Map<UpsertUserRequest>(userDTO);
 
-                _client.CreateUser(upsertReq);
-            }catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            return await _client.CreateUserAsync(upsertReq);
         }
-
-
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionReply> Put(string id, [FromBody] UserDTO userDTO)
         {
+            userDTO.Id = id;
+
+            var upsertReq = _mapper.Map<UpsertUserRequest>(userDTO);
+
+            return await _client.UpdateUserAsync(upsertReq);
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionReply> Delete(string id)
         {
+            var req = new DeleteUserRequest() { Id = id };
+
+            return await _client.DeleteUserAsync(req);
         }
     }
 }

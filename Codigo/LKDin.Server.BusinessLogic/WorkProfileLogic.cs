@@ -9,17 +9,17 @@ using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.BusinessLogic
 {
-    public class WorkProfileService : IWorkProfileService
+    public class WorkProfileLogic : IWorkProfileLogic
     {
         private readonly IWorkProfileRepository _workProfileRepository;
 
         private readonly ISkillRepository _skillRepository;
 
-        private readonly IUserService _userService;
+        private readonly IUserLogic _userService;
 
         private readonly Logger _logger;
 
-        public WorkProfileService(IUserService userService)
+        public WorkProfileLogic(IUserLogic userService)
         {
             this._workProfileRepository = new WorkProfileRepository();
 

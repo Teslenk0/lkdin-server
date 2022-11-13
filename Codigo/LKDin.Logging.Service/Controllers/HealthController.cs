@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace LKDin.Admin.Controllers
+namespace LKDin.Logging.Service.Controllers
 {
     [Route("_health")]
     [ApiController]
     public class HealthController : ControllerBase
     {
         [HttpGet]
-        public Object Get()
+        public object Get()
         {
             return new { Application = "LKDin.Logging.Service", Healthy = true, };
         }

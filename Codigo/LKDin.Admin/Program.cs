@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
-using LKDin.Admin.Internal;
+using LKDin.Admin.Internal.Filters;
+using LKDin.Admin.Internal.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new ErrorHandlerFilter());
+});
 
 var config = new MapperConfiguration(cfg =>
 {

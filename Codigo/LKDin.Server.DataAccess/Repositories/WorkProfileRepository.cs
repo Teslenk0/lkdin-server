@@ -50,5 +50,19 @@ namespace LKDin.Server.DataAccess.Repositories
                 .Where(wp => wp.Description.ToLower().Contains(description.ToLower()))
                 .ToList();
         }
+
+        public void DeleteWorkProfileByUserId(string userId)
+        {
+            var workProfile = GetByUserId(userId);
+
+            if (workProfile != null)
+            {
+                DataManager.DeleteDataFromStore<WorkProfile>(workProfile);
+
+                var skillRepository = new SkillRepository();
+
+                skillRepository.DeleteSkillsByWorkProfileId(workProfile.Id);
+            }
+        }
     }
 }

@@ -9,5 +9,9 @@ namespace LKDin.Server.IDataAccess.Repositories
         public bool Exists(string id);
 
         public User? Get(string id);
+
+        public User Update(User user);
+
+        public void Delete(User user);
     }
 }

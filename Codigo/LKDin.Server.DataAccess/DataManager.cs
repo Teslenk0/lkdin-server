@@ -99,12 +99,35 @@ namespace LKDin.Server.DataAccess
             lock (locker)
             {
                 var linesToKeep = File.ReadLines(filePath)
-                         .Where(l => !l.Contains($"Id(string)={baseEntity.Id}"))
+                         .Where(l => !(l.EndsWith($"Id(string)={baseEntity.Id}") || l.Contains($"Id(string)={baseEntity.Id}|")))
                          .ToList();
 
                 var updatedData = SerializationManager.Serialize<T>(baseEntity);
 
                 linesToKeep.Add(updatedData);
+
+                File.WriteAllLines(filePath, linesToKeep);
+            }
+        }
+
+        public static void DeleteDataFromStore<T>(BaseEntity baseEntity)
+        {
+            var storeName = typeof(T).Name.ToLower();
+
+            if (!_lockers.ContainsKey(storeName))
+            {
+                _lockers.TryAdd(storeName, new object());
+            }
+
+            var filePath = ConfigManager.GetStoreFilePath(storeName);
+
+            var locker = _lockers[storeName];
+
+            lock (locker)
+            {
+                var linesToKeep = File.ReadLines(filePath)
+                         .Where(l => !(l.EndsWith($"Id(string)={baseEntity.Id}") || l.Contains($"Id(string)={baseEntity.Id}|")))
+                         .ToList();
 
                 File.WriteAllLines(filePath, linesToKeep);
             }

@@ -7,9 +7,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class SearchWorkProfilesBySkillsOption : ConsoleMenuOption
     {
-        private readonly IWorkProfileService _workProfileService;
+        private readonly IWorkProfileLogic _workProfileService;
 
-        public SearchWorkProfilesBySkillsOption(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
+        public SearchWorkProfilesBySkillsOption(string messageToPrint, IWorkProfileLogic workProfileService) : base(messageToPrint)
         {
             this._workProfileService = workProfileService;
         }

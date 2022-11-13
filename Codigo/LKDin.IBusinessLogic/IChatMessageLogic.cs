@@ -2,7 +2,7 @@
 
 namespace LKDin.IBusinessLogic
 {
-    public interface IChatMessageService
+    public interface IChatMessageLogic
     {
         public Task CreateChatMessage(ChatMessageDTO chatMessageDTO);
 

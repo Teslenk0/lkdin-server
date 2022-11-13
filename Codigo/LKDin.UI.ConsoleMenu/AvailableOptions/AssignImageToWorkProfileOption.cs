@@ -6,9 +6,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class AssignImageToWorkProfile : UserProtectedConsoleMenuOption
     {
-        private readonly IWorkProfileService _workProfileService;
+        private readonly IWorkProfileLogic _workProfileService;
 
-        public AssignImageToWorkProfile(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
+        public AssignImageToWorkProfile(string messageToPrint, IWorkProfileLogic workProfileService) : base(messageToPrint)
         {
             this._workProfileService = workProfileService;
         }

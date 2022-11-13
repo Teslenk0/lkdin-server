@@ -5,9 +5,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class CheckChatMessagesOption : UserProtectedConsoleMenuOption
     {
-        private readonly IChatMessageService _chatMessageService;
+        private readonly IChatMessageLogic _chatMessageService;
 
-        public CheckChatMessagesOption(string messageToPrint, IChatMessageService chatMessageService) : base(messageToPrint)
+        public CheckChatMessagesOption(string messageToPrint, IChatMessageLogic chatMessageService) : base(messageToPrint)
         {
             this._chatMessageService = chatMessageService;
         }

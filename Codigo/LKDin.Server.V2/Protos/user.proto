@@ -24,6 +24,7 @@ message DeleteUserRequest {
 }
 
 message ActionReply {
-	int32 status = 1;
+	string status = 1;
 	string message = 2;
+	bool   success = 3;
 }

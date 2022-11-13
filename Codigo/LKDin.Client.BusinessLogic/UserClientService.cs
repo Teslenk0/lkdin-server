@@ -5,7 +5,7 @@ using LKDin.Networking;
 
 namespace LKDin.Client.BusinessLogic
 {
-    public class UserClientService : IUserService
+    public class UserClientService : IUserLogic
     {
         private readonly NetworkDataHelper _networkDataHelper;
 
@@ -23,7 +23,17 @@ namespace LKDin.Client.BusinessLogic
             await _networkDataHelper.ReceiveMessage();
         }
 
+        public async Task DeleteUser(UserDTO userDTO)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task <UserDTO?> GetUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateUser(UserDTO userDTO)
         {
             throw new NotImplementedException();
         }

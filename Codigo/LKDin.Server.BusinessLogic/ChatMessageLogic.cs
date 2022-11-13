@@ -5,19 +5,18 @@ using LKDin.Server.Domain;
 using LKDin.Server.DataAccess.Repositories;
 using LKDin.Server.IDataAccess.Repositories;
 using LKDin.Logging.Client;
-using LKDin.Messaging;
 
 namespace LKDin.Server.BusinessLogic
 {
-    public class ChatMessageService : IChatMessageService
+    public class ChatMessageLogic : IChatMessageLogic
     {
         private readonly IChatMessageRepository _chatMessageRepository;
 
-        private readonly IUserService _userService;
+        private readonly IUserLogic _userService;
 
         private readonly Logger _logger;
 
-        public ChatMessageService(IUserService userService)
+        public ChatMessageLogic(IUserLogic userService)
         {
             this._chatMessageRepository = new ChatMessageRepository();
 

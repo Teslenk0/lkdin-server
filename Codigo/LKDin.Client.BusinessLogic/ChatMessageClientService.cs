@@ -5,7 +5,7 @@ using LKDin.Networking;
 
 namespace LKDin.Client.BusinessLogic
 {
-    public class ChatMessageClientService : IChatMessageService
+    public class ChatMessageClientService : IChatMessageLogic
     {
         private readonly NetworkDataHelper _networkDataHelper;
 

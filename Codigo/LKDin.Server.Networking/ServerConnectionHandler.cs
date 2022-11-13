@@ -31,7 +31,7 @@ namespace LKDin.Server.Networking
                     {
                         case AvailableOperation.CREATE_USER:
                             {
-                                var userService = new UserService();
+                                var userService = new UserLogic();
 
                                 await userService.CreateUser(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
@@ -40,7 +40,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.CREATE_WORK_PROFILE:
                             {
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 await workProfileService.CreateWorkProfile(SerializationManager.Deserialize<WorkProfileDTO>(messagePayload));
 
@@ -55,7 +55,7 @@ namespace LKDin.Server.Networking
 
                                 workProfileDTO.ImagePath = tmpFilePath;
 
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 await workProfileService.AssignImageToWorkProfile(workProfileDTO);
 
@@ -64,7 +64,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.SEARCH_PROFILES_BY_DESCRIPTION:
                             {
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 var profiles = await workProfileService.GetWorkProfilesByDescription(messagePayload);
 
@@ -75,7 +75,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.SEARCH_PROFILES_BY_SKILLS:
                             {
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 var profiles = await workProfileService.GetWorkProfilesBySkills(SerializationManager.Deserialize<List<SkillDTO>>(messagePayload));
 
@@ -86,7 +86,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.SHOW_WORK_PROFILE_BY_ID:
                             {
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 var profile = await workProfileService.GetWorkProfileByUserId(messagePayload);
 
@@ -97,7 +97,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.CHECK_CHAT_MESSAGES_BY_SENDER_ID:
                             {
-                                var chatMessageService = new ChatMessageService(new UserService());
+                                var chatMessageService = new ChatMessageLogic(new UserLogic());
 
                                 var chatMessages = await chatMessageService.GetBySenderId(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
@@ -108,7 +108,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.CHECK_CHAT_MESSAGES_BY_RECEIVER_ID:
                             {
-                                var chatMessageService = new ChatMessageService(new UserService());
+                                var chatMessageService = new ChatMessageLogic(new UserLogic());
 
                                 var chatMessages = await chatMessageService.GetByReceiverId(SerializationManager.Deserialize<UserDTO>(messagePayload));
 
@@ -119,7 +119,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.SEND_CHAT_MESSAGE:
                             {
-                                var chatMessageService = new ChatMessageService(new UserService());
+                                var chatMessageService = new ChatMessageLogic(new UserLogic());
 
                                 await chatMessageService.CreateChatMessage(SerializationManager.Deserialize<ChatMessageDTO>(messagePayload));
 
@@ -128,7 +128,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.MARK_MESSAGE_AS_READ:
                             {
-                                var chatMessageService = new ChatMessageService(new UserService());
+                                var chatMessageService = new ChatMessageLogic(new UserLogic());
 
                                 await chatMessageService.MarkMessageAsRead(messagePayload);
 
@@ -137,7 +137,7 @@ namespace LKDin.Server.Networking
                             break;
                         case AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID:
                             {
-                                var workProfileService = new WorkProfileService(new UserService());
+                                var workProfileService = new WorkProfileLogic(new UserLogic());
 
                                 var workProfileDTO = await workProfileService.GetWorkProfileByUserId(messagePayload);
 

@@ -5,9 +5,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class ShowUserOption : UserProtectedConsoleMenuOption
     {
-        private readonly IWorkProfileService _workProfileService;
+        private readonly IWorkProfileLogic _workProfileService;
 
-        public ShowUserOption(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
+        public ShowUserOption(string messageToPrint, IWorkProfileLogic workProfileService) : base(messageToPrint)
         {
             this._workProfileService = workProfileService;
         }

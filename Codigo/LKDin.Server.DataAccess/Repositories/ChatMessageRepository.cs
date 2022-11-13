@@ -57,5 +57,12 @@ namespace LKDin.Server.DataAccess.Repositories
                 DataManager.UpdateDataFromStore<ChatMessage>(message);
             });
         }
+
+        public void DeleteChatMessagesByUserId(string userId)
+        {
+            GetBySenderId(userId).ForEach(message => DataManager.DeleteDataFromStore<ChatMessage>(message));
+
+            GetByReceiverId(userId).ForEach(message => DataManager.DeleteDataFromStore<ChatMessage>(message));
+        }
     }
 }

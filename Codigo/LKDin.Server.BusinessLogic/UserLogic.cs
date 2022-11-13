@@ -7,17 +7,21 @@ using LKDin.Server.IDataAccess.Repositories;
 
 namespace LKDin.Server.BusinessLogic
 {
-    public class UserService : IUserService
+    public class UserLogic : IUserLogic
     {
         private readonly IUserRepository _userRepository;
 
         private readonly Logger _logger;
 
-        public UserService()
+        private readonly bool _skipPasswordCheck;
+
+        public UserLogic(bool skipPasswordCheck = false)
         {
             this._userRepository = new UserRepository();
 
             this._logger = new Logger("server:business-logic:user-service");
+
+            _skipPasswordCheck = skipPasswordCheck;
         }
 
         public async Task CreateUser(UserDTO userDTO)
@@ -40,6 +44,48 @@ namespace LKDin.Server.BusinessLogic
             this._userRepository.Create(user);
 
             this._logger.Info($"Se creó el usuario ID:{userDTO.Id} exitosamente");
+        }
+
+        public async Task UpdateUser(UserDTO userDTO)
+        {
+            this._logger.Info($"Actualizando usuario ID:{userDTO.Id}");
+
+            var exists = this._userRepository.Exists(userDTO.Id);
+
+            if (!exists)
+            {
+                this._logger.Error($"Usuario ID:{userDTO.Id} no existe");
+
+                throw new UserDoesNotExistException(userDTO.Id);
+            }
+
+            var user = UserDTO.DTOToEntity(userDTO);
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
+
+            this._userRepository.Update(user);
+
+            this._logger.Info($"Se actualizó el usuario ID:{userDTO.Id} exitosamente");
+        }
+
+        public async Task DeleteUser(UserDTO userDTO)
+        {
+            this._logger.Info($"Eliminando usuario ID:{userDTO.Id}");
+
+            var exists = this._userRepository.Exists(userDTO.Id);
+
+            if (!exists)
+            {
+                this._logger.Error($"Usuario ID:{userDTO.Id} no existe");
+
+                throw new UserDoesNotExistException(userDTO.Id);
+            }
+
+            var user = UserDTO.DTOToEntity(userDTO);
+
+            this._userRepository.Delete(user);
+
+            this._logger.Info($"Se eliminó el usuario ID:{userDTO.Id} exitosamente");
         }
 
         public async Task<UserDTO?> GetUser(string userId)
@@ -67,6 +113,11 @@ namespace LKDin.Server.BusinessLogic
                 this._logger.Error($"Usuario inexistente ID:{userId}");
 
                 throw new UserDoesNotExistException(userId);
+            }
+
+            if (_skipPasswordCheck)
+            {
+                return UserDTO.EntityToDTO(user);
             }
 
             bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);

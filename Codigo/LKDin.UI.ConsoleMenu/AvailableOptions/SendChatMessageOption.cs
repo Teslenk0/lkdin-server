@@ -5,9 +5,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class SendChatMessageOption : UserProtectedConsoleMenuOption
     {
-        private readonly IChatMessageService _chatMessageService;
+        private readonly IChatMessageLogic _chatMessageService;
 
-        public SendChatMessageOption(string messageToPrint, IChatMessageService chatMessageService) : base(messageToPrint)
+        public SendChatMessageOption(string messageToPrint, IChatMessageLogic chatMessageService) : base(messageToPrint)
         {
             this._chatMessageService = chatMessageService;
         }

@@ -4,9 +4,9 @@ namespace LKDin.UI.ConsoleMenu.AvailableOptions
 {
     public class DownloadWorkProfileImageOption : UserProtectedConsoleMenuOption
     {
-        private readonly IWorkProfileService _workProfileService;
+        private readonly IWorkProfileLogic _workProfileService;
 
-        public DownloadWorkProfileImageOption(string messageToPrint, IWorkProfileService workProfileService) : base(messageToPrint)
+        public DownloadWorkProfileImageOption(string messageToPrint, IWorkProfileLogic workProfileService) : base(messageToPrint)
         {
             this._workProfileService = workProfileService;
         }
