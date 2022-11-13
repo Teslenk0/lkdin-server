@@ -4,48 +4,28 @@ option csharp_namespace = "LKDin.Server.V2";
 
 package work_profile;
 
+import "Protos/shared.proto";
+
 service WorkProfile {
-  rpc CreateWorkProfile(CreateWorkProfileRequest)
-      returns (CreateWorkProfileReply);
+  rpc CreateWorkProfile(UpsertWorkProfileRequest)
+      returns (shared.ActionReply);
 
-  rpc DeleteWorkProfile(DeleteWorkProfileRequest)
-      returns (DeleteWorkProfileReply);
+  rpc UpdateWorkProfile(UpsertWorkProfileRequest)
+      returns (shared.ActionReply);
 
-  rpc UpdateWorkProfile(UpdateWorkProfileRequest)
-      returns (UpdateWorkProfileReply);
+  rpc DeleteWorkProfile(shared.DeleteActionRequest)
+      returns (shared.ActionReply);
 
-  rpc DeleteWorkProfileImage(DeleteWorkProfileImageRequest)
-      returns (DeleteWorkProfileImageReply);
+  rpc DeleteWorkProfileImage(shared.DeleteActionRequest)
+      returns (shared.ActionReply);
 }
 
-message CreateWorkProfileRequest {
-  string name = 1;
+message UpsertSkillRequest {
+    string name = 1;
 }
 
-message DeleteWorkProfileRequest {
-  string name = 1;
-}
-
-message UpdateWorkProfileRequest {
-  string name = 1;
-}
-
-message DeleteWorkProfileImageRequest {
-  string name = 1;
-}
-
-message CreateWorkProfileReply {
-  string message = 1;
-}
-
-message DeleteWorkProfileReply {
-  string message = 1;
-}
-
-message UpdateWorkProfileReply {
-  string message = 1;
-}
-
-message DeleteWorkProfileImageReply {
-  string message = 1;
+message UpsertWorkProfileRequest {
+        string description = 1;
+        string userId = 2;
+        repeated UpsertSkillRequest skills = 3;
 }

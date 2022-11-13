@@ -15,5 +15,11 @@ namespace LKDin.IBusinessLogic
         public Task<WorkProfileDTO> GetWorkProfileByUserId(string userId);
 
         public Task<string> DownloadWorkProfileImage(string userId);
+
+        public Task DeleteWorkProfileImage(WorkProfileDTO workProfileDTO);
+
+        public Task DeleteWorkProfile(WorkProfileDTO workProfileDTO);
+
+        public Task UpdateWorkProfile(WorkProfileDTO workProfileDTO);
     }
 }

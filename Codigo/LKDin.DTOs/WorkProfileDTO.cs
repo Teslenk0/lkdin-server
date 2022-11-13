@@ -4,15 +4,15 @@ namespace LKDin.DTOs
 {
     public class WorkProfileDTO : ProtectedDTO
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public string? ImagePath { get; set; }
 
-        public List<SkillDTO> Skills { get; set; }
+        public List<SkillDTO>? Skills { get; set; }
 
-        public UserDTO User { get; set; }
+        public UserDTO? User { get; set; }
 
         public static WorkProfileDTO EntityToDTO(WorkProfile workProfile)
         {

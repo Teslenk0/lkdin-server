@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Logging.Client", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Server.V2", "..\LKDin.Server.V2\LKDin.Server.V2.csproj", "{560C2C5C-AE49-4A8F-9444-F426C46D335B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LKDin.Admin", "..\LKDin.Admin\LKDin.Admin.csproj", "{B79546F9-9CAB-4A05-AFA8-8ACBB0772CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LKDin.Admin", "..\LKDin.Admin\LKDin.Admin.csproj", "{B79546F9-9CAB-4A05-AFA8-8ACBB0772CD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

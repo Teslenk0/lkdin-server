@@ -7,6 +7,27 @@ namespace LKDin.Helpers.Assets
     {
         private readonly static Dictionary<string, object> _lockers = new();
 
+        public static void DeleteAssetFromAssetsFolder<T>(string filePath)
+        {
+            if (!DoesFileExist(filePath))
+            {
+                throw new AssetDoesNotExistException(filePath);
+            }
+
+            if (!_lockers.ContainsKey(filePath))
+            {
+                _lockers.TryAdd(filePath, new object());
+            }
+
+            var lockerForFile = _lockers[filePath];
+
+            lock (lockerForFile)
+            {
+                File.Delete(filePath);
+            }
+
+        }
+
         public static string CopyFileToDownloadsFolder<T>(string filePath, bool isServer)
         {
             if (!DoesFileExist(filePath))
@@ -99,7 +120,7 @@ namespace LKDin.Helpers.Assets
 
             var finalFileName = fileName;
 
-            if(fileMode == FileMode.Create)
+            if (fileMode == FileMode.Create)
             {
                 // If the file does not exists in the tmp folder assign a tmp name
                 finalFileName = $"{Guid.NewGuid()}{Path.GetExtension(fileName)}";
@@ -117,8 +138,8 @@ namespace LKDin.Helpers.Assets
                 using var fs = new FileStream(filePath, fileMode);
 
                 fs.Write(data, 0, data.Length);
-            }          
-            
+            }
+
             return finalFileName;
         }
 

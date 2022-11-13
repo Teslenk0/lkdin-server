@@ -6,9 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-	<!--<ItemGroup>
+  <!--<ItemGroup>
     <None Remove="Protos\user.proto" />
     <None Remove="Protos\work_profile.proto" />
+	<None Remove="Protos\shared.proto" />
   </ItemGroup>-->
 
   <ItemGroup>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\shared.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\user.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\work_profile.proto" GrpcServices="Client" />
   </ItemGroup>

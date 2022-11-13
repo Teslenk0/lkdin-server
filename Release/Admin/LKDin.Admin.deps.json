@@ -1,0 +1,618 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "LKDin.Admin/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "12.0.0",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
+          "Google.Protobuf": "3.21.9",
+          "Grpc.Net.Client": "2.49.0",
+          "Grpc.Tools": "2.50.0",
+          "LKDin.DTOs": "1.0.0",
+          "LKDin.Helpers": "1.0.0"
+        },
+        "runtime": {
+          "LKDin.Admin.dll": {}
+        }
+      },
+      "AutoMapper/12.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.0": {
+        "dependencies": {
+          "AutoMapper": "12.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "Google.Protobuf/3.21.9": {
+        "runtime": {
+          "lib/net5.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.21.9.0",
+            "fileVersion": "3.21.9.0"
+          }
+        }
+      },
+      "Grpc.Core.Api/2.49.0": {
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Grpc.Core.Api.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.49.0.0"
+          }
+        }
+      },
+      "Grpc.Net.Client/2.49.0": {
+        "dependencies": {
+          "Grpc.Net.Common": "2.49.0",
+          "Microsoft.Extensions.Logging.Abstractions": "3.0.3"
+        },
+        "runtime": {
+          "lib/net6.0/Grpc.Net.Client.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.49.0.0"
+          }
+        }
+      },
+      "Grpc.Net.Common/2.49.0": {
+        "dependencies": {
+          "Grpc.Core.Api": "2.49.0"
+        },
+        "runtime": {
+          "lib/net6.0/Grpc.Net.Common.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.49.0.0"
+          }
+        }
+      },
+      "Grpc.Tools/2.50.0": {},
+      "Microsoft.CSharp/4.7.0": {},
+      "Microsoft.Extensions.Configuration/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Binder/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Configuration.Binder.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.FileExtensions/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "7.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
+          "Microsoft.Extensions.FileProviders.Abstractions": "7.0.0",
+          "Microsoft.Extensions.FileProviders.Physical": "7.0.0",
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Configuration.FileExtensions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Json/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "7.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0",
+          "Microsoft.Extensions.Configuration.FileExtensions": "7.0.0",
+          "Microsoft.Extensions.FileProviders.Abstractions": "7.0.0",
+          "System.Text.Json": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Configuration.Json.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {},
+      "Microsoft.Extensions.FileProviders.Abstractions/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.FileProviders.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Physical/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Abstractions": "7.0.0",
+          "Microsoft.Extensions.FileSystemGlobbing": "7.0.0",
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.FileProviders.Physical.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileSystemGlobbing/7.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.FileSystemGlobbing.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/3.0.3": {},
+      "Microsoft.Extensions.Options/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Primitives": "7.0.0"
+        }
+      },
+      "Microsoft.Extensions.Primitives/7.0.0": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/6.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/6.0.1": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "6.0.0",
+          "System.Security.Permissions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.922.41905"
+          }
+        }
+      },
+      "System.Drawing.Common/6.0.0": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/net6.0/System.Drawing.Common.dll": {
+            "rid": "unix",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          },
+          "runtimes/win/lib/net6.0/System.Drawing.Common.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.Memory/4.5.3": {},
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
+      "System.Security.AccessControl/6.0.0": {},
+      "System.Security.Cryptography.ProtectedData/6.0.0": {
+        "runtime": {
+          "lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.Security.Permissions/6.0.0": {
+        "dependencies": {
+          "System.Security.AccessControl": "6.0.0",
+          "System.Windows.Extensions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Security.Permissions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.Text.Encodings.Web/7.0.0": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Text.Encodings.Web.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll": {
+            "rid": "browser",
+            "assetType": "runtime",
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "System.Text.Json/7.0.0": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0",
+          "System.Text.Encodings.Web": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Text.Json.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "System.Windows.Extensions/6.0.0": {
+        "dependencies": {
+          "System.Drawing.Common": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/System.Windows.Extensions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Windows.Extensions.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "LKDin.DTOs/1.0.0": {
+        "dependencies": {
+          "LKDin.Server.Domain": "1.0.0"
+        },
+        "runtime": {
+          "LKDin.DTOs.dll": {}
+        }
+      },
+      "LKDin.Exceptions/1.0.0": {
+        "runtime": {
+          "LKDin.Exceptions.dll": {}
+        }
+      },
+      "LKDin.Helpers/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "12.0.0",
+          "Google.Protobuf": "3.21.9",
+          "LKDin.DTOs": "1.0.0",
+          "LKDin.Exceptions": "1.0.0",
+          "Microsoft.Extensions.Configuration": "7.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "7.0.0",
+          "Microsoft.Extensions.Configuration.Json": "7.0.0",
+          "System.Configuration.ConfigurationManager": "6.0.1"
+        },
+        "runtime": {
+          "LKDin.Helpers.dll": {}
+        }
+      },
+      "LKDin.Server.Domain/1.0.0": {
+        "runtime": {
+          "LKDin.Server.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LKDin.Admin/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AutoMapper/12.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0Rmg0zI5AFu1O/y//o9VGyhxKjhggWpk9mOA1tp0DEVx40c61bs+lnQv+0jUq8XbniF7FKgIVvI1perqiMtLrA==",
+      "path": "automapper/12.0.0",
+      "hashPath": "automapper.12.0.0.nupkg.sha512"
+    },
+    "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XCJ4E3oKrbRl1qY9Mr+7uyC0xZj1+bqQjmQRWTiTKiVuuXTny+7YFWHi20tPjwkMukLbicN6yGlDy5PZ4wyi1w==",
+      "path": "automapper.extensions.microsoft.dependencyinjection/12.0.0",
+      "hashPath": "automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512"
+    },
+    "Google.Protobuf/3.21.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OTpFujTgkmqMLbg3KT7F/iuKi1rg6s5FCS2M9XcVLDn40zL8wgXm37CY/F6MeOEXKjdcnXGCN/h7oyMkVydVsg==",
+      "path": "google.protobuf/3.21.9",
+      "hashPath": "google.protobuf.3.21.9.nupkg.sha512"
+    },
+    "Grpc.Core.Api/2.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6OTcSQ8iML+xzmELhH4anUZlNM3dHDKPFBsMLSdiT80LJaaZKxwZml/K9ZdfLIjSR/EzdMZzzU2Avbedz4N7BA==",
+      "path": "grpc.core.api/2.49.0",
+      "hashPath": "grpc.core.api.2.49.0.nupkg.sha512"
+    },
+    "Grpc.Net.Client/2.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mLXxEJzqnRHseVzRCzSQznA7y8pcSStVbstLTUuQRulN7kREovh82ctNkGpkfwONi/DHoWscX9mJLiAmh0gjOQ==",
+      "path": "grpc.net.client/2.49.0",
+      "hashPath": "grpc.net.client.2.49.0.nupkg.sha512"
+    },
+    "Grpc.Net.Common/2.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G0TVTS8fjCk8b7td/E7C8/ssJPm3JnGVBKsveoj/89PIwIee72qkXG+tVn5c1gwTanEFPdyPoydna/bmU/NAaw==",
+      "path": "grpc.net.common/2.49.0",
+      "hashPath": "grpc.net.common.2.49.0.nupkg.sha512"
+    },
+    "Grpc.Tools/2.50.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EPp2aQpoBOvzmhLqipNwk88nf3IVQ0G0DhdSlekYHGPOUCgtcqcEzD3OIWUfQPisSYxMY2HC1sQJm6Li1sVOTw==",
+      "path": "grpc.tools/2.50.0",
+      "hashPath": "grpc.tools.2.50.0.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tldQUBWt/xeH2K7/hMPPo5g8zuLc3Ro9I5d4o/XrxvxOCA2EZBtW7bCHHTc49fcBtvB8tLAb/Qsmfrq+2SJ4vA==",
+      "path": "microsoft.extensions.configuration/7.0.0",
+      "hashPath": "microsoft.extensions.configuration.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-f34u2eaqIjNO9YLHBz8rozVZ+TcFiFs0F3r7nUJd7FRkVSxk8u4OpoK226mi49MwexHOR2ibP9MFvRUaLilcQQ==",
+      "path": "microsoft.extensions.configuration.abstractions/7.0.0",
+      "hashPath": "microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Binder/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tgU4u7bZsoS9MKVRiotVMAwHtbREHr5/5zSEV+JPhg46+ox47Au84E3D2IacAaB0bk5ePNaNieTlPrfjbbRJkg==",
+      "path": "microsoft.extensions.configuration.binder/7.0.0",
+      "hashPath": "microsoft.extensions.configuration.binder.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.FileExtensions/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xk2lRJ1RDuqe57BmgvRPyCt6zyePKUmvT6iuXqiHR+/OIIgWVR8Ff5k2p6DwmqY8a17hx/OnrekEhziEIeQP6Q==",
+      "path": "microsoft.extensions.configuration.fileextensions/7.0.0",
+      "hashPath": "microsoft.extensions.configuration.fileextensions.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Json/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LDNYe3uw76W35Jci+be4LDf2lkQZe0A7EEYQVChFbc509CpZ4Iupod8li4PUXPBhEUOFI/rlQNf5xkzJRQGvtA==",
+      "path": "microsoft.extensions.configuration.json/7.0.0",
+      "hashPath": "microsoft.extensions.configuration.json.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Abstractions/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NyawiW9ZT/liQb34k9YqBSNPLuuPkrjMgQZ24Y/xXX1RoiBkLUdPMaQTmxhZ5TYu8ZKZ9qayzil75JX95vGQUg==",
+      "path": "microsoft.extensions.fileproviders.abstractions/7.0.0",
+      "hashPath": "microsoft.extensions.fileproviders.abstractions.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Physical/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K8D2MTR+EtzkbZ8z80LrG7Ur64R7ZZdRLt1J5cgpc/pUWl0C6IkAUapPuK28oionHueCPELUqq0oYEvZfalNdg==",
+      "path": "microsoft.extensions.fileproviders.physical/7.0.0",
+      "hashPath": "microsoft.extensions.fileproviders.physical.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileSystemGlobbing/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2jONjKHiF+E92ynz2ZFcr9OvxIw+rTGMPEH+UZGeHTEComVav93jQUWGkso8yWwVBcEJGcNcZAaqY01FFJcj7w==",
+      "path": "microsoft.extensions.filesystemglobbing/7.0.0",
+      "hashPath": "microsoft.extensions.filesystemglobbing.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/3.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-m2Jyi/MEn043WMI1I6J1ALuCThktZ93rd7eqzYeLmMcA0bdZC+TBVl0LuEbEWM01dWeeBjOoagjNwQTzOi2r6A==",
+      "path": "microsoft.extensions.logging.abstractions/3.0.3",
+      "hashPath": "microsoft.extensions.logging.abstractions.3.0.3.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
+      "path": "microsoft.extensions.options/6.0.0",
+      "hashPath": "microsoft.extensions.options.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-um1KU5kxcRp3CNuI8o/GrZtD4AIOXDk+RLsytjZ9QPok3ttLUelLKpilVPuaFT3TFjOhSibUAso0odbOaCDj3Q==",
+      "path": "microsoft.extensions.primitives/7.0.0",
+      "hashPath": "microsoft.extensions.primitives.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
+      "path": "microsoft.win32.systemevents/6.0.0",
+      "hashPath": "microsoft.win32.systemevents.6.0.0.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jXw9MlUu/kRfEU0WyTptAVueupqIeE3/rl0EZDMlf8pcvJnitQ8HeVEp69rZdaStXwTV72boi/Bhw8lOeO+U2w==",
+      "path": "system.configuration.configurationmanager/6.0.1",
+      "hashPath": "system.configuration.configurationmanager.6.0.1.nupkg.sha512"
+    },
+    "System.Drawing.Common/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NfuoKUiP2nUWwKZN6twGqXioIe1zVD0RIj2t976A+czLHr2nY454RwwXs6JU9Htc6mwqL6Dn/nEL3dpVf2jOhg==",
+      "path": "system.drawing.common/6.0.0",
+      "hashPath": "system.drawing.common.6.0.0.nupkg.sha512"
+    },
+    "System.Memory/4.5.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
+      "path": "system.memory/4.5.3",
+      "hashPath": "system.memory.4.5.3.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    },
+    "System.Security.AccessControl/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AUADIc0LIEQe7MzC+I0cl0rAT8RrTAKFHl53yHjEUzNVIaUlhFY11vc2ebiVJzVBuOzun6F7FBA+8KAbGTTedQ==",
+      "path": "system.security.accesscontrol/6.0.0",
+      "hashPath": "system.security.accesscontrol.6.0.0.nupkg.sha512"
+    },
+    "System.Security.Cryptography.ProtectedData/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rp1gMNEZpvx9vP0JW0oHLxlf8oSiQgtno77Y4PLUBjSiDYoD77Y8uXHr1Ea5XG4/pIKhqAdxZ8v8OTUtqo9PeQ==",
+      "path": "system.security.cryptography.protecteddata/6.0.0",
+      "hashPath": "system.security.cryptography.protecteddata.6.0.0.nupkg.sha512"
+    },
+    "System.Security.Permissions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T/uuc7AklkDoxmcJ7LGkyX1CcSviZuLCa4jg3PekfJ7SU0niF0IVTXwUiNVP9DSpzou2PpxJ+eNY2IfDM90ZCg==",
+      "path": "system.security.permissions/6.0.0",
+      "hashPath": "system.security.permissions.6.0.0.nupkg.sha512"
+    },
+    "System.Text.Encodings.Web/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OP6umVGxc0Z0MvZQBVigj4/U31Pw72ITihDWP9WiWDm+q5aoe0GaJivsfYGq53o6dxH7DcXWiCTl7+0o2CGdmg==",
+      "path": "system.text.encodings.web/7.0.0",
+      "hashPath": "system.text.encodings.web.7.0.0.nupkg.sha512"
+    },
+    "System.Text.Json/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DaGSsVqKsn/ia6RG8frjwmJonfos0srquhw09TlT8KRw5I43E+4gs+/bZj4K0vShJ5H9imCuXupb4RmS+dBy3w==",
+      "path": "system.text.json/7.0.0",
+      "hashPath": "system.text.json.7.0.0.nupkg.sha512"
+    },
+    "System.Windows.Extensions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
+      "path": "system.windows.extensions/6.0.0",
+      "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "LKDin.DTOs/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LKDin.Exceptions/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LKDin.Helpers/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LKDin.Server.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

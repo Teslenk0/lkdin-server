@@ -52,7 +52,7 @@ namespace LKDin.Admin.Controllers.Api.V1
         [HttpDelete("{id}")]
         public async Task<ActionReply> Delete(string id)
         {
-            var req = new DeleteUserRequest() { Id = id };
+            var req = new DeleteActionRequest() { Id = id };
 
             return await _client.DeleteUserAsync(req);
         }

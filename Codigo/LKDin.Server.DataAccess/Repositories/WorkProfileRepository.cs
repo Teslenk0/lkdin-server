@@ -30,6 +30,15 @@ namespace LKDin.Server.DataAccess.Repositories
             return workProfile;
         }
 
+        public WorkProfile UnAssignImageFromWorkProfile(WorkProfile workProfile)
+        {
+            workProfile.ImagePath = null;
+
+            DataManager.UpdateDataFromStore<WorkProfile>(workProfile);
+
+            return workProfile;
+        }
+
         public WorkProfile? GetByUserId(string userId)
         {
             return DataManager.WorkProfiles.Find(wp => wp.UserId.Equals(userId));
@@ -49,6 +58,13 @@ namespace LKDin.Server.DataAccess.Repositories
                 .WorkProfiles
                 .Where(wp => wp.Description.ToLower().Contains(description.ToLower()))
                 .ToList();
+        }
+
+        public WorkProfile UpdateWorkProfile(WorkProfile workProfile)
+        {
+            DataManager.UpdateDataFromStore<WorkProfile>(workProfile);
+
+            return workProfile;
         }
 
         public void DeleteWorkProfileByUserId(string userId)

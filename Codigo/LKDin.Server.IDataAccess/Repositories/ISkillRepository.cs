@@ -9,5 +9,7 @@ namespace LKDin.Server.IDataAccess.Repositories
         public List<Skill> GetByName(List<string> skillsToSearchFor);
 
         public List<Skill> GetByWorkProfileIds(List<string> workProfileIds);
+
+        public void DeleteSkillsByWorkProfileId(string workProfileId);
     }
 }

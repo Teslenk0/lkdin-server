@@ -15,17 +15,17 @@ namespace LKDin.Server.BusinessLogic
 
         private readonly ISkillRepository _skillRepository;
 
-        private readonly IUserLogic _userService;
+        private readonly IUserLogic _userLogic;
 
         private readonly Logger _logger;
 
-        public WorkProfileLogic(IUserLogic userService)
+        public WorkProfileLogic(IUserLogic userLogic)
         {
             this._workProfileRepository = new WorkProfileRepository();
 
             this._skillRepository = new SkillRepository();
 
-            this._userService = userService;
+            this._userLogic = userLogic;
 
             this._logger = new Logger("server:business-logic:work-profile-service");
         }
@@ -34,7 +34,7 @@ namespace LKDin.Server.BusinessLogic
         {
             this._logger.Info($"Creando nuevo perfil de trabajo ID:{workProfileDTO.UserId}");
 
-            await this._userService.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
+            await this._userLogic.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
 
             var exists = this._workProfileRepository.ExistsByUserId(workProfileDTO.UserId);
 
@@ -69,7 +69,7 @@ namespace LKDin.Server.BusinessLogic
         {
             this._logger.Info($"Asignando imagen a perfil de trabajo ID:{partialWorkProfileDTO.UserId}");
 
-            await this._userService.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
+            await this._userLogic.ValidateUserCredentials(partialWorkProfileDTO.UserId, partialWorkProfileDTO.UserPassword);
 
             var workProfile = this._workProfileRepository.GetByUserId(partialWorkProfileDTO.UserId);
 
@@ -81,7 +81,7 @@ namespace LKDin.Server.BusinessLogic
             }
 
             var assetPath = AssetManager.CopyAssetToAssetsFolder<WorkProfile>(partialWorkProfileDTO.ImagePath, workProfile.Id);
-           
+
             workProfile.ImagePath = assetPath;
 
             this._workProfileRepository.AssignImageToWorkProfile(workProfile);
@@ -89,7 +89,7 @@ namespace LKDin.Server.BusinessLogic
             this._logger.Info($"Se asignó imagen al perfil de trabajo ID:{workProfile.UserId}");
         }
 
-        public async Task <List<WorkProfileDTO>> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
+        public async Task<List<WorkProfileDTO>> GetWorkProfilesBySkills(List<SkillDTO> skillsToSearchFor)
         {
             this._logger.Info($"Obteniendo perfiles de trabajo por habilidades");
 
@@ -110,7 +110,7 @@ namespace LKDin.Server.BusinessLogic
             {
                 var wpDTO = WorkProfileDTO.EntityToDTO(wp);
 
-                var userDTO = await this._userService.GetUser(wp.UserId);
+                var userDTO = await this._userLogic.GetUser(wp.UserId);
 
                 wpDTO.User = userDTO;
 
@@ -129,7 +129,7 @@ namespace LKDin.Server.BusinessLogic
             return result;
         }
 
-        public async Task <List<WorkProfileDTO>> GetWorkProfilesByDescription(string description)
+        public async Task<List<WorkProfileDTO>> GetWorkProfilesByDescription(string description)
         {
             this._logger.Info($"Obteniendo perfiles de trabajo por descripción");
 
@@ -148,7 +148,7 @@ namespace LKDin.Server.BusinessLogic
             {
                 var wpDTO = WorkProfileDTO.EntityToDTO(wp);
 
-                var userDTO = await this._userService.GetUser(wp.UserId);
+                var userDTO = await this._userLogic.GetUser(wp.UserId);
 
                 wpDTO.User = userDTO;
 
@@ -167,11 +167,11 @@ namespace LKDin.Server.BusinessLogic
             return result;
         }
 
-        public async Task <WorkProfileDTO> GetWorkProfileByUserId(string userId)
+        public async Task<WorkProfileDTO> GetWorkProfileByUserId(string userId)
         {
             this._logger.Info($"Obteniendo perfil de trabajo por ID:{userId}");
 
-            var userDTO = await this._userService.GetUser(userId);
+            var userDTO = await this._userLogic.GetUser(userId);
 
             if (userDTO == null)
             {
@@ -228,6 +228,105 @@ namespace LKDin.Server.BusinessLogic
             var assetPath = AssetManager.CopyFileToDownloadsFolder<WorkProfileDTO>(workProfile.ImagePath, true);
 
             return assetPath;
+        }
+
+        public async Task DeleteWorkProfileImage(WorkProfileDTO workProfileDTO)
+        {
+            this._logger.Info($"Eliminando imagen del perfil de trabajo ID:{workProfileDTO.Id}");
+
+            await this._userLogic.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
+
+            var workProfile = this._workProfileRepository.GetByUserId(workProfileDTO.Id);
+
+            if (workProfile == null)
+            {
+                this._logger.Error($"Perfil de trabajo ID:{workProfileDTO.Id} no existe");
+
+                throw new WorkProfileDoesNotExistException(workProfileDTO.Id);
+            }
+
+            if (string.IsNullOrWhiteSpace(workProfile.ImagePath))
+            {
+                this._logger.Error($"Perfil de trabajo ID:{workProfileDTO.Id} no tiene una imagen asignada");
+
+                throw new NoImageAssignedException(workProfileDTO.Id);
+            }
+
+            if (AssetManager.DoesFileExist(workProfile.ImagePath))
+            {
+                AssetManager.DeleteAssetFromAssetsFolder<WorkProfile>(workProfile.ImagePath);
+            }
+            else
+            {
+                this._logger.Warn($"El archivo {workProfile.ImagePath} no existe - Omitiendo eliminacion del archivo");
+            }
+
+            this._workProfileRepository.UnAssignImageFromWorkProfile(workProfile);
+
+            this._logger.Info($"Se eliminó imagen del perfil de trabajo ID:{workProfile.Id} exitosamente");
+        }
+
+        public async Task DeleteWorkProfile(WorkProfileDTO workProfileDTO)
+        {
+            this._logger.Info($"Eliminando perfil de trabajo ID:{workProfileDTO.Id}");
+
+            await this._userLogic.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
+
+            var workProfile = this._workProfileRepository.GetByUserId(workProfileDTO.Id);
+
+            if (workProfile == null)
+            {
+                this._logger.Error($"Perfil de trabajo ID:{workProfileDTO.Id} no existe");
+
+                throw new WorkProfileDoesNotExistException(workProfileDTO.Id);
+            }
+
+            if (!string.IsNullOrWhiteSpace(workProfile.ImagePath) && AssetManager.DoesFileExist(workProfile.ImagePath))
+            {
+                AssetManager.DeleteAssetFromAssetsFolder<WorkProfile>(workProfile.ImagePath);
+            }
+
+            this._workProfileRepository.DeleteWorkProfileByUserId(workProfile.Id);
+
+            this._logger.Info($"Se eliminó el perfil de trabajo ID:{workProfile.Id} exitosamente");
+        }
+
+        public async Task UpdateWorkProfile(WorkProfileDTO workProfileDTO)
+        {
+            this._logger.Info($"Actualizando perfil de trabajo ID:{workProfileDTO.Id}");
+
+            await this._userLogic.ValidateUserCredentials(workProfileDTO.UserId, workProfileDTO.UserPassword);
+
+            var workProfile = this._workProfileRepository.GetByUserId(workProfileDTO.Id);
+
+            if (workProfile == null)
+            {
+                this._logger.Error($"Perfil de trabajo ID:{workProfileDTO.Id} no existe");
+
+                throw new WorkProfileDoesNotExistException(workProfileDTO.Id);
+            }
+
+            var updatedWorkProfile = WorkProfileDTO.DTOToEntity(workProfileDTO);
+
+            this._workProfileRepository.UpdateWorkProfile(updatedWorkProfile);
+
+            this._skillRepository.DeleteSkillsByWorkProfileId(workProfile.Id);
+
+            if(workProfileDTO.Skills != null && workProfileDTO.Skills.Count > 0)
+            {
+                List<Skill> skills = new();
+
+                foreach (SkillDTO skillDTO in workProfileDTO.Skills)
+                {
+                    skillDTO.WorkProfileId = workProfile.Id.ToString();
+
+                    skills.Add(SkillDTO.DTOToEntity(skillDTO));
+                }
+
+                this._skillRepository.CreateMany(skills);
+            }
+
+            this._logger.Info($"Se actualizó el perfil de trabajo ID:{updatedWorkProfile.Id} exitosamente");
         }
     }
 }

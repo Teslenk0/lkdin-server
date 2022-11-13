@@ -45,7 +45,7 @@ namespace LKDin.Server.V2.Services
             return ConfirmOperation();
         }
 
-        public override async Task<ActionReply> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+        public override async Task<ActionReply> DeleteUser(DeleteActionRequest request, ServerCallContext context)
         {
             _logger.Info("Recibida nueva llamada gRPC para eliminar usuario");
 

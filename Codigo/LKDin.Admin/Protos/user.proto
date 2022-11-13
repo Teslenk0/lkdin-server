@@ -4,12 +4,14 @@ option csharp_namespace = "LKDin.Admin";
 
 package user;
 
+import "Protos/shared.proto";
+
 service User {
-  rpc CreateUser(UpsertUserRequest) returns (ActionReply);
+  rpc CreateUser(UpsertUserRequest) returns (shared.ActionReply);
 
-  rpc UpdateUser(UpsertUserRequest) returns (ActionReply);
+  rpc UpdateUser(UpsertUserRequest) returns (shared.ActionReply);
 
-  rpc DeleteUser(DeleteUserRequest) returns (ActionReply);
+  rpc DeleteUser(shared.DeleteActionRequest) returns (shared.ActionReply);
 }
 
 // The request message containing the user's name.
@@ -17,14 +19,4 @@ message UpsertUserRequest {
   string name = 1;
   string id = 2;
   string password = 3;
-}
-
-message DeleteUserRequest {
-  string id = 1;
-}
-
-message ActionReply {
-	string status = 1;
-	string message = 2;
-	bool   success = 3;
 }

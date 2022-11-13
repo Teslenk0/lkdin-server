@@ -10,10 +10,16 @@ namespace LKDin.Server.IDataAccess.Repositories
 
         public WorkProfile AssignImageToWorkProfile(WorkProfile workProfile);
 
+        public WorkProfile UnAssignImageFromWorkProfile(WorkProfile workProfile);
+
         public WorkProfile GetByUserId(string userId);
 
         public List<WorkProfile> GetByIds(List<string> workProfileIds);
 
         public List<WorkProfile> GetByDescription(string description);
+
+        public WorkProfile UpdateWorkProfile(WorkProfile workProfile);
+
+        public void DeleteWorkProfileByUserId(string userId);
     }
 }

@@ -4,11 +4,11 @@ namespace LKDin.DTOs
 {
     public class SkillDTO
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string WorkProfileId { get; set; }
+        public string? WorkProfileId { get; set; }
 
         public static SkillDTO EntityToDTO(Skill skill)
         {

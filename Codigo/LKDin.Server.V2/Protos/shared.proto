@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "LKDin.Server.V2";
+
+package shared;
+
+message ActionReply {
+	string status = 1;
+	string message = 2;
+	bool   success = 3;
+}
+
+message DeleteActionRequest {
+  string id = 1;
+}

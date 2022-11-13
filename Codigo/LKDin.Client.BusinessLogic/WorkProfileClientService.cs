@@ -35,6 +35,16 @@ namespace LKDin.Client.BusinessLogic
             await _networkDataHelper.ReceiveMessage();
         }
 
+        public Task DeleteWorkProfile(WorkProfileDTO workProfileDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteWorkProfileImage(WorkProfileDTO workProfileDTO)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> DownloadWorkProfileImage(string userId)
         {
             await _networkDataHelper.SendMessage(userId, AvailableOperation.DOWNLOAD_PROFILE_IMAGE_BY_ID);
@@ -81,6 +91,11 @@ namespace LKDin.Client.BusinessLogic
             var messagePayload = data[Protocol.MSG_NAME];
 
             return SerializationManager.DeserializeList<List<WorkProfileDTO>>(messagePayload);
+        }
+
+        public Task UpdateWorkProfile(WorkProfileDTO workProfileDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

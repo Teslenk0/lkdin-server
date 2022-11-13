@@ -62,8 +62,9 @@ namespace LKDin.Server.V2
             builder.Services.AddScoped<IUserLogic, UserLogic>(x =>
      ActivatorUtilities.CreateInstance<UserLogic>(x, true));
 
-            builder.Services.AddScoped<IWorkProfileLogic, WorkProfileLogic>(x =>
-     ActivatorUtilities.CreateInstance<WorkProfileLogic>(x, true));
+            builder.Services.AddScoped<IWorkProfileLogic, WorkProfileLogic>(x => ActivatorUtilities
+                .CreateInstance<WorkProfileLogic>(x, ActivatorUtilities
+                    .CreateInstance<UserLogic>(x, true)));
 
             var config = new MapperConfiguration(cfg =>
             {
